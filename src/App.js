@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -6,6 +6,14 @@ function App() {
   const [selectedFragmentIndex, setSelectedFragmentIndex] = useState(0);
   const [mode, setMode] = useState('explore');
   const [currentFragmentText, setCurrentFragmentText] = useState(''); // For editing fragment text
+  const appContainerRef = useRef(null);
+
+  /* Always restore focus on App area when switching back to explore mode */
+  useEffect(() => {
+    if (appContainerRef.current && mode == 'explore') {
+      appContainerRef.current.focus();
+    }
+  }, [mode, fragments, selectedFragmentIndex]);
 
   const handleKeyDown = (e) => {
     if (mode === 'explore') {
@@ -28,7 +36,7 @@ function App() {
           break;
       }
     } else if (mode === 'edit') {
-      if (e.key === 'Enter' && !e.ctrlKey) {
+      if (e.key === 'Enter' && e.ctrlKey) {
         if (selectedFragmentIndex === fragments.length) {
           // Adding new fragment
           if (currentFragmentText.trim()) {
@@ -48,15 +56,12 @@ function App() {
         setMode('explore');
         setCurrentFragmentText('');
         e.preventDefault();
-      } else if (e.key === 'Enter' && e.ctrlKey) {
-        setCurrentFragmentText((prevText) => prevText + '\n');
-        e.preventDefault();
       }
     }
   };
 
   return (
-    <div className="App" onKeyDown={handleKeyDown} tabIndex="0">
+    <div className="App" onKeyDown={handleKeyDown} tabIndex="0" ref={appContainerRef}>
       <div className="fragment-list">
         {fragments.flatMap((fragment, index) => {
           if (selectedFragmentIndex === index && mode === 'edit') {
@@ -100,19 +105,6 @@ function App() {
             )
           }
         </span>        
-        {/* <span
-          className={`fragment new ${selectedFragmentIndex === fragments.length ? 'selected' : ''}`}
-        >
-          {selectedFragmentIndex === fragments.length && mode === 'edit' ? (
-            <textarea
-              value={currentFragmentText}
-              onChange={(e) => setCurrentFragmentText(e.target.value)}
-              autoFocus
-            />
-          ) : (
-            '<new>'
-          )}
-        </span> */}
       </div>
     </div>
   );
