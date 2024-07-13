@@ -78,13 +78,16 @@ function App() {
           return (
             <React.Fragment key={index}>
               {fragment.split('\n').map((line, i) => (
-                <span
-                  key={i}
-                  className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}
-                >
-                  {line}
-                  {i < fragment.split('\n').length - 1 && <br />}
-                </span>
+                <React.Fragment key={i}>
+                  <span className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}>
+                    {line}
+                  </span>
+                  {(i != fragment.split('\n').length - 1 || line === '') && (
+                    <span className='break'>
+                      <br></br>
+                    </span>
+                  )}
+                </React.Fragment>
               ))}
             </React.Fragment>
           );

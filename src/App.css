@@ -31,6 +31,10 @@
   background-color: #ffefd0;
 }
 
+.break {
+  width: 100%;
+}
+
 textarea {
   width: 100%;
   height: 100%;
