@@ -72,6 +72,12 @@ function App() {
           </React.Fragment>
         ))}
         <span
+          key='new'
+          className={`fragment new ${selectedFragmentIndex === fragments.length ? 'selected' : ''}`}
+        >
+          &lt;new&gt;
+        </span>        
+        {/* <span
           className={`fragment new ${selectedFragmentIndex === fragments.length ? 'selected' : ''}`}
         >
           {selectedFragmentIndex === fragments.length && mode === 'edit' ? (
@@ -83,11 +89,11 @@ function App() {
           ) : (
             '<new>'
           )}
-        </span>
+        </span> */}
       </div>
     </div>
   );
-  
+
 }
 
 export default App;
