@@ -58,23 +58,20 @@ function App() {
   return (
     <div className="App" onKeyDown={handleKeyDown} tabIndex="0">
       <div className="fragment-list">
-        {fragments.map((fragment, index) => (
-          <div
-            key={index}
-            className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}
-          >
-            {selectedFragmentIndex === index && mode === 'edit' ? (
-              <textarea
-                value={currentFragmentText}
-                onChange={(e) => setCurrentFragmentText(e.target.value)}
-                autoFocus
-              />
-            ) : (
-              fragment
-            )}
-          </div>
+        {fragments.flatMap((fragment, index) => (
+          <React.Fragment key={index}>
+            {fragment.split('\n').map((line, i) => (
+              <span
+                key={i}
+                className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}
+              >
+                {line}
+                {i < fragment.split('\n').length - 1 && <br />}
+              </span>
+            ))}
+          </React.Fragment>
         ))}
-        <div
+        <span
           className={`fragment new ${selectedFragmentIndex === fragments.length ? 'selected' : ''}`}
         >
           {selectedFragmentIndex === fragments.length && mode === 'edit' ? (
@@ -86,10 +83,11 @@ function App() {
           ) : (
             '<new>'
           )}
-        </div>
+        </span>
       </div>
     </div>
   );
+  
 }
 
 export default App;
