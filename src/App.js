@@ -25,6 +25,7 @@ function App() {
           setSelectedFragmentIndex((prevIndex) => (prevIndex < fragments.length ? prevIndex + 1 : prevIndex));
           break;
         case ' ':
+          e.preventDefault();
           if (selectedFragmentIndex === fragments.length) {
             setCurrentFragmentText('');
           } else {
