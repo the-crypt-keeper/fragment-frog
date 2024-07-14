@@ -10,7 +10,7 @@ function App() {
 
   /* Always restore focus on App area when switching back to explore mode */
   useEffect(() => {
-    if (appContainerRef.current && mode == 'explore') {
+    if (appContainerRef.current && mode === 'explore') {
       appContainerRef.current.focus();
     }
   }, [mode, fragments, selectedFragmentIndex]);
@@ -39,7 +39,11 @@ function App() {
           break;
         case 'i':
           e.preventDefault();
-          setFragments([...fragments.slice(0, selectedFragmentIndex), '', ...fragments.slice(selectedFragmentIndex)]);
+          if (selectedFragmentIndex < fragments.length) {
+            let nextFragmentIndex = selectedFragmentIndex + 1;
+            setFragments([...fragments.slice(0, nextFragmentIndex), '', ...fragments.slice(nextFragmentIndex)]);
+            setSelectedFragmentIndex(nextFragmentIndex);
+          }
           setCurrentFragmentText('');
           setMode('insert');
           break;
@@ -96,7 +100,7 @@ function App() {
                   <span className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}>
                     {line}
                   </span>
-                  {(i != fragment.split('\n').length - 1 || line === '') && (
+                  {(i !== fragment.split('\n').length - 1 || line === '') && (
                     <span className='break'>
                       <br></br>
                     </span>
