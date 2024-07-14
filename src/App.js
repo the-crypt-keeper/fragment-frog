@@ -33,10 +33,20 @@ function App() {
           }
           setMode('edit');
           break;
+        case 'd':
+          e.preventDefault();
+          setFragments(fragments.filter((_, index) => index !== selectedFragmentIndex));
+          break;
+        case 'i':
+          e.preventDefault();
+          setFragments([...fragments.slice(0, selectedFragmentIndex), '', ...fragments.slice(selectedFragmentIndex)]);
+          setCurrentFragmentText('');
+          setMode('insert');
+          break;
         default:
           break;
       }
-    } else if (mode === 'edit') {
+    } else if (mode === 'edit' || mode === 'insert') {
       if (e.key === 'Enter' && e.ctrlKey) {
         if (selectedFragmentIndex === fragments.length) {
           // Adding new fragment
@@ -57,6 +67,9 @@ function App() {
         setMode('explore');
         setCurrentFragmentText('');
         e.preventDefault();
+        if (mode === 'insert') {
+          setFragments(fragments.filter((_, index) => index !== selectedFragmentIndex));
+        }
       }
     }
   };
@@ -65,7 +78,7 @@ function App() {
     <div className="App" onKeyDown={handleKeyDown} tabIndex="0" ref={appContainerRef}>
       <div className="fragment-list">
         {fragments.flatMap((fragment, index) => {
-          if (selectedFragmentIndex === index && mode === 'edit') {
+          if (selectedFragmentIndex === index && mode !== 'explore') {
             return (
               <span key={index} className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}>              
               <textarea
@@ -97,7 +110,7 @@ function App() {
           key='new'
           className={`fragment new ${selectedFragmentIndex === fragments.length ? 'selected' : ''}`}
         >
-          { (selectedFragmentIndex === fragments.length && mode === 'edit') ?
+          { (selectedFragmentIndex === fragments.length && mode !== 'explore') ?
             (
               <textarea
                 value={currentFragmentText}
