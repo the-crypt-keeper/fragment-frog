@@ -14,7 +14,7 @@ function App() {
       appContainerRef.current.focus();
     }
   }, [mode, fragments, selectedFragmentIndex]);
-
+  
   const handleKeyDown = (e) => {
     if (mode === 'explore') {
       switch (e.key) {
@@ -51,7 +51,18 @@ function App() {
           break;
       }
     } else if (mode === 'edit' || mode === 'insert') {
-      if (e.key === 'Enter' && e.ctrlKey) {
+      var startPos = e.target.selectionStart;
+      var endPos = e.target.selectionEnd;
+      console.log(startPos, endPos)
+
+      if (e.key === 'Enter' && e.ctrlKey) {  
+        // Insert a newline at startpos
+        e.preventDefault();
+        e.target.value = e.target.value.slice(0, startPos) + '\n' + e.target.value.slice(startPos)
+        e.target.selectionStart = startPos + 1;
+        e.target.selectionEnd = startPos + 1;
+        setCurrentFragmentText(e.target.value);
+      } else if (e.key === 'Enter' && !e.ctrlKey) {
         if (selectedFragmentIndex === fragments.length) {
           // Adding new fragment
           if (currentFragmentText.trim()) {
