@@ -12,7 +12,7 @@ Fragment: A small piece of text, usually but not necessarily a sentence
 Fragment list: A list of fragments that when joined together forms the current document.
 Selected fragment: The index of the currently selected fragment in the list. It should be possible to select a new, not-yet-created fragment at the very end of the list.
 Document: The fragment list joined into a single string without introducing any additional whitespace.
-Mode: The current editor mode: "explore" (default) or "edit"
+Mode: The current editor mode: "explore" (default), "edit" or "insert"
 
 ## The Fragment List
 
@@ -27,15 +27,18 @@ It should possible to select a new, not-yet-created fragment at the very end of 
 In the default "explore" mode, the following keyboard controls should be available:
 
 - Left/right: change which fragment is selected
+- i: insert a new fragment to the right of the current fragment and transition to "insert" mode
 - space: transition to "edit" mode
 
-In "edit" mode the Selected Fragment should be rendered as a textarea. If entered on the `<new>` fragment, the text should start empty and if the user accepts it with enter the fragment should be created and the selected fragment again moved to another `<new>`
+In "edit" and "insert" modes, the Selected Fragment should be rendered as a textarea. If entered on the `<new>` fragment, the text should start empty and if the user accepts it with enter the fragment should be created and the selected fragment again moved to another `<new>`.
 
-The following keyboard controls should be available in "edit" mode:
+The following keyboard controls should be available in "edit" and "insert" mode:
 
 - ctrl+enter: insert a newline
 - enter: save changes to the fragment, return to explore mode
-- escape: discard changes, return to "explore" mode
+- escape: 
+  - edit mode: discard changes, return to "explore" mode
+  - insert mode: delete the inserted fragment, return to "explore" mode
 
 ## Starting state
 
