@@ -144,6 +144,20 @@ function App() {
           generateSuggestions();
           e.preventDefault();
           break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+          e.preventDefault();
+          const suggestionIndex = parseInt(e.key) - 1;
+          if (suggestionIndex < suggestions.length && suggestions[suggestionIndex]) {
+            const newFragment = suggestions[suggestionIndex];
+            const insertIndex = selectedFragmentIndex + 1;
+            setFragments([...fragments.slice(0, insertIndex), newFragment, ...fragments.slice(insertIndex)]);
+            setSelectedFragmentIndex(insertIndex);
+            setInsertedSuggestions(new Set([...insertedSuggestions, suggestionIndex]));
+          }
+          break;
         case 'ArrowLeft':
           if (e.ctrlKey) {
             e.preventDefault();
