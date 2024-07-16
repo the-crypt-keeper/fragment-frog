@@ -6,6 +6,7 @@ function App() {
   const [selectedFragmentIndex, setSelectedFragmentIndex] = useState(0);
   const [mode, setMode] = useState('explore');
   const [currentFragmentText, setCurrentFragmentText] = useState(''); // For editing fragment text
+  const [clipboard, setClipboard] = useState([]); // New state for clipboard
   const appContainerRef = useRef(null);
 
   /* Always restore focus on App area when switching back to explore mode */
@@ -91,7 +92,8 @@ function App() {
 
   return (
     <div className="App" onKeyDown={handleKeyDown} tabIndex="0" ref={appContainerRef}>
-      <div className="fragment-list">
+      <div className="main-content">
+        <div className="fragment-list">
         {fragments.flatMap((fragment, index) => {
           if (selectedFragmentIndex === index && mode !== 'explore') {
             return (
@@ -138,9 +140,17 @@ function App() {
           }
         </span>        
       </div>
+      <div className="clipboard-panel">
+        <h3>Clipboard</h3>
+        {clipboard.map((item, index) => (
+          <div key={index} className="clipboard-item">
+            {item}
+          </div>
+        ))}
+      </div>
     </div>
+  </div>
   );
-
 }
 
 export default App;
