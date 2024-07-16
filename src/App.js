@@ -2,14 +2,22 @@ import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
+
+  // editor and clipboard
+  const appContainerRef = useRef(null);
   const [fragments, setFragments] = useState([]);
   const [selectedFragmentIndex, setSelectedFragmentIndex] = useState(0);
   const [mode, setMode] = useState('explore');
   const [currentFragmentText, setCurrentFragmentText] = useState(''); // For editing fragment text
-  const [clipboard, setClipboard] = useState([]); // New state for clipboard
-  const [suggestions, setSuggestions] = useState([]); // New state for suggestions
+  const [clipboard, setClipboard] = useState([]); // New state for clipboard    
+  
+  // suggestions
+  const abortControllerRef = useRef(null);
+  const [model, setModel] = useState('');
+  const [suggestions, setSuggestions] = useState(["suggestion1","suggestion2"]); // New state for suggestions
   const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
-  const appContainerRef = useRef(null);
+  const currentPromptRef = useRef('');
+  const numSuggestions = 4;
 
   /* Always restore focus on App area when switching back to explore mode */
   useEffect(() => {
@@ -17,10 +25,128 @@ function App() {
       appContainerRef.current.focus();
     }
   }, [mode, fragments, selectedFragmentIndex]);
+
+  const getAvailableModel = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/models`, {
+        headers: { 'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}` }
+      });
+      const data = await response.json();
+      setModel(data.data[0].id);
+    } catch (error) {
+      console.error('Error fetching models:', error);
+    }
+  };
+  useEffect(() => { getAvailableModel(); }, [])
+
+  const generateSuggestions = async (force = false) => {
+    //clearTimeout(typingTimeoutRef.current);
+    if (!model) return;
+
+    // Compute prompt
+    let prompt = fragments.slice(0, selectedFragmentIndex).join('');
+    console.log('prompt:', prompt)
+
+    // Reset animations and clear inserted suggestions
+    const suggestionElements = document.querySelectorAll('.suggestion-item');
+    suggestionElements.forEach(el => { el.classList.remove('fade-out'); });
+    setInsertedSuggestions(new Set());
+
+    // if (prompt === generatePrompt && !force) return;
+    // setGeneratePrompt(prompt);
+
+    if (prompt.trim() === '') return;
+
+    // Abort previous request if it's still ongoing
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create a new AbortController for this request
+    abortControllerRef.current = new AbortController();
+    currentPromptRef.current = prompt;
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: model,
+          prompt: prompt,
+          max_tokens: 50,
+          temperature: 1.0,
+          top_p: 0.9,
+          n: numSuggestions,
+          stop: ['.'],
+          stream: true,
+        }),
+        signal: abortControllerRef.current.signal,
+      });
   
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      const newSuggestions = Array(numSuggestions).fill('');
+      const doneSuggestions = Array(numSuggestions).fill(false);
+  
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+        lines.forEach(line => {
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              const data = JSON.parse(line.slice(6));
+
+              if (data.choices && data.choices.length > 0) {
+                const { index, text, finish_reason, stop_reason } = data.choices[0];
+                if (!doneSuggestions[index]) {
+                  if (text) {
+                    newSuggestions[index] += text;
+                    if (currentPromptRef.current === prompt) {
+                      setSuggestions([...newSuggestions]);
+                    }
+                  }
+                  if (finish_reason === "stop" && stop_reason != null) {
+                    newSuggestions[index] += stop_reason;
+                    doneSuggestions[index] = true;
+                    if (currentPromptRef.current === prompt) {
+                      setSuggestions([...newSuggestions]);
+                    }
+                  }
+                }
+              }
+            } catch (e) {
+              console.error('Error parsing JSON:', e, line);
+            }
+          }
+        });
+      }
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted');
+      } else {
+        console.error('Error generating suggestions:', error);
+      }
+    } finally {
+      abortControllerRef.current = null;
+    }
+  };
+
   const handleKeyDown = (e) => {
     if (mode === 'explore') {
       switch (e.key) {
+        case 'Tab':
+          generateSuggestions();
+          e.preventDefault();
+          break;
         case 'ArrowLeft':
           if (e.ctrlKey) {
             e.preventDefault();
