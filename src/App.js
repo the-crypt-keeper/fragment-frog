@@ -111,12 +111,12 @@ function App() {
                 if (!doneSuggestions[index]) {
                   if (text) {
                     newSuggestions[index] += text;
-                    if (currentPromptRef.current === prompt) { setSuggestions(newSuggestions); }
+                    if (currentPromptRef.current === prompt) { setSuggestions([...newSuggestions]); }
                   }
                   if (finish_reason === "stop") {
                     if (stop_reason != null) { newSuggestions[index] += stop_reason; }
                     doneSuggestions[index] = true;
-                    if (currentPromptRef.current === prompt) { setSuggestions(newSuggestions); }
+                    if (currentPromptRef.current === prompt) { setSuggestions([...newSuggestions]); }
                   }
                 }
               }
@@ -321,7 +321,7 @@ function App() {
       <div className="editor-suggestions">
         {suggestions.map((suggestion, index) => (
           <div key={index} className={`suggestion-item ${insertedSuggestions.has(index) ? 'fade-out' : ''}`}>
-            <span className="suggestion-hint">Ctrl+{index}</span>
+            <span className="suggestion-hint">{index+1}</span>
             {suggestion}
           </div>
         ))}

@@ -88,6 +88,7 @@ textarea {
 
 .suggestion-hint {
   font-weight: bold;
+  font-size: 1.5em;
   margin-right: 5px;
   float: left;
   border: 1px black solid;
