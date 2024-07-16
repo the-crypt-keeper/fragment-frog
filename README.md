@@ -8,15 +8,19 @@ FragmentFrog is a React application designed to help users write, edit, and revi
 - **Fragment list**: A list of fragments that, when joined together, forms the current document.
 - **Selected fragment**: The index of the currently selected fragment in the list.
 - **Document**: The fragment list joined into a single string without introducing any additional whitespace.
+- **Clipboard**: A list of tepmorary fragments with FIFO semantics to enable non-linear editing.
 - **Mode**: The current editor mode: "explore" (default), "edit", or "insert".
 
 ## Keyboard Controls
 
 ### Explore Mode (Default)
 - Left/Right Arrows: Change selected fragment
+- CTRL+Left/Right Arrows: Moved the currently selected fragment left or right
 - Space: Edits selected fragments
 - 'i': Insert a new fragment after selected fragment
 - 'd': Deletes the selected fragment
+- 'x': Cuts the selected fragment, placing it at the end of the Clipboard
+- 'v': Pastes the top element from the clipboard.
 
 ### Edit/Insert Mode
 - Ctrl+Enter: Insert a newline
