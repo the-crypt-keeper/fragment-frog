@@ -79,11 +79,11 @@ textarea {
 
 .suggestion-item {
   margin: 5px;
-  padding: 5px;
+  padding: 1%;
   background-color: #f0f0f0;
   border-radius: 3px;
   transition: opacity 0.5s ease-out;
-  width: 25%;
+  width: 20%;
 }
 
 .suggestion-hint {

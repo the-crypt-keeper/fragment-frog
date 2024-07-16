@@ -14,7 +14,7 @@ function App() {
   // suggestions
   const abortControllerRef = useRef(null);
   const [model, setModel] = useState('');
-  const [suggestions, setSuggestions] = useState(["suggestion1","suggestion2"]); // New state for suggestions
+  const [suggestions, setSuggestions] = useState([]); // New state for suggestions
   const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
   const currentPromptRef = useRef('');
   const numSuggestions = 4;
@@ -104,22 +104,19 @@ function App() {
           if (line.startsWith('data: ') && line !== 'data: [DONE]') {
             try {
               const data = JSON.parse(line.slice(6));
+              console.log(newSuggestions);
 
               if (data.choices && data.choices.length > 0) {
                 const { index, text, finish_reason, stop_reason } = data.choices[0];
                 if (!doneSuggestions[index]) {
                   if (text) {
                     newSuggestions[index] += text;
-                    if (currentPromptRef.current === prompt) {
-                      setSuggestions([...newSuggestions]);
-                    }
+                    if (currentPromptRef.current === prompt) { setSuggestions(newSuggestions); }
                   }
-                  if (finish_reason === "stop" && stop_reason != null) {
-                    newSuggestions[index] += stop_reason;
+                  if (finish_reason === "stop") {
+                    if (stop_reason != null) { newSuggestions[index] += stop_reason; }
                     doneSuggestions[index] = true;
-                    if (currentPromptRef.current === prompt) {
-                      setSuggestions([...newSuggestions]);
-                    }
+                    if (currentPromptRef.current === prompt) { setSuggestions(newSuggestions); }
                   }
                 }
               }
