@@ -7,6 +7,8 @@ function App() {
   const [mode, setMode] = useState('explore');
   const [currentFragmentText, setCurrentFragmentText] = useState(''); // For editing fragment text
   const [clipboard, setClipboard] = useState([]); // New state for clipboard
+  const [suggestions, setSuggestions] = useState([]); // New state for suggestions
+  const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
   const appContainerRef = useRef(null);
 
   /* Always restore focus on App area when switching back to explore mode */
@@ -188,6 +190,19 @@ function App() {
         {clipboard.map((item, index) => (
           <div key={index} className="clipboard-item">
             {item}
+          </div>
+        ))}
+      </div>
+    </div>
+    <div className="suggestions-panel">
+      <h3>Suggestions</h3>
+      <div className="editor-suggestions">
+        {suggestions.map((suggestion, index) => (
+          <div 
+            key={index} 
+            className={`suggestion-item ${insertedSuggestions.has(index) ? 'fade-out' : ''}`}
+          >
+            {suggestion}
           </div>
         ))}
       </div>
