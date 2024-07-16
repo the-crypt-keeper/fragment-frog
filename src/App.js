@@ -20,10 +20,34 @@ function App() {
     if (mode === 'explore') {
       switch (e.key) {
         case 'ArrowLeft':
-          setSelectedFragmentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+          if (e.ctrlKey) {
+            e.preventDefault();
+            if (selectedFragmentIndex > 0) {
+              const newFragments = [...fragments];
+              const temp = newFragments[selectedFragmentIndex];
+              newFragments[selectedFragmentIndex] = newFragments[selectedFragmentIndex - 1];
+              newFragments[selectedFragmentIndex - 1] = temp;
+              setFragments(newFragments);
+              setSelectedFragmentIndex(prevIndex => prevIndex - 1);
+            }
+          } else {
+            setSelectedFragmentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+          }
           break;
         case 'ArrowRight':
-          setSelectedFragmentIndex((prevIndex) => (prevIndex < fragments.length ? prevIndex + 1 : prevIndex));
+          if (e.ctrlKey) {
+            e.preventDefault();
+            if (selectedFragmentIndex < fragments.length - 1) {
+              const newFragments = [...fragments];
+              const temp = newFragments[selectedFragmentIndex];
+              newFragments[selectedFragmentIndex] = newFragments[selectedFragmentIndex + 1];
+              newFragments[selectedFragmentIndex + 1] = temp;
+              setFragments(newFragments);
+              setSelectedFragmentIndex(prevIndex => prevIndex + 1);
+            }
+          } else {
+            setSelectedFragmentIndex((prevIndex) => (prevIndex < fragments.length ? prevIndex + 1 : prevIndex));
+          }
           break;
         case ' ':
           e.preventDefault();
