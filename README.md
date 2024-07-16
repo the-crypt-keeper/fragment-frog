@@ -17,11 +17,11 @@ FragmentFrog is a React application designed to help users write, edit, and revi
 ### Explore Mode (Default)
 - Left/Right Arrows: Change selected fragment
 - CTRL+Left/Right Arrows: Moved the currently selected fragment left or right
-- Space: Edits selected fragments
+- Space: Edits the selected fragment
 - 'i': Insert a new fragment after selected fragment
 - 'd': Deletes the selected fragment
 - 'x': Cuts the selected fragment, placing it at the end of the Clipboard
-- 'v': Pastes the top element from the clipboard.
+- 'v': Pastes the top element from the clipboard
 - Tab: Generate new suggestions
 - 1, 2, 3, 4: Insert the corresponding suggestion (1st, 2nd, 3rd, or 4th) after the selected fragment
 - Ctrl + 1, 2, 3, 4: Insert the corresponding suggestion without automatically generating new suggestions
@@ -38,22 +38,17 @@ FragmentFrog is a React application designed to help users write, edit, and revi
 3. Start the development server: `npm start`
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Contributing
-
-We welcome contributions! Please feel free to submit a Pull Request.
-
-## Suggestion List
+## LLM Suggestion List
 
 The Suggestion List is an AI-powered feature that provides contextual suggestions for continuing your text. Here's how it works:
 
 1. In Explore mode, press Tab to generate new suggestions based on the current context.
-2. Four suggestions will appear in the suggestion panel on the right side of the interface.
-3. To insert a suggestion, press the corresponding number key (1, 2, 3, or 4).
-4. The selected suggestion will be inserted after the currently selected fragment.
-5. By default, new suggestions will be generated automatically after inserting a suggestion.
-6. To insert a suggestion without generating new ones, hold Ctrl while pressing the number key.
+2. Four suggestions will appear in the suggestion panel at the bottom of the interface.
+3. To insert a suggestion after the currently selected fragment, press the corresponding number key (1, 2, 3, or 4).
+4. By default, new suggestions will be generated automatically after inserting a suggestion.
+5. To insert a suggestion without generating new ones, hold Ctrl while pressing the number key.
 
-The suggestion list helps you overcome writer's block and provides creative ideas for continuing your text.
+The suggestion list helps you overcome writer's block and provides creative ideas for continuing your text!
 
 ## License
 
