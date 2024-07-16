@@ -48,6 +48,25 @@ function App() {
           setCurrentFragmentText('');
           setMode('insert');
           break;
+        case 'x':
+          e.preventDefault();
+          if (selectedFragmentIndex < fragments.length) {
+            const cutFragment = fragments[selectedFragmentIndex];
+            setClipboard(prevClipboard => [...prevClipboard, cutFragment]);
+            setFragments(fragments.filter((_, index) => index !== selectedFragmentIndex));
+            setSelectedFragmentIndex(prevIndex => Math.min(prevIndex, fragments.length - 2));
+          }
+          break;
+        case 'v':
+          e.preventDefault();
+          if (clipboard.length > 0) {
+            const pastedFragment = clipboard[0];
+            setClipboard(prevClipboard => prevClipboard.slice(1));
+            const insertIndex = selectedFragmentIndex + 1;
+            setFragments([...fragments.slice(0, insertIndex), pastedFragment, ...fragments.slice(insertIndex)]);
+            setSelectedFragmentIndex(insertIndex);
+          }
+          break;
         default:
           break;
       }
