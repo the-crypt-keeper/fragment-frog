@@ -1,6 +1,8 @@
 # 🐸 FragmentFrog
 
-FragmentFrog is a React application designed to help users write, edit, and revise stories, documents, emails, or any other text quickly with keyboard shortcuts and AI assistance.
+FragmentFrog is a web-based non-linear text editing application.
+
+It's designed to help users compose stories, documents, emails, or any other text quickly with keyboard shortcuts and AI assistance.
 
 ## Concepts
 
@@ -55,3 +57,10 @@ The suggestion list helps you overcome writer's block and provides creative idea
 This project is open source and available under the [MIT License](LICENSE).
 
 Happy frogging! 🐸
+
+## TODO
+
+- stream suggestions from multiple LLMs
+- import/export fragment list .json
+- export document .txt
+- sessions with backend
