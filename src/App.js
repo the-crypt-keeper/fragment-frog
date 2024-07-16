@@ -60,7 +60,9 @@ function App() {
     const suggestionElements = document.querySelectorAll('.suggestion-item');
     suggestionElements.forEach(el => { el.classList.remove('fade-out'); });
     setInsertedSuggestions(new Set());
-    setSuggestions([]);
+    let emptySuggestions = []
+    for (let i=0; i<numSuggestions; i++) { emptySuggestions.push('') }
+    setSuggestions(emptySuggestions);
 
     // if (prompt === generatePrompt && !force) return;
     // setGeneratePrompt(prompt);
@@ -158,7 +160,7 @@ function App() {
     if (mode === 'explore') {
       switch (e.key) {
         case 'Tab':
-          generateSuggestions();
+          setShouldGenerateSuggestions(true);
           e.preventDefault();
           break;
         case '1':
@@ -256,7 +258,6 @@ function App() {
     } else if (mode === 'edit' || mode === 'insert') {
       var startPos = e.target.selectionStart;
       var endPos = e.target.selectionEnd;
-      console.log(startPos, endPos)
 
       if (e.key === 'Enter' && e.ctrlKey) {  
         // Insert a newline at startpos
@@ -359,7 +360,7 @@ function App() {
         {suggestions.map((suggestion, index) => (
           <div key={index} className={`suggestion-item ${insertedSuggestions.has(index) ? 'fade-out' : ''}`}>
             <span className="suggestion-hint">{index+1}</span>
-            {suggestion}
+            {suggestion ? suggestion : "[please wait]"}
           </div>
         ))}
       </div>
