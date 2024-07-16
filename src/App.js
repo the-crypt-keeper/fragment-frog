@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const [shouldGenerateSuggestions, setShouldGenerateSuggestions] = useState(false);
 
   // editor and clipboard
   const appContainerRef = useRef(null);
@@ -26,6 +27,13 @@ function App() {
       appContainerRef.current.focus();
     }
   }, [mode, fragments, selectedFragmentIndex]);
+
+  useEffect(() => {
+    if (shouldGenerateSuggestions) {
+      generateSuggestions();
+      setShouldGenerateSuggestions(false);
+    }
+  }, [fragments, selectedFragmentIndex, shouldGenerateSuggestions]);
 
   const getAvailableModel = async () => {
     try {
@@ -166,7 +174,7 @@ function App() {
             setSelectedFragmentIndex(insertIndex);
             setInsertedSuggestions(new Set([...insertedSuggestions, suggestionIndex]));
             if (!e.ctrlKey) {
-              generateSuggestions();
+              setShouldGenerateSuggestions(true);
             }
           }
           break;
