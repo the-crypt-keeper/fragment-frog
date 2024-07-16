@@ -2,7 +2,7 @@
 
 FragmentFrog is a React application designed to help users write, edit, and revise stories, documents, emails, or any other text quickly with keyboard shortcuts and AI assistance.
 
-## 🐸 Concepts
+## Concepts
 
 - **Fragment**: A small piece of text, usually but not necessarily a sentence.
 - **Fragment list**: A list of fragments that, when joined together, forms the current document.
@@ -10,38 +10,31 @@ FragmentFrog is a React application designed to help users write, edit, and revi
 - **Document**: The fragment list joined into a single string without introducing any additional whitespace.
 - **Mode**: The current editor mode: "explore" (default), "edit", or "insert".
 
-## 🐸 Features
-
-- Main display area takes up 95% of the screen in both width and height.
-- Fragments are rendered visually distinct, with the selected fragment highlighted.
-- Ability to select a new, not-yet-created fragment at the end of the list.
-- Keyboard controls for efficient navigation and editing.
-
-## 🐸 Keyboard Controls
+## Keyboard Controls
 
 ### Explore Mode (Default)
-- Left/Right Arrow: Change selected fragment
-- 'i': Insert a new fragment and switch to insert mode
-- Space: Switch to edit mode
-- 'd': Delete the current fragment
+- Left/Right Arrows: Change selected fragment
+- Space: Edits selected fragments
+- 'i': Insert a new fragment after selected fragment
+- 'd': Deletes the selected fragment
 
 ### Edit/Insert Mode
 - Ctrl+Enter: Insert a newline
 - Enter: Save changes and return to explore mode
 - Escape: Discard changes (edit mode) or delete inserted fragment (insert mode) and return to explore mode
 
-## 🐸 Getting Started
+## Getting Started
 
 1. Clone the repository
 2. Install dependencies: `npm install`
 3. Start the development server: `npm start`
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## 🐸 Contributing
+## Contributing
 
 We welcome contributions! Please feel free to submit a Pull Request.
 
-## 🐸 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
