@@ -24,9 +24,10 @@
 .clipboard-panel {
   width: 20%;
   height: 100%;
-  border-left: 1px solid #ccc;
-  padding: 10px;
+  border: 1px solid #ccc;
   box-sizing: border-box;
+  padding-left: 5px;
+  padding-right: 5px;
   overflow-y: auto;
 }
 
@@ -127,4 +128,9 @@ textarea {
 
 .generation-indicator.busy {
   background-color: red;
+}
+
+.title {
+  font-size: 2em;
+  float: right;
 }

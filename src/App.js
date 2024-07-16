@@ -373,7 +373,8 @@ function App() {
         </span>        
       </div>
       <div className="clipboard-panel">
-        <h3>Clipboard</h3>
+        <div className='title'>FragmentFrog 🐸</div>
+        <h3 align='center'>Clipboard</h3>
         {clipboard.map((item, index) => (
           <div key={index} className="clipboard-item">
             {item}
