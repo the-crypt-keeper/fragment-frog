@@ -6,6 +6,7 @@ function App() {
 
   // editor and clipboard
   const appContainerRef = useRef(null);
+  const fragmentListRef = useRef(null);
   const [fragments, setFragments] = useState([]);
   const [selectedFragmentIndex, setSelectedFragmentIndex] = useState(0);
   const [mode, setMode] = useState('explore');
@@ -34,6 +35,19 @@ function App() {
       setShouldGenerateSuggestions(false);
     }
   }, [fragments, selectedFragmentIndex, shouldGenerateSuggestions]);
+
+  const scrollToSelectedFragment = () => {
+    if (fragmentListRef.current) {
+      const selectedElement = fragmentListRef.current.querySelector('.fragment.selected');
+      if (selectedElement) {
+        selectedElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  };
+
+  useEffect(() => {
+    scrollToSelectedFragment();
+  }, [selectedFragmentIndex, fragments]);
 
   const getAvailableModel = async () => {
     try {
@@ -282,6 +296,7 @@ function App() {
         }
         setMode('explore');
         e.preventDefault();
+        setTimeout(scrollToSelectedFragment, 0);
       } else if (e.key === 'Escape') {
         setMode('explore');
         setCurrentFragmentText('');
@@ -299,7 +314,7 @@ function App() {
           {generationState}
       </div>
       <div className="main-content">
-        <div className="fragment-list">
+        <div className="fragment-list" ref={fragmentListRef}>
         {fragments.flatMap((fragment, index) => {
           if (selectedFragmentIndex === index && mode !== 'explore') {
             return (
