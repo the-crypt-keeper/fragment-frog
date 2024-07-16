@@ -18,6 +18,7 @@ function App() {
   const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
   const currentPromptRef = useRef('');
   const numSuggestions = 4;
+  const [generationState, setGenerationState] = useState('IDLE');
 
   /* Always restore focus on App area when switching back to explore mode */
   useEffect(() => {
@@ -51,11 +52,15 @@ function App() {
     const suggestionElements = document.querySelectorAll('.suggestion-item');
     suggestionElements.forEach(el => { el.classList.remove('fade-out'); });
     setInsertedSuggestions(new Set());
+    setSuggestions([]);
 
     // if (prompt === generatePrompt && !force) return;
     // setGeneratePrompt(prompt);
 
-    if (prompt.trim() === '') return;
+    if (prompt.trim() === '') {
+      setGenerationState('IDLE');
+      return;
+    }
 
     // Abort previous request if it's still ongoing
     if (abortControllerRef.current) {
@@ -65,6 +70,7 @@ function App() {
     // Create a new AbortController for this request
     abortControllerRef.current = new AbortController();
     currentPromptRef.current = prompt;
+    setGenerationState('BUSY');
 
     try {
       const response = await fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/completions`, {
@@ -104,7 +110,6 @@ function App() {
           if (line.startsWith('data: ') && line !== 'data: [DONE]') {
             try {
               const data = JSON.parse(line.slice(6));
-              console.log(newSuggestions);
 
               if (data.choices && data.choices.length > 0) {
                 const { index, text, finish_reason, stop_reason } = data.choices[0];
@@ -125,6 +130,10 @@ function App() {
             }
           }
         });
+      }
+
+      if (currentPromptRef.current === prompt) {
+        setGenerationState('IDLE');
       }
     } catch (error) {
       if (error.name === 'AbortError') {
@@ -156,6 +165,9 @@ function App() {
             setFragments([...fragments.slice(0, insertIndex), newFragment, ...fragments.slice(insertIndex)]);
             setSelectedFragmentIndex(insertIndex);
             setInsertedSuggestions(new Set([...insertedSuggestions, suggestionIndex]));
+            if (!e.ctrlKey) {
+              generateSuggestions();
+            }
           }
           break;
         case 'ArrowLeft':
@@ -274,6 +286,9 @@ function App() {
 
   return (
     <div className="App" onKeyDown={handleKeyDown} tabIndex="0" ref={appContainerRef}>
+      <div className={`generation-indicator ${generationState.toLowerCase()}`}>
+          {generationState}
+      </div>
       <div className="main-content">
         <div className="fragment-list">
         {fragments.flatMap((fragment, index) => {
