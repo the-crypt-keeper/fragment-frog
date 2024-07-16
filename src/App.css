@@ -82,8 +82,8 @@ textarea {
   padding: 1%;
   background-color: #f0f0f0;
   border-radius: 3px;
-  transition: opacity 0.5s ease-out;
   width: 20%;
+  transition: opacity 0.5s ease, background-color 0s;
 }
 
 .suggestion-hint {
@@ -96,6 +96,35 @@ textarea {
   padding-right: 2px;
 }
 
+@keyframes flash-blue {
+  0% { background-color: #067ff1; }
+  100% { background-color: transparent; }
+}
+
 .suggestion-item.fade-out {
-  opacity: 0.5;
+  animation: flash-blue 0.2s ease-out;    
+  opacity: 0.2;
+}
+
+.generation-indicator {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  z-index: 1000;
+}
+
+.generation-indicator.idle {
+  background-color: grey;
+}
+
+.generation-indicator.waiting {
+  background-color: blue;
+}
+
+.generation-indicator.busy {
+  background-color: red;
 }

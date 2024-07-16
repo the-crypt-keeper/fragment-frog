@@ -71,12 +71,13 @@ function App() {
     console.log('prompt:', prompt)
 
     // Reset animations and clear inserted suggestions
-    const suggestionElements = document.querySelectorAll('.suggestion-item');
-    suggestionElements.forEach(el => { el.classList.remove('fade-out'); });
-    setInsertedSuggestions(new Set());
-    let emptySuggestions = []
-    for (let i=0; i<numSuggestions; i++) { emptySuggestions.push('') }
-    setSuggestions(emptySuggestions);
+    // const suggestionElements = document.querySelectorAll('.suggestion-item');
+    // suggestionElements.forEach(el => { el.classList.remove('fade-out'); });
+    
+    
+    // let emptySuggestions = []
+    // for (let i=0; i<numSuggestions; i++) { emptySuggestions.push('') }
+    // setSuggestions(emptySuggestions);
 
     // if (prompt === generatePrompt && !force) return;
     // setGeneratePrompt(prompt);
@@ -94,7 +95,7 @@ function App() {
     // Create a new AbortController for this request
     abortControllerRef.current = new AbortController();
     currentPromptRef.current = prompt;
-    setGenerationState('BUSY');
+    setGenerationState('WAITING');
 
     try {
       const response = await fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/completions`, {
@@ -130,6 +131,8 @@ function App() {
         if (done) break;
         const chunk = decoder.decode(value);
         const lines = chunk.split('\n');
+        var firstToken = false;
+
         lines.forEach(line => {
           if (line.startsWith('data: ') && line !== 'data: [DONE]') {
             try {
@@ -140,7 +143,14 @@ function App() {
                 if (!doneSuggestions[index]) {
                   if (text) {
                     newSuggestions[index] += text;
-                    if (currentPromptRef.current === prompt) { setSuggestions([...newSuggestions]); }
+                    if (currentPromptRef.current === prompt) { 
+                      setSuggestions([...newSuggestions]);
+                      if (!firstToken) {
+                        firstToken = true;
+                        setInsertedSuggestions(new Set());
+                        setGenerationState('BUSY');
+                      }
+                    }
                   }
                   if (finish_reason === "stop") {
                     if (stop_reason != null) { newSuggestions[index] += stop_reason; }
@@ -189,6 +199,7 @@ function App() {
             setFragments([...fragments.slice(0, insertIndex), newFragment, ...fragments.slice(insertIndex)]);
             setSelectedFragmentIndex(insertIndex);
             setInsertedSuggestions(new Set([...insertedSuggestions, suggestionIndex]));
+
             if (!e.ctrlKey) {
               setShouldGenerateSuggestions(true);
             }
