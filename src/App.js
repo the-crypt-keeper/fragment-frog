@@ -195,13 +195,10 @@ function App() {
       </div>
     </div>
     <div className="suggestions-panel">
-      <h3>Suggestions</h3>
       <div className="editor-suggestions">
         {suggestions.map((suggestion, index) => (
-          <div 
-            key={index} 
-            className={`suggestion-item ${insertedSuggestions.has(index) ? 'fade-out' : ''}`}
-          >
+          <div key={index} className={`suggestion-item ${insertedSuggestions.has(index) ? 'fade-out' : ''}`}>
+            <span className="suggestion-hint">Ctrl+{index}</span>
             {suggestion}
           </div>
         ))}

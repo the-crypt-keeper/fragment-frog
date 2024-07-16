@@ -85,6 +85,13 @@ textarea {
   transition: opacity 0.5s ease-out;
 }
 
+.suggestion-hint {
+  font-weight: bold;
+  margin-right: 5px;
+  float: left;
+  border: 1px black solid;
+}
+
 .suggestion-item.fade-out {
   opacity: 0.5;
 }
