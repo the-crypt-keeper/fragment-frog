@@ -125,13 +125,16 @@ function App() {
       const decoder = new TextDecoder('utf-8');
       const newSuggestions = Array(numSuggestions).fill('');
       const doneSuggestions = Array(numSuggestions).fill(false);
+      let buffer = '';
   
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         console.log(value);
         const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
+        buffer += chunk;
+        const lines = buffer.split('\n');
+        buffer = lines.pop(); // Store the last incomplete line
         var firstToken = false;
 
         lines.forEach(line => {
