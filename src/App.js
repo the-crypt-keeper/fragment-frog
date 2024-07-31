@@ -19,7 +19,7 @@ function App() {
   const [suggestions, setSuggestions] = useState([]); // New state for suggestions
   const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
   const currentPromptRef = useRef('');
-  const numSuggestions = 4;
+  const numSuggestions = 8;
   const [generationState, setGenerationState] = useState('IDLE');
 
   /* Always restore focus on App area when switching back to explore mode */
@@ -129,6 +129,7 @@ function App() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
+        console.log(value);
         const chunk = decoder.decode(value);
         const lines = chunk.split('\n');
         var firstToken = false;
@@ -153,7 +154,7 @@ function App() {
                     }
                   }
                   if (finish_reason === "stop") {
-                    if (stop_reason != null) { newSuggestions[index] += stop_reason; }
+                    //if (stop_reason != null) { newSuggestions[index] += stop_reason; }
                     doneSuggestions[index] = true;
                     if (currentPromptRef.current === prompt) { setSuggestions([...newSuggestions]); }
                   }
@@ -191,6 +192,10 @@ function App() {
         case '2':
         case '3':
         case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':                                    
           e.preventDefault();
           const suggestionIndex = parseInt(e.key) - 1;
           if (suggestionIndex < suggestions.length && suggestions[suggestionIndex]) {
@@ -372,10 +377,25 @@ function App() {
           }
         </span>        
       </div>
-      <div className="clipboard-panel">
-        <div className='title'>FragmentFrog 🐸</div>
-        <h3 align='center'>Clipboard</h3>
-        {clipboard.map((item, index) => (
+      <div className="clipboard-panel">        
+        <div className='title'>FragmentFrog 🐸</div>        
+        <h3 align='center'>{clipboard.length == 0 ? "Quick Help" : "ClipStack"}</h3>
+        {clipboard.length == 0 ? 
+          <div key="clip-empty">            
+            left/right to select<br></br>
+            space to edit<br></br>
+            ctrl+left/right to move<br></br>
+            d to delete<br></br>
+            i to insert<br></br>
+            x to cut (push)<br></br>
+            v to paste (pop)<br></br>
+            tab to (re-)suggest<br></br>
+            [1-4] to accept and re-suggest<br></br>
+            ctrl+[1-4] to accept without re-suggest<br></br>
+            
+          </div>
+          :           
+          clipboard.map((item, index) => (
           <div key={index} className="clipboard-item">
             {item}
           </div>
