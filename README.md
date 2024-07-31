@@ -14,6 +14,15 @@ It's designed to help users compose stories, documents, emails, or any other tex
 - **Mode**: The current editor mode: "explore" (default), "edit", or "insert".
 - **Suggestion List**: A list of AI-generated suggestions for continuing the text.
 
+## Running
+
+- `node -v` should be `v20.15.1`
+- `npm ci`
+- create `.env`
+    - `REACT_APP_OPENAI_API_ENDPOINT=...`
+    - `REACT_APP_OPENAI_API_KEY=...`
+- `npm run start`
+
 ## Keyboard Controls
 
 ### Explore Mode (Default)

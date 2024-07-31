@@ -130,7 +130,6 @@ function App() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        console.log(value);
         const chunk = decoder.decode(value);
         buffer += chunk;
         const lines = buffer.split('\n');
@@ -144,6 +143,7 @@ function App() {
 
               if (data.choices && data.choices.length > 0) {
                 const { index, text, finish_reason, stop_reason } = data.choices[0];
+
                 if (!doneSuggestions[index]) {
                   if (text) {
                     newSuggestions[index] += text;
