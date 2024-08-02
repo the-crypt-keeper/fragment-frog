@@ -64,7 +64,11 @@ function App() {
       console.error('Error fetching models:', error);
     }
   };
-  useEffect(() => { getAvailableModels(); }, [])
+  useEffect(() => { getAvailableModels(); }, []);
+
+  const handleReloadModels = () => {
+    getAvailableModels();
+  };
 
   const handlePrimaryModelChange = (event) => {
     setPrimaryModel(event.target.value);
@@ -376,6 +380,7 @@ function App() {
             ))}
           </select>
         </div>
+        <button className="reload-button" onClick={handleReloadModels}>↻</button>
       </div>
       <div className="main-content">
         <div className="fragment-list" ref={fragmentListRef}>

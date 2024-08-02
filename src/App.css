@@ -188,3 +188,17 @@ textarea {
   width: 35%;
   font-size: 14px;
 }
+
+.reload-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 2px 5px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.reload-button:hover {
+  background-color: #e0e0e0;
+}
