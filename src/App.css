@@ -81,10 +81,19 @@ textarea {
 .suggestion-item {
   margin: 5px;
   padding: 1%;
-  background-color: #f0f0f0;
   border-radius: 3px;
   width: 20%;
   transition: opacity 0.5s ease, background-color 0s;
+}
+
+.suggestion-item.primary {
+  background-color: #e6f3ff;
+  border: 1px solid #b3d9ff;
+}
+
+.suggestion-item.secondary {
+  background-color: #fff0e6;
+  border: 1px solid #ffd9b3;
 }
 
 .suggestion-hint {

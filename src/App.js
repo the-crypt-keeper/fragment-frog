@@ -75,112 +75,123 @@ function App() {
   };
 
   const generateSuggestions = async (force = false) => {
-    //clearTimeout(typingTimeoutRef.current);
-    if (!primaryModel) return;
+    if (!primaryModel || !secondaryModel) return;
 
-    // Compute prompt
     let prompt = fragments.slice(0, selectedFragmentIndex).join('');
     console.log('prompt:', prompt)
-
-    // Reset animations and clear inserted suggestions
-    // const suggestionElements = document.querySelectorAll('.suggestion-item');
-    // suggestionElements.forEach(el => { el.classList.remove('fade-out'); });
-    
-    
-    // let emptySuggestions = []
-    // for (let i=0; i<numSuggestions; i++) { emptySuggestions.push('') }
-    // setSuggestions(emptySuggestions);
-
-    // if (prompt === generatePrompt && !force) return;
-    // setGeneratePrompt(prompt);
 
     if (prompt.trim() === '') {
       setGenerationState('IDLE');
       return;
     }
 
-    // Abort previous request if it's still ongoing
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
 
-    // Create a new AbortController for this request
     abortControllerRef.current = new AbortController();
     currentPromptRef.current = prompt;
     setGenerationState('WAITING');
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: primaryModel,
-          prompt: prompt,
-          max_tokens: 50,
-          temperature: 1.0,
-          top_p: 0.9,
-          n: numSuggestions,
-          stop: ['.'],
-          stream: true,
+      const [primaryResponse, secondaryResponse] = await Promise.all([
+        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: primaryModel,
+            prompt: prompt,
+            max_tokens: 50,
+            temperature: 1.0,
+            top_p: 0.9,
+            n: 4,
+            stop: ['.'],
+            stream: true,
+          }),
+          signal: abortControllerRef.current.signal,
         }),
-        signal: abortControllerRef.current.signal,
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: secondaryModel,
+            prompt: prompt,
+            max_tokens: 50,
+            temperature: 1.0,
+            top_p: 0.9,
+            n: 4,
+            stop: ['.'],
+            stream: true,
+          }),
+          signal: abortControllerRef.current.signal,
+        })
+      ]);
+
+      if (!primaryResponse.ok || !secondaryResponse.ok) {
+        throw new Error(`HTTP error! status: ${primaryResponse.status} ${secondaryResponse.status}`);
       }
-  
-      const reader = response.body.getReader();
+
+      const primaryReader = primaryResponse.body.getReader();
+      const secondaryReader = secondaryResponse.body.getReader();
       const decoder = new TextDecoder('utf-8');
       const newSuggestions = Array(numSuggestions).fill('');
       const doneSuggestions = Array(numSuggestions).fill(false);
-      let buffer = '';
-  
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value);
-        buffer += chunk;
-        const lines = buffer.split('\n');
-        buffer = lines.pop(); // Store the last incomplete line
-        var firstToken = false;
+      let primaryBuffer = '';
+      let secondaryBuffer = '';
+      let firstToken = false;
 
-        lines.forEach(line => {
-          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-            try {
-              const data = JSON.parse(line.slice(6));
+      const processStream = async (reader, startIndex, buffer) => {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value);
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
 
-              if (data.choices && data.choices.length > 0) {
-                const { index, text, finish_reason, stop_reason } = data.choices[0];
-
-                if (!doneSuggestions[index]) {
-                  if (text) {
-                    newSuggestions[index] += text;
-                    if (currentPromptRef.current === prompt) { 
-                      setSuggestions([...newSuggestions]);
-                      if (!firstToken) {
-                        firstToken = true;
-                        setInsertedSuggestions(new Set());
-                        setGenerationState('BUSY');
+          lines.forEach(line => {
+            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+              try {
+                const data = JSON.parse(line.slice(6));
+                if (data.choices && data.choices.length > 0) {
+                  const { index, text, finish_reason } = data.choices[0];
+                  const suggestionIndex = startIndex + index;
+                  if (!doneSuggestions[suggestionIndex]) {
+                    if (text) {
+                      newSuggestions[suggestionIndex] += text;
+                      if (currentPromptRef.current === prompt) { 
+                        setSuggestions([...newSuggestions]);
+                        if (!firstToken) {
+                          firstToken = true;
+                          setInsertedSuggestions(new Set());
+                          setGenerationState('BUSY');
+                        }
                       }
                     }
-                  }
-                  if (finish_reason === "stop") {
-                    //if (stop_reason != null) { newSuggestions[index] += stop_reason; }
-                    doneSuggestions[index] = true;
-                    if (currentPromptRef.current === prompt) { setSuggestions([...newSuggestions]); }
+                    if (finish_reason === "stop") {
+                      doneSuggestions[suggestionIndex] = true;
+                      if (currentPromptRef.current === prompt) { setSuggestions([...newSuggestions]); }
+                    }
                   }
                 }
+              } catch (e) {
+                console.error('Error parsing JSON:', e, line);
               }
-            } catch (e) {
-              console.error('Error parsing JSON:', e, line);
             }
-          }
-        });
-      }
+          });
+        }
+        return buffer;
+      };
+
+      await Promise.all([
+        processStream(primaryReader, 0, primaryBuffer),
+        processStream(secondaryReader, 4, secondaryBuffer)
+      ]);
 
       if (currentPromptRef.current === prompt) {
         setGenerationState('IDLE');
@@ -442,7 +453,10 @@ function App() {
     <div className="suggestions-panel">
       <div className="editor-suggestions">
         {suggestions.map((suggestion, index) => (
-          <div key={index} className={`suggestion-item ${insertedSuggestions.has(index) ? 'fade-out' : ''}`}>
+          <div 
+            key={index} 
+            className={`suggestion-item ${index < 4 ? 'primary' : 'secondary'} ${insertedSuggestions.has(index) ? 'fade-out' : ''}`}
+          >
             <span className="suggestion-hint">{index+1}</span>
             {suggestion ? suggestion : "[please wait]"}
           </div>
