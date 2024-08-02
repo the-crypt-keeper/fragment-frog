@@ -16,6 +16,7 @@ function App() {
   // suggestions
   const abortControllerRef = useRef(null);
   const [model, setModel] = useState('');
+  const [availableModels, setAvailableModels] = useState([]);
   const [suggestions, setSuggestions] = useState([]); // New state for suggestions
   const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
   const currentPromptRef = useRef('');
@@ -49,18 +50,23 @@ function App() {
     scrollToSelectedFragment();
   }, [selectedFragmentIndex, fragments]);
 
-  const getAvailableModel = async () => {
+  const getAvailableModels = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/models`, {
         headers: { 'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}` }
       });
       const data = await response.json();
+      setAvailableModels(data.data);
       setModel(data.data[0].id);
     } catch (error) {
       console.error('Error fetching models:', error);
     }
   };
-  useEffect(() => { getAvailableModel(); }, [])
+  useEffect(() => { getAvailableModels(); }, [])
+
+  const handleModelChange = (event) => {
+    setModel(event.target.value);
+  };
 
   const generateSuggestions = async (force = false) => {
     //clearTimeout(typingTimeoutRef.current);
@@ -331,6 +337,16 @@ function App() {
     <div className="App" onKeyDown={handleKeyDown} tabIndex="0" ref={appContainerRef}>
       <div className={`generation-indicator ${generationState.toLowerCase()}`}>
           {generationState}
+      </div>
+      <div className="model-selector">
+        <label htmlFor="model-select">Select Model: </label>
+        <select id="model-select" value={model} onChange={handleModelChange}>
+          {availableModels.map((model) => (
+            <option key={model.id} value={model.id}>
+              {model.id}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="main-content">
         <div className="fragment-list" ref={fragmentListRef}>

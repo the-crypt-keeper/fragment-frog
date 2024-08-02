@@ -138,3 +138,14 @@ textarea {
   max-width: 100%;
   text-align: center;
 }
+
+.model-selector {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.model-selector select {
+  margin-left: 10px;
+  padding: 5px;
+  font-size: 16px;
+}
