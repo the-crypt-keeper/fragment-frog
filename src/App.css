@@ -37,6 +37,15 @@
   /* margin-bottom: 4px; */
 }
 
+.fragment hr {
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+  border: none;
+  border-top: 1px solid #000;
+  vertical-align: middle;
+}
+
 .fragment.selected {
   background-color: #d0ffd0 !important;
 }
