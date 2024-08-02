@@ -39,10 +39,10 @@
 
 .fragment hr {
   display: inline-block;
-  width: 100%;
+  width: 98%;
   margin: 0;
   border: none;
-  border-top: 1px solid #000;
+  border-top: 2px solid #000;
   vertical-align: middle;
 }
 

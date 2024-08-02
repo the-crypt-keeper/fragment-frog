@@ -451,7 +451,7 @@ function App() {
                   <span className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}>
                     {line == '---' ? <hr /> : line}
                   </span>
-                  {(i !== fragment.split('\n').length - 1 || line === '') && (
+                  {(i !== fragment.split('\n').length - 1 || (line === '' && line != '---')) && (
                     <span className='break'>
                       <br />
                     </span>
