@@ -90,6 +90,16 @@ function App() {
     fileInputRef.current.click();
   };
 
+  const handleClear = () => {
+    if (window.confirm('Are you sure you want to clear all fragments? This action cannot be undone.')) {
+      setFragments([]);
+      setSelectedFragmentIndex(0);
+      setClipboard([]);
+      setSuggestions([]);
+      setInsertedSuggestions(new Set());
+    }
+  };
+
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -422,6 +432,7 @@ function App() {
         <button className="small-button reload-button" onClick={handleReloadModels}>↻</button>
         <button className="small-button" onClick={handleExport}>⬇️</button>
         <button className="small-button" onClick={handleImport}>⬆️</button>
+        <button className="small-button" onClick={handleClear}>💣</button>
         <input
           type="file"
           ref={fileInputRef}
