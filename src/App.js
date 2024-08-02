@@ -356,9 +356,9 @@ function App() {
           {generationState}
       </div>
       <div className="model-selector">
-        <div>
+        <div className="model-select-container primary">
           <label htmlFor="primary-model-select">Primary Model: </label>
-          <select id="primary-model-select" value={primaryModel} onChange={handlePrimaryModelChange}>
+          <select id="primary-model-select" value={primaryModel} onChange={handlePrimaryModelChange} className="model-select primary">
             {availableModels.map((model) => (
               <option key={model.id} value={model.id}>
                 {model.id}
@@ -366,9 +366,9 @@ function App() {
             ))}
           </select>
         </div>
-        <div>
+        <div className="model-select-container secondary">
           <label htmlFor="secondary-model-select">Secondary Model: </label>
-          <select id="secondary-model-select" value={secondaryModel} onChange={handleSecondaryModelChange}>
+          <select id="secondary-model-select" value={secondaryModel} onChange={handleSecondaryModelChange} className="model-select secondary">
             {availableModels.map((model) => (
               <option key={model.id} value={model.id}>
                 {model.id}
