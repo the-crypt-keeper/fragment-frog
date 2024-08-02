@@ -34,8 +34,8 @@ It's designed to help users compose stories, documents, emails, or any other tex
 - 'x': Cuts the selected fragment, placing it at the end of the Clipboard
 - 'v': Pastes the top element from the clipboard
 - Tab: Generate new suggestions
-- 1, 2, 3, 4: Insert the corresponding suggestion (1st, 2nd, 3rd, or 4th) after the selected fragment
-- Ctrl + 1, 2, 3, 4: Insert the corresponding suggestion without automatically generating new suggestions
+- 1-8: Insert the corresponding suggestion after the selected fragment
+- Ctrl + 1-8: Insert the corresponding suggestion without automatically generating new suggestions
 
 ### Edit/Insert Mode
 - Ctrl+Enter: Insert a newline
@@ -46,8 +46,9 @@ It's designed to help users compose stories, documents, emails, or any other tex
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Start the development server: `npm start`
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+3. Ensure you have created a `.env` or otherwise set `REACT_APP_OPENAI_API_ENDPOINT` to point to the root of your OpenAI proxy
+4. Start the development server: `npm start`
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## LLM Suggestion List
 
@@ -55,7 +56,7 @@ The Suggestion List is an AI-powered feature that provides contextual suggestion
 
 1. In Explore mode, press Tab to generate new suggestions based on the current context.
 2. Four suggestions will appear in the suggestion panel at the bottom of the interface.
-3. To insert a suggestion after the currently selected fragment, press the corresponding number key (1, 2, 3, or 4).
+3. To insert a suggestion after the currently selected fragment, press the corresponding number key.
 4. By default, new suggestions will be generated automatically after inserting a suggestion.
 5. To insert a suggestion without generating new ones, hold Ctrl while pressing the number key.
 
@@ -69,7 +70,7 @@ Happy frogging! 🐸
 
 ## TODO
 
-- stream suggestions from multiple LLMs
-- import/export fragment list .json
 - export document .txt
+- track which LLMs fragments came from and render them in corresponding colors
+- track which fragments have been edited and indicate it with a border style
 - sessions with backend
