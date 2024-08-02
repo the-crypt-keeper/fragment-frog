@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const fileInputRef = useRef(null);
   const [shouldGenerateSuggestions, setShouldGenerateSuggestions] = useState(false);
 
   // editor and clipboard
@@ -68,6 +69,44 @@ function App() {
 
   const handleReloadModels = () => {
     getAvailableModels();
+  };
+
+  const handleExport = () => {
+    const state = {
+      fragments,
+      clipboard
+    };
+    const blob = new Blob([JSON.stringify(state)], { type: 'application/json' });
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = "fragmentfrog_export.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleImport = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const state = JSON.parse(e.target.result);
+          setFragments(state.fragments);
+          setClipboard(state.clipboard);
+          setSuggestions([]);
+          setInsertedSuggestions(new Set());
+        } catch (error) {
+          console.error('Error parsing imported file:', error);
+        }
+      };
+      reader.readAsText(file);
+    }
   };
 
   const handlePrimaryModelChange = (event) => {
@@ -380,7 +419,16 @@ function App() {
             ))}
           </select>
         </div>
-        <button className="reload-button" onClick={handleReloadModels}>↻</button>
+        <button className="small-button reload-button" onClick={handleReloadModels}>↻</button>
+        <button className="small-button" onClick={handleExport}>Export</button>
+        <button className="small-button" onClick={handleImport}>Import</button>
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handleFileUpload}
+          accept=".json"
+        />
       </div>
       <div className="main-content">
         <div className="fragment-list" ref={fragmentListRef}>

@@ -189,7 +189,7 @@ textarea {
   font-size: 14px;
 }
 
-.reload-button {
+.small-button {
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -199,6 +199,10 @@ textarea {
   margin-left: 5px;
 }
 
-.reload-button:hover {
+.small-button:hover {
   background-color: #e0e0e0;
+}
+
+.reload-button {
+  font-size: 14px;
 }
