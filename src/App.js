@@ -420,8 +420,8 @@ function App() {
           </select>
         </div>
         <button className="small-button reload-button" onClick={handleReloadModels}>↻</button>
-        <button className="small-button" onClick={handleExport}>Export</button>
-        <button className="small-button" onClick={handleImport}>Import</button>
+        <button className="small-button" onClick={handleExport}>⬇️</button>
+        <button className="small-button" onClick={handleImport}>⬆️</button>
         <input
           type="file"
           ref={fileInputRef}
