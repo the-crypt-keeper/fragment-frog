@@ -39,7 +39,7 @@
 }
 
 .fragment {
-  display: inline-block;
+  display: inline;
   margin: 5px;
   padding: 5px;
   border-radius: 3px;
@@ -56,6 +56,17 @@
 
 .break {
   width: 100%;
+}
+
+.fragment-list {
+  width: 80%;
+  height: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 textarea {
