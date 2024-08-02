@@ -149,20 +149,20 @@ textarea {
 }
 
 .model-selector {
-  margin: 10px 0;
+  margin: 5px 0;
   text-align: center;
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .model-selector div {
   display: flex;
   align-items: center;
-  margin: 5px;
-  padding: 1%;
+  margin: 2px;
+  padding: 2px;
   border-radius: 3px;
-  width: 40%;
+  width: 45%;
   box-sizing: border-box;
 }
 
@@ -177,13 +177,14 @@ textarea {
 }
 
 .model-selector select {
-  margin-left: 10px;
-  padding: 5px;
-  font-size: 16px;
-  width: 60%;
+  margin-left: 5px;
+  padding: 2px;
+  font-size: 14px;
+  width: 65%;
 }
 
 .model-selector label {
   font-weight: bold;
-  width: 40%;
+  width: 35%;
+  font-size: 14px;
 }
