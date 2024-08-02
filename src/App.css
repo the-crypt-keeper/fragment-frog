@@ -159,10 +159,31 @@ textarea {
 .model-selector div {
   display: flex;
   align-items: center;
+  margin: 5px;
+  padding: 1%;
+  border-radius: 3px;
+  width: 40%;
+  box-sizing: border-box;
+}
+
+.model-selector .primary {
+  background-color: #e6f3ff;
+  border: 1px solid #b3d9ff;
+}
+
+.model-selector .secondary {
+  background-color: #fff0e6;
+  border: 1px solid #ffd9b3;
 }
 
 .model-selector select {
   margin-left: 10px;
   padding: 5px;
   font-size: 16px;
+  width: 60%;
+}
+
+.model-selector label {
+  font-weight: bold;
+  width: 40%;
 }
