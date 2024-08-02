@@ -522,7 +522,7 @@ function App() {
             className={`suggestion-item ${index < 4 ? 'primary' : 'secondary'} ${insertedSuggestions.has(index) ? 'fade-out' : ''}`}
           >
             <span className="suggestion-hint">{index+1}</span>
-            {suggestion ? suggestion : "[please wait]"}
+            {suggestion ? suggestion.replaceAll('\n','↵') : "[please wait]"}
           </div>
         ))}
       </div>
