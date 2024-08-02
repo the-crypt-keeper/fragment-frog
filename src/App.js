@@ -15,7 +15,8 @@ function App() {
   
   // suggestions
   const abortControllerRef = useRef(null);
-  const [model, setModel] = useState('');
+  const [primaryModel, setPrimaryModel] = useState('');
+  const [secondaryModel, setSecondaryModel] = useState('');
   const [availableModels, setAvailableModels] = useState([]);
   const [suggestions, setSuggestions] = useState([]); // New state for suggestions
   const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
@@ -57,20 +58,25 @@ function App() {
       });
       const data = await response.json();
       setAvailableModels(data.data);
-      setModel(data.data[0].id);
+      setPrimaryModel(data.data[0].id);
+      setSecondaryModel(data.data.length > 1 ? data.data[1].id : data.data[0].id);
     } catch (error) {
       console.error('Error fetching models:', error);
     }
   };
   useEffect(() => { getAvailableModels(); }, [])
 
-  const handleModelChange = (event) => {
-    setModel(event.target.value);
+  const handlePrimaryModelChange = (event) => {
+    setPrimaryModel(event.target.value);
+  };
+
+  const handleSecondaryModelChange = (event) => {
+    setSecondaryModel(event.target.value);
   };
 
   const generateSuggestions = async (force = false) => {
     //clearTimeout(typingTimeoutRef.current);
-    if (!model) return;
+    if (!primaryModel) return;
 
     // Compute prompt
     let prompt = fragments.slice(0, selectedFragmentIndex).join('');
@@ -111,7 +117,7 @@ function App() {
           'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
         },
         body: JSON.stringify({
-          model: model,
+          model: primaryModel,
           prompt: prompt,
           max_tokens: 50,
           temperature: 1.0,
@@ -339,14 +345,26 @@ function App() {
           {generationState}
       </div>
       <div className="model-selector">
-        <label htmlFor="model-select">Select Model: </label>
-        <select id="model-select" value={model} onChange={handleModelChange}>
-          {availableModels.map((model) => (
-            <option key={model.id} value={model.id}>
-              {model.id}
-            </option>
-          ))}
-        </select>
+        <div>
+          <label htmlFor="primary-model-select">Primary Model: </label>
+          <select id="primary-model-select" value={primaryModel} onChange={handlePrimaryModelChange}>
+            {availableModels.map((model) => (
+              <option key={model.id} value={model.id}>
+                {model.id}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="secondary-model-select">Secondary Model: </label>
+          <select id="secondary-model-select" value={secondaryModel} onChange={handleSecondaryModelChange}>
+            {availableModels.map((model) => (
+              <option key={model.id} value={model.id}>
+                {model.id}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="main-content">
         <div className="fragment-list" ref={fragmentListRef}>
