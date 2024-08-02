@@ -491,8 +491,8 @@ function App() {
             x to cut (push)<br></br>
             v to paste (pop)<br></br>
             tab to (re-)suggest<br></br>
-            [1-4] to accept and re-suggest<br></br>
-            ctrl+[1-4] to accept without re-suggest<br></br>
+            ctrl+[1-8] to accept<br></br>
+            [1-8] to accept and re-suggest<br></br>
             
           </div>
           :           
