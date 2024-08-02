@@ -449,11 +449,11 @@ function App() {
               {fragment.split('\n').map((line, i) => (
                 <React.Fragment key={i}>
                   <span className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}>
-                    {line == '---' ? (<hr></hr>) : line}
+                    {line == '---' ? <hr /> : line}
                   </span>
                   {(i !== fragment.split('\n').length - 1 || line === '') && (
                     <span className='break'>
-                      <br></br>
+                      <br />
                     </span>
                   )}
                 </React.Fragment>
