@@ -61,8 +61,12 @@ function App() {
       });
       const data = await response.json();
       setAvailableModels(data.data);
-      setPrimaryModel(data.data[0].id);
-      setSecondaryModel(data.data.length > 1 ? data.data[1].id : data.data[0].id);
+      if (primaryModel === '') {
+        setPrimaryModel(data.data[0].id);
+      }
+      if (secondaryModel === '') {
+        setSecondaryModel(data.data.length > 1 ? data.data[1].id : data.data[0].id);
+      }
     } catch (error) {
       console.error('Error fetching models:', error);
     }
