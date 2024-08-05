@@ -138,6 +138,11 @@ function App() {
       return;
     }
 
+    let messages = [
+      {'role': 'system', 'content': 'You are a creative writing assistant.  Continue the story provided by the user.'},
+      {'role': 'user', 'content': fragments.slice(0, selectedFragmentIndex).join('') }
+    ]
+
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
@@ -148,7 +153,7 @@ function App() {
 
     try {
       const [primaryResponse, secondaryResponse] = await Promise.all([
-        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/completions`, {
+        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/chat/completions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -156,7 +161,7 @@ function App() {
           },
           body: JSON.stringify({
             model: primaryModel,
-            prompt: prompt,
+            messages: messages,
             max_tokens: 50,
             temperature: 1.0,
             top_p: 0.9,
@@ -166,7 +171,7 @@ function App() {
           }),
           signal: abortControllerRef.current.signal,
         }),
-        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/completions`, {
+        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/chat/completions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -174,7 +179,7 @@ function App() {
           },
           body: JSON.stringify({
             model: secondaryModel,
-            prompt: prompt,
+            messages: messages,
             max_tokens: 50,
             temperature: 1.0,
             top_p: 0.9,
@@ -204,6 +209,7 @@ function App() {
           const { done, value } = await reader.read();
           if (done) break;
           buffer += decoder.decode(value);
+          console.log(buffer);
           const lines = buffer.split('\n');
           buffer = lines.pop();
 
@@ -212,7 +218,12 @@ function App() {
               try {
                 const data = JSON.parse(line.slice(6));
                 if (data.choices && data.choices.length > 0) {
-                  const { index, text, finish_reason } = data.choices[0];
+                  let { index, text, finish_reason } = data.choices[0];
+                  if (data.choices[0].delta) {
+                    text = data.choices[0].delta.content;
+                    if (finish_reason == 'stop') { text = '.'; }
+                  }
+                     
                   const suggestionIndex = startIndex + index;
                   if (!doneSuggestions[suggestionIndex]) {
                     if (text) {
