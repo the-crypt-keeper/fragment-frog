@@ -464,7 +464,7 @@ function App() {
       </div>
       <div className="model-selector">
         <div className="model-select-container primary">
-          <label htmlFor="primary-model-select">Primary Model: </label>
+          <label htmlFor="primary-model-select">Primary: </label>
           <select id="primary-model-select" value={primaryModel} onChange={handlePrimaryModelChange} className="model-select primary">
             {availableModels.map((model) => (
               <option key={model.id} value={model.id}>
