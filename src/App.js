@@ -18,6 +18,8 @@ function App() {
   const abortControllerRef = useRef(null);
   const [primaryModel, setPrimaryModel] = useState('');
   const [secondaryModel, setSecondaryModel] = useState('');
+  const [primaryModelMode, setPrimaryModelMode] = useState('CMP');
+  const [secondaryModelMode, setSecondaryModelMode] = useState('CMP');
   const [availableModels, setAvailableModels] = useState([]);
   const [suggestions, setSuggestions] = useState([]); // New state for suggestions
   const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
@@ -127,6 +129,14 @@ function App() {
     setSecondaryModel(event.target.value);
   };
 
+  const togglePrimaryModelMode = () => {
+    setPrimaryModelMode(prevMode => prevMode === 'CMP' ? 'INS' : 'CMP');
+  };
+
+  const toggleSecondaryModelMode = () => {
+    setSecondaryModelMode(prevMode => prevMode === 'CMP' ? 'INS' : 'CMP');
+  };
+
   const generateSuggestions = async (force = false) => {
     if (!primaryModel || !secondaryModel) return;
 
@@ -138,10 +148,61 @@ function App() {
       return;
     }
 
-    let messages = [
-      {'role': 'system', 'content': 'You are a creative writing assistant.  Continue the story provided by the user.'},
-      {'role': 'user', 'content': fragments.slice(0, selectedFragmentIndex).join('') }
-    ]
+    let primaryPayload, secondaryPayload;
+
+    if (primaryModelMode === 'CMP') {
+      primaryPayload = {
+        model: primaryModel,
+        prompt: prompt,
+        max_tokens: 50,
+        temperature: 1.0,
+        top_p: 0.9,
+        n: 4,
+        stop: ['.'],
+        stream: true,
+      };
+    } else {
+      primaryPayload = {
+        model: primaryModel,
+        messages: [
+          {'role': 'system', 'content': 'You are a creative writing assistant. Continue the story provided by the user.'},
+          {'role': 'user', 'content': prompt}
+        ],
+        max_tokens: 50,
+        temperature: 1.0,
+        top_p: 0.9,
+        n: 4,
+        stop: ['.'],
+        stream: true,
+      };
+    }
+
+    if (secondaryModelMode === 'CMP') {
+      secondaryPayload = {
+        model: secondaryModel,
+        prompt: prompt,
+        max_tokens: 50,
+        temperature: 1.0,
+        top_p: 0.9,
+        n: 4,
+        stop: ['.'],
+        stream: true,
+      };
+    } else {
+      secondaryPayload = {
+        model: secondaryModel,
+        messages: [
+          {'role': 'system', 'content': 'You are a creative writing assistant. Continue the story provided by the user.'},
+          {'role': 'user', 'content': prompt}
+        ],
+        max_tokens: 50,
+        temperature: 1.0,
+        top_p: 0.9,
+        n: 4,
+        stop: ['.'],
+        stream: true,
+      };
+    }
 
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -153,40 +214,22 @@ function App() {
 
     try {
       const [primaryResponse, secondaryResponse] = await Promise.all([
-        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/chat/completions`, {
+        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/${primaryModelMode === 'CMP' ? 'v1/completions' : 'v1/chat/completions'}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
           },
-          body: JSON.stringify({
-            model: primaryModel,
-            messages: messages,
-            max_tokens: 50,
-            temperature: 1.0,
-            top_p: 0.9,
-            n: 4,
-            stop: ['.'],
-            stream: true,
-          }),
+          body: JSON.stringify(primaryPayload),
           signal: abortControllerRef.current.signal,
         }),
-        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/v1/chat/completions`, {
+        fetch(`${process.env.REACT_APP_OPENAI_API_ENDPOINT}/${secondaryModelMode === 'CMP' ? 'v1/completions' : 'v1/chat/completions'}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
           },
-          body: JSON.stringify({
-            model: secondaryModel,
-            messages: messages,
-            max_tokens: 50,
-            temperature: 1.0,
-            top_p: 0.9,
-            n: 4,
-            stop: ['.'],
-            stream: true,
-          }),
+          body: JSON.stringify(secondaryPayload),
           signal: abortControllerRef.current.signal,
         })
       ]);
@@ -429,6 +472,7 @@ function App() {
               </option>
             ))}
           </select>
+          <button className="small-button mode-toggle" onClick={togglePrimaryModelMode}>{primaryModelMode}</button>
         </div>
         <div className="model-select-container secondary">
           <label htmlFor="secondary-model-select">Secondary Model: </label>
@@ -439,6 +483,7 @@ function App() {
               </option>
             ))}
           </select>
+          <button className="small-button mode-toggle" onClick={toggleSecondaryModelMode}>{secondaryModelMode}</button>
         </div>
         <button className="small-button reload-button" onClick={handleReloadModels}>↻</button>
         <button className="small-button" onClick={handleExport}>⬇️</button>

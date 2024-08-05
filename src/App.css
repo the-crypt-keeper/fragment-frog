@@ -191,7 +191,7 @@ textarea {
   margin-left: 5px;
   padding: 2px;
   font-size: 14px;
-  width: 65%;
+  width: 55%;
 }
 
 .model-selector label {
@@ -217,4 +217,11 @@ textarea {
 
 .reload-button {
   font-size: 14px;
+}
+
+.mode-toggle {
+  width: 40px;
+  font-size: 10px;
+  padding: 2px;
+  margin-left: 5px;
 }
