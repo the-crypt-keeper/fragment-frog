@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
+import SettingsModal from './SettingsModal';
 
 function App() {
   const fileInputRef = useRef(null);
@@ -26,6 +27,15 @@ function App() {
   const currentPromptRef = useRef('');
   const numSuggestions = 8;
   const [generationState, setGenerationState] = useState('IDLE');
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [systemPrompts, setSystemPrompts] = useState({
+    primary: 'You are a creative writing assistant. Continue the story provided by the user.',
+    secondary: 'You are a creative writing assistant. Continue the story provided by the user.'
+  });
+  const [temperatures, setTemperatures] = useState({
+    primary: 1.0,
+    secondary: 1.0
+  });
 
   /* Always restore focus on App area when switching back to explore mode */
   useEffect(() => {
@@ -159,7 +169,7 @@ function App() {
         model: primaryModel,
         prompt: prompt,
         max_tokens: 50,
-        temperature: 1.0,
+        temperature: temperatures.primary,
         top_p: 0.9,
         n: 4,
         stop: ['.'],
@@ -169,11 +179,11 @@ function App() {
       primaryPayload = {
         model: primaryModel,
         messages: [
-          {'role': 'system', 'content': 'You are a creative writing assistant. Continue the story provided by the user.'},
+          {'role': 'system', 'content': systemPrompts.primary},
           {'role': 'user', 'content': prompt}
         ],
         max_tokens: 50,
-        temperature: 1.0,
+        temperature: temperatures.primary,
         top_p: 0.9,
         n: 4,
         stop: ['.'],
@@ -186,7 +196,7 @@ function App() {
         model: secondaryModel,
         prompt: prompt,
         max_tokens: 50,
-        temperature: 1.0,
+        temperature: temperatures.secondary,
         top_p: 0.9,
         n: 4,
         stop: ['.'],
@@ -196,11 +206,11 @@ function App() {
       secondaryPayload = {
         model: secondaryModel,
         messages: [
-          {'role': 'system', 'content': 'You are a creative writing assistant. Continue the story provided by the user.'},
+          {'role': 'system', 'content': systemPrompts.secondary},
           {'role': 'user', 'content': prompt}
         ],
         max_tokens: 50,
-        temperature: 1.0,
+        temperature: temperatures.secondary,
         top_p: 0.9,
         n: 4,
         stop: ['.'],
@@ -494,6 +504,7 @@ function App() {
         <button className="small-button" onClick={handleExport}>⬇️</button>
         <button className="small-button" onClick={handleImport}>⬆️</button>
         <button className="small-button" onClick={handleClear}>💣</button>
+        <button className="small-button" onClick={() => setIsSettingsModalOpen(true)}>⚙️</button>
         <input
           type="file"
           ref={fileInputRef}
@@ -589,6 +600,22 @@ function App() {
       </div>
     </div>
   </div>
+  <SettingsModal
+    isOpen={isSettingsModalOpen}
+    onClose={() => setIsSettingsModalOpen(false)}
+    primaryModel={primaryModel}
+    secondaryModel={secondaryModel}
+    onSave={(settings) => {
+      setSystemPrompts({
+        primary: settings.primarySystemPrompt,
+        secondary: settings.secondarySystemPrompt
+      });
+      setTemperatures({
+        primary: settings.primaryTemperature,
+        secondary: settings.secondaryTemperature
+      });
+    }}
+  />
   );
 }
 
