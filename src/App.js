@@ -175,7 +175,7 @@ function App() {
     if (primaryModelMode === 'CMP') {
       primaryPayload = {
         model: primaryModel,
-        prompt: prompt,
+        prompt: `### Instruction: ${systemPrompts.primary}\n\n### Response:${prompt}`,
         max_tokens: 50,
         temperature: temperatures.primary,
         top_p: 0.9,
@@ -202,7 +202,7 @@ function App() {
     if (secondaryModelMode === 'CMP') {
       secondaryPayload = {
         model: secondaryModel,
-        prompt: prompt,
+        prompt: `### Instruction: ${systemPrompts.secondary}\n\n### Response:${prompt}`,
         max_tokens: 50,
         temperature: temperatures.secondary,
         top_p: 0.9,
