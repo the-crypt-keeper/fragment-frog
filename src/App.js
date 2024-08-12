@@ -265,11 +265,12 @@ function App() {
               try {
                 const data = JSON.parse(line.slice(6));
                 if (data.choices && data.choices.length > 0) {
-                  let { index, text, finish_reason } = data.choices[0];
+                  let { index, text, finish_reason, stop_reason } = data.choices[0];
                   if (data.choices[0].delta) {
                     text = data.choices[0].delta.content;
                     if (finish_reason == 'stop') { text = '.'; }
                   }
+                  if (stop_reason == '.') { text = '.'; }
                      
                   const suggestionIndex = startIndex + index;
                   if (!doneSuggestions[suggestionIndex]) {
@@ -468,7 +469,7 @@ function App() {
       </div>
       <div className="model-selector">
         <div className="model-select-container primary">
-          <label htmlFor="primary-model-select">Primary: </label>
+          <label htmlFor="primary-model-select">Primary Model: </label>
           <select id="primary-model-select" value={primaryModel} onChange={handlePrimaryModelChange} className="model-select primary">
             {availableModels.map((model) => (
               <option key={model.id} value={model.id}>
@@ -522,7 +523,7 @@ function App() {
                   <span className={`fragment ${selectedFragmentIndex === index ? 'selected' : ''}`}>
                     {line == '---' ? <hr /> : line == '' ? '↵' : line}
                   </span>
-                  {(false || (line === '' && line != '---')) && (
+                  {(line === '') && (
                     <span className='break'>
                       <br />
                     </span>
