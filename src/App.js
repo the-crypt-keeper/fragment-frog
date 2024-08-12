@@ -599,23 +599,23 @@ function App() {
         ))}
       </div>
     </div>
+    <SettingsModal
+      isOpen={isSettingsModalOpen}
+      onClose={() => setIsSettingsModalOpen(false)}
+      primaryModel={primaryModel}
+      secondaryModel={secondaryModel}
+      onSave={(settings) => {
+        setSystemPrompts({
+          primary: settings.primarySystemPrompt,
+          secondary: settings.secondarySystemPrompt
+        });
+        setTemperatures({
+          primary: settings.primaryTemperature,
+          secondary: settings.secondaryTemperature
+        });
+      }}
+    />
   </div>
-  <SettingsModal
-    isOpen={isSettingsModalOpen}
-    onClose={() => setIsSettingsModalOpen(false)}
-    primaryModel={primaryModel}
-    secondaryModel={secondaryModel}
-    onSave={(settings) => {
-      setSystemPrompts({
-        primary: settings.primarySystemPrompt,
-        secondary: settings.secondarySystemPrompt
-      });
-      setTemperatures({
-        primary: settings.primaryTemperature,
-        secondary: settings.secondaryTemperature
-      });
-    }}
-  />
   );
 }
 
