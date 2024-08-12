@@ -90,7 +90,9 @@ function App() {
   const handleExport = () => {
     const state = {
       fragments,
-      clipboard
+      clipboard,
+      systemPrompts,
+      temperatures
     };
     const blob = new Blob([JSON.stringify(state)], { type: 'application/json' });
     const href = URL.createObjectURL(blob);
@@ -125,6 +127,12 @@ function App() {
           const state = JSON.parse(e.target.result);
           setFragments(state.fragments);
           setClipboard(state.clipboard);
+          if (state.systemPrompts) {
+            setSystemPrompts(state.systemPrompts);
+          }
+          if (state.temperatures) {
+            setTemperatures(state.temperatures);
+          }
           setSuggestions([]);
           setInsertedSuggestions(new Set());
         } catch (error) {
