@@ -483,6 +483,12 @@ function App() {
     }
   });
 
+  const restoreFocus = useCallback(() => {
+    if (appContainerRef.current) {
+      appContainerRef.current.focus();
+    }
+  }, []);
+
   return (
     <div className="App" onKeyDown={handleKeyDown} tabIndex="0" ref={appContainerRef}>
       <div className={`generation-indicator ${generationState.toLowerCase()}`}>
