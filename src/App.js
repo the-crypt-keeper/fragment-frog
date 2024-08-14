@@ -618,7 +618,10 @@ function App() {
     </div>
     <SettingsModal
       isOpen={isSettingsModalOpen}
-      onClose={() => setIsSettingsModalOpen(false)}
+      onClose={() => {
+        setIsSettingsModalOpen(false);
+        restoreFocus();
+      }}
       primaryModel={primaryModel}
       secondaryModel={secondaryModel}
       onSave={(settings) => {
@@ -631,8 +634,8 @@ function App() {
           secondary: settings.secondaryTemperature
         });
         setIsSettingsModalOpen(false);
+        restoreFocus();
       }}
-      onAfterClose={restoreFocus}
     />
   </div>
   );

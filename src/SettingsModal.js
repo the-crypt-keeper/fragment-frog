@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './SettingsModal.css';
 
-function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave, onAfterClose }) {
+function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }) {
   const [primarySystemPrompt, setPrimarySystemPrompt] = useState('You are a creative writing assistant. Continue the story provided by the user.');
   const [secondarySystemPrompt, setSecondarySystemPrompt] = useState('You are a creative writing assistant. Continue the story provided by the user.');
   const [primaryTemperature, setPrimaryTemperature] = useState(1.0);
@@ -15,12 +15,10 @@ function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave, 
       secondaryTemperature
     });
     onClose();
-    onAfterClose();
   };
 
   const handleClose = () => {
     onClose();
-    onAfterClose();
   };
 
   if (!isOpen) return null;
