@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './App.css';
 import SettingsModal from './SettingsModal';
 
 function App() {
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const fileInputRef = useRef(null);
   const [shouldGenerateSuggestions, setShouldGenerateSuggestions] = useState(false);
 
@@ -337,7 +338,9 @@ function App() {
     }
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = useCallback((e) => {
+    if (isSettingsModalOpen) return;
+    
     if (mode === 'explore') {
       switch (e.key) {
         case 'Tab':
@@ -621,6 +624,7 @@ function App() {
           primary: settings.primaryTemperature,
           secondary: settings.secondaryTemperature
         });
+        setIsSettingsModalOpen(false);
       }}
     />
   </div>
