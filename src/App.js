@@ -28,7 +28,7 @@ function App() {
   const currentPromptRef = useRef('');
   const numSuggestions = 8;
   const [generationState, setGenerationState] = useState('IDLE');
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+
   const [systemPrompts, setSystemPrompts] = useState({
     primary: 'You are a creative writing assistant. Continue the story provided by the user.',
     secondary: 'You are a creative writing assistant. Continue the story provided by the user.'
@@ -481,7 +481,7 @@ function App() {
         }
       }
     }
-  };
+  });
 
   return (
     <div className="App" onKeyDown={handleKeyDown} tabIndex="0" ref={appContainerRef}>
