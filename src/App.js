@@ -626,6 +626,7 @@ function App() {
         });
         setIsSettingsModalOpen(false);
       }}
+      onAfterClose={restoreFocus}
     />
   </div>
   );
