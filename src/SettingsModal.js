@@ -42,49 +42,49 @@ function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }
           <div className="settings-row">
             <div className="settings-column">
               <h3>Primary Model ({primaryModel})</h3>
-            <label>
-              Temperature:
-              <input
-                type="number"
-                min="0"
-                max="2"
-                step="0.1"
-                value={primaryTemperature}
-                onChange={(e) => setPrimaryTemperature(parseFloat(e.target.value))}
-              />
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={primaryStop}
-                onChange={(e) => setPrimaryStop(e.target.checked)}
-              />
-              Stop at period
-            </label>
+              <label>
+                Temperature:
+                <input
+                  type="number"
+                  min="0"
+                  max="2"
+                  step="0.1"
+                  value={primaryTemperature}
+                  onChange={(e) => setPrimaryTemperature(parseFloat(e.target.value))}
+                />
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={primaryStop}
+                  onChange={(e) => setPrimaryStop(e.target.checked)}
+                />
+                Stop at period
+              </label>
+            </div>
+            <div className="settings-column">
+              <h3>Secondary Model ({secondaryModel})</h3>
+              <label>
+                Temperature:
+                <input
+                  type="number"
+                  min="0"
+                  max="2"
+                  step="0.1"
+                  value={secondaryTemperature}
+                  onChange={(e) => setSecondaryTemperature(parseFloat(e.target.value))}
+                />
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={secondaryStop}
+                  onChange={(e) => setSecondaryStop(e.target.checked)}
+                />
+                Stop at period
+              </label>
+            </div>
           </div>
-          <div className="settings-column">
-            <h3>Secondary Model ({secondaryModel})</h3>
-            <label>
-              Temperature:
-              <input
-                type="number"
-                min="0"
-                max="2"
-                step="0.1"
-                value={secondaryTemperature}
-                onChange={(e) => setSecondaryTemperature(parseFloat(e.target.value))}
-              />
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={secondaryStop}
-                onChange={(e) => setSecondaryStop(e.target.checked)}
-              />
-              Stop at period
-            </label>
-          </div>
-        </div>
         <div className="settings-buttons">
           <button onClick={handleClose}>Cancel</button>
           <button onClick={handleSave}>OK</button>
