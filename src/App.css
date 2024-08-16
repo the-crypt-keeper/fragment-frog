@@ -191,7 +191,15 @@ textarea {
   margin-left: 5px;
   padding: 2px;
   font-size: 14px;
+}
+
+.model-selector .model-select {
   width: 55%;
+}
+
+.model-selector .completions-select {
+  width: auto;
+  min-width: 40px;
 }
 
 .model-selector label {
