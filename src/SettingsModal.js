@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import './SettingsModal.css';
 
 function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }) {
-  const [primarySystemPrompt, setPrimarySystemPrompt] = useState('You are a creative writing assistant. Continue the story provided by the user.');
-  const [secondarySystemPrompt, setSecondarySystemPrompt] = useState('You are a creative writing assistant. Continue the story provided by the user.');
+  const [systemPrompt, setSystemPrompt] = useState('You are a creative writing assistant. Continue the story provided by the user.');
   const [primaryTemperature, setPrimaryTemperature] = useState(1.0);
   const [secondaryTemperature, setSecondaryTemperature] = useState(1.0);
+  const [primaryStop, setPrimaryStop] = useState(true);
+  const [secondaryStop, setSecondaryStop] = useState(true);
 
   const handleSave = () => {
     onSave({
-      primarySystemPrompt,
-      secondarySystemPrompt,
+      systemPrompt,
       primaryTemperature,
-      secondaryTemperature
+      secondaryTemperature,
+      primaryStop,
+      secondaryStop
     });
     onClose();
   };
@@ -29,14 +31,16 @@ function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }
         <h2>Settings</h2>
         <div className="settings-content">
           <div className="settings-column">
-            <h3>Primary Model ({primaryModel})</h3>
+            <h3>System Prompt</h3>
             <label>
-              System Prompt:
               <textarea
-                value={primarySystemPrompt}
-                onChange={(e) => setPrimarySystemPrompt(e.target.value)}
+                value={systemPrompt}
+                onChange={(e) => setSystemPrompt(e.target.value)}
               />
             </label>
+          </div>
+          <div className="settings-column">
+            <h3>Primary Model ({primaryModel})</h3>
             <label>
               Temperature:
               <input
@@ -48,16 +52,17 @@ function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }
                 onChange={(e) => setPrimaryTemperature(parseFloat(e.target.value))}
               />
             </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={primaryStop}
+                onChange={(e) => setPrimaryStop(e.target.checked)}
+              />
+              Stop at period
+            </label>
           </div>
           <div className="settings-column">
             <h3>Secondary Model ({secondaryModel})</h3>
-            <label>
-              System Prompt:
-              <textarea
-                value={secondarySystemPrompt}
-                onChange={(e) => setSecondarySystemPrompt(e.target.value)}
-              />
-            </label>
             <label>
               Temperature:
               <input
@@ -68,6 +73,14 @@ function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }
                 value={secondaryTemperature}
                 onChange={(e) => setSecondaryTemperature(parseFloat(e.target.value))}
               />
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={secondaryStop}
+                onChange={(e) => setSecondaryStop(e.target.checked)}
+              />
+              Stop at period
             </label>
           </div>
         </div>

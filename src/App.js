@@ -29,13 +29,14 @@ function App() {
   const numSuggestions = 8;
   const [generationState, setGenerationState] = useState('IDLE');
 
-  const [systemPrompts, setSystemPrompts] = useState({
-    primary: 'You are a creative writing assistant. Continue the story provided by the user.',
-    secondary: 'You are a creative writing assistant. Continue the story provided by the user.'
-  });
+  const [systemPrompt, setSystemPrompt] = useState('You are a creative writing assistant. Continue the story provided by the user.');
   const [temperatures, setTemperatures] = useState({
     primary: 1.0,
     secondary: 1.0
+  });
+  const [stopAtPeriod, setStopAtPeriod] = useState({
+    primary: true,
+    secondary: true
   });
 
   /* Always restore focus on App area when switching back to explore mode */
@@ -181,7 +182,7 @@ function App() {
         temperature: temperatures.primary,
         top_p: 0.9,
         n: 4,
-        stop: ['.'],
+        stop: stopAtPeriod.primary ? ['.'] : null,
         stream: true,
       };
     } else {
@@ -208,7 +209,7 @@ function App() {
         temperature: temperatures.secondary,
         top_p: 0.9,
         n: 4,
-        stop: ['.'],
+        stop: stopAtPeriod.secondary ? ['.'] : null,
         stream: true,
       };
     } else {
@@ -634,13 +635,14 @@ function App() {
       primaryModel={primaryModel}
       secondaryModel={secondaryModel}
       onSave={(settings) => {
-        setSystemPrompts({
-          primary: settings.primarySystemPrompt,
-          secondary: settings.secondarySystemPrompt
-        });
+        setSystemPrompt(settings.systemPrompt);
         setTemperatures({
           primary: settings.primaryTemperature,
           secondary: settings.secondaryTemperature
+        });
+        setStopAtPeriod({
+          primary: settings.primaryStop,
+          secondary: settings.secondaryStop
         });
         setIsSettingsModalOpen(false);
         restoreFocus();
