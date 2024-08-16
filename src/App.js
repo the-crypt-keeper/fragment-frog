@@ -22,11 +22,12 @@ function App() {
   const [secondaryModel, setSecondaryModel] = useState('');
   const [primaryModelMode, setPrimaryModelMode] = useState('CMP');
   const [secondaryModelMode, setSecondaryModelMode] = useState('CMP');
+  const [primaryCompletions, setPrimaryCompletions] = useState(4);
+  const [secondaryCompletions, setSecondaryCompletions] = useState(4);
   const [availableModels, setAvailableModels] = useState([]);
   const [suggestions, setSuggestions] = useState([]); // New state for suggestions
   const [insertedSuggestions, setInsertedSuggestions] = useState(new Set()); // New state for inserted suggestions
   const currentPromptRef = useRef('');
-  const numSuggestions = 8;
   const [generationState, setGenerationState] = useState('IDLE');
 
   const [systemPrompt, setSystemPrompt] = useState('You are a creative writing assistant. Continue the story provided by the user.');
@@ -181,7 +182,7 @@ function App() {
         max_tokens: 50,
         temperature: temperatures.primary,
         top_p: 0.9,
-        n: 4,
+        n: primaryCompletions,
         stop: stopAtPeriod.primary ? ['.'] : null,
         stream: true,
       };
@@ -195,7 +196,7 @@ function App() {
         max_tokens: 50,
         temperature: temperatures.primary,
         top_p: 0.9,
-        n: 4,
+        n: primaryCompletions,
         stop: ['.'],
         stream: true,
       };
@@ -208,7 +209,7 @@ function App() {
         max_tokens: 50,
         temperature: temperatures.secondary,
         top_p: 0.9,
-        n: 4,
+        n: secondaryCompletions,
         stop: stopAtPeriod.secondary ? ['.'] : null,
         stream: true,
       };
@@ -222,7 +223,7 @@ function App() {
         max_tokens: 60,
         temperature: temperatures.secondary,
         top_p: 0.9,
-        n: 4,
+        n: secondaryCompletions,
         stop: ['.'],
         stream: true,
       };
@@ -265,8 +266,8 @@ function App() {
       const primaryReader = primaryResponse.body.getReader();
       const secondaryReader = secondaryResponse.body.getReader();
       const decoder = new TextDecoder('utf-8');
-      const newSuggestions = Array(numSuggestions).fill('');
-      const doneSuggestions = Array(numSuggestions).fill(false);
+      const newSuggestions = Array(primaryCompletions + secondaryCompletions).fill('');
+      const doneSuggestions = Array(primaryCompletions + secondaryCompletions).fill(false);
       let primaryBuffer = '';
       let secondaryBuffer = '';
       let firstToken = false;
@@ -514,6 +515,15 @@ function App() {
               </option>
             ))}
           </select>
+          <select 
+            value={primaryCompletions} 
+            onChange={(e) => setPrimaryCompletions(Number(e.target.value))} 
+            className="completions-select primary"
+          >
+            {[1, 2, 3, 4].map((n) => (
+              <option key={n} value={n}>{n}</option>
+            ))}
+          </select>
           <button className="small-button mode-toggle" onClick={togglePrimaryModelMode}>{primaryModelMode}</button>
         </div>
         <div className="model-select-container secondary">
@@ -523,6 +533,15 @@ function App() {
               <option key={model.id} value={model.id}>
                 {model.id}
               </option>
+            ))}
+          </select>
+          <select 
+            value={secondaryCompletions} 
+            onChange={(e) => setSecondaryCompletions(Number(e.target.value))} 
+            className="completions-select secondary"
+          >
+            {[1, 2, 3, 4].map((n) => (
+              <option key={n} value={n}>{n}</option>
             ))}
           </select>
           <button className="small-button mode-toggle" onClick={toggleSecondaryModelMode}>{secondaryModelMode}</button>
