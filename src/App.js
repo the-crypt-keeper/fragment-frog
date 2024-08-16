@@ -294,6 +294,15 @@ function App() {
                   const suggestionIndex = startIndex + index;
                   if (!doneSuggestions[suggestionIndex]) {
                     if (text) {
+                      // Check if prompt ends with '.' and we're in instruct mode (CMP)
+                      if (prompt.trim().endsWith('.') && 
+                          ((startIndex === 0 && primaryModelMode === 'CMP') || 
+                           (startIndex === 4 && secondaryModelMode === 'CMP'))) {
+                        // Prepend space only for the first token of each suggestion
+                        if (newSuggestions[suggestionIndex] === '') {
+                          text = ' ' + text;
+                        }
+                      }
                       newSuggestions[suggestionIndex] += text;
                       if (currentPromptRef.current === prompt) { 
                         setSuggestions([...newSuggestions]);
