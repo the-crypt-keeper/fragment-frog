@@ -93,7 +93,7 @@ function App() {
     const state = {
       fragments,
       clipboard,
-      systemPrompts,
+      systemPrompt,
       temperatures
     };
     const blob = new Blob([JSON.stringify(state)], { type: 'application/json' });
@@ -129,8 +129,8 @@ function App() {
           const state = JSON.parse(e.target.result);
           setFragments(state.fragments);
           setClipboard(state.clipboard);
-          if (state.systemPrompts) {
-            setSystemPrompts(state.systemPrompts);
+          if (state.systemPrompt) {
+            setSystemPrompt(state.systemPrompt);
           }
           if (state.temperatures) {
             setTemperatures(state.temperatures);
@@ -177,7 +177,7 @@ function App() {
     if (primaryModelMode === 'CMP') {
       primaryPayload = {
         model: primaryModel,
-        prompt: `### Instruction: ${systemPrompts.primary}\n\n### Response:${prompt}`,
+        prompt: `### Instruction: ${systemPrompt}\n\n### Response:${prompt}`,
         max_tokens: 50,
         temperature: temperatures.primary,
         top_p: 0.9,
@@ -189,7 +189,7 @@ function App() {
       primaryPayload = {
         model: primaryModel,
         messages: [
-          {'role': 'system', 'content': systemPrompts.primary},
+          {'role': 'system', 'content': systemPrompt},
           {'role': 'user', 'content': prompt}
         ],
         max_tokens: 50,
@@ -204,7 +204,7 @@ function App() {
     if (secondaryModelMode === 'CMP') {
       secondaryPayload = {
         model: secondaryModel,
-        prompt: `### Instruction: ${systemPrompts.secondary}\n\n### Response:${prompt}`,
+        prompt: `### Instruction: ${systemPrompt}\n\n### Response:${prompt}`,
         max_tokens: 50,
         temperature: temperatures.secondary,
         top_p: 0.9,
@@ -216,7 +216,7 @@ function App() {
       secondaryPayload = {
         model: secondaryModel,
         messages: [
-          {'role': 'system', 'content': systemPrompts.secondary},
+          {'role': 'system', 'content': systemPrompt},
           {'role': 'user', 'content': prompt}
         ],
         max_tokens: 60,
