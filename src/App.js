@@ -218,7 +218,7 @@ function App() {
           {'role': 'system', 'content': systemPrompts.secondary},
           {'role': 'user', 'content': prompt}
         ],
-        max_tokens: 50,
+        max_tokens: 60,
         temperature: temperatures.secondary,
         top_p: 0.9,
         n: 4,
@@ -294,10 +294,10 @@ function App() {
                   const suggestionIndex = startIndex + index;
                   if (!doneSuggestions[suggestionIndex]) {
                     if (text) {
-                      // Check if prompt ends with '.' and we're in instruct mode (CMP)
+                      // Check if prompt ends with '.' and we're in instruct mode (INS)
                       if (prompt.trim().endsWith('.') && 
-                          ((startIndex === 0 && primaryModelMode === 'CMP') || 
-                           (startIndex === 4 && secondaryModelMode === 'CMP'))) {
+                          ((startIndex === 0 && primaryModelMode === 'INS') || 
+                           (startIndex === 4 && secondaryModelMode === 'INS'))) {
                         // Prepend space only for the first token of each suggestion
                         if (newSuggestions[suggestionIndex] === '') {
                           text = ' ' + text;
