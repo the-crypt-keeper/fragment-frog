@@ -23,6 +23,15 @@
 
 .settings-content {
   display: flex;
+  flex-direction: column;
+}
+
+.settings-row {
+  margin-bottom: 20px;
+}
+
+.settings-row:last-child {
+  display: flex;
   justify-content: space-between;
 }
 
@@ -30,12 +39,13 @@
   width: 48%;
 }
 
+.settings-row label,
 .settings-column label {
   display: block;
   margin-bottom: 10px;
 }
 
-.settings-column textarea {
+.settings-row textarea {
   width: 100%;
   height: 100px;
 }

@@ -30,7 +30,7 @@ function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }
       <div className="settings-modal">
         <h2>Settings</h2>
         <div className="settings-content">
-          <div className="settings-column">
+          <div className="settings-row">
             <h3>System Prompt</h3>
             <label>
               <textarea
@@ -39,8 +39,9 @@ function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }
               />
             </label>
           </div>
-          <div className="settings-column">
-            <h3>Primary Model ({primaryModel})</h3>
+          <div className="settings-row">
+            <div className="settings-column">
+              <h3>Primary Model ({primaryModel})</h3>
             <label>
               Temperature:
               <input
@@ -90,6 +91,7 @@ function SettingsModal({ isOpen, onClose, primaryModel, secondaryModel, onSave }
         </div>
       </div>
     </div>
+  </div>
   );
 }
 
