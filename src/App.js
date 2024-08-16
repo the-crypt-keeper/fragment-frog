@@ -266,8 +266,8 @@ function App() {
       const primaryReader = primaryResponse.body.getReader();
       const secondaryReader = secondaryResponse.body.getReader();
       const decoder = new TextDecoder('utf-8');
-      const newSuggestions = Array(primaryCompletions + secondaryCompletions).fill('');
-      const doneSuggestions = Array(primaryCompletions + secondaryCompletions).fill(false);
+      const newSuggestions = Array(4 + 4).fill('');
+      const doneSuggestions = Array(4 + 4).fill(false);
       let primaryBuffer = '';
       let secondaryBuffer = '';
       let firstToken = false;
