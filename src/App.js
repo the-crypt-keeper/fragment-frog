@@ -179,6 +179,7 @@ function App() {
       primaryPayload = {
         model: primaryModel,
         prompt: `### Instruction: ${systemPrompt}\n\n### Response:${prompt}`,
+        min_tokens: 4,
         max_tokens: 50,
         temperature: temperatures.primary,
         top_p: 0.9,
@@ -193,6 +194,7 @@ function App() {
           {'role': 'system', 'content': systemPrompt},
           {'role': 'user', 'content': prompt}
         ],
+        min_tokens: 4,
         max_tokens: 50,
         temperature: temperatures.primary,
         top_p: 0.9,
@@ -206,6 +208,7 @@ function App() {
       secondaryPayload = {
         model: secondaryModel,
         prompt: `### Instruction: ${systemPrompt}\n\n### Response:${prompt}`,
+        min_tokens: 4,
         max_tokens: 50,
         temperature: temperatures.secondary,
         top_p: 0.9,
@@ -220,6 +223,7 @@ function App() {
           {'role': 'system', 'content': systemPrompt},
           {'role': 'user', 'content': prompt}
         ],
+        min_tokens: 4,
         max_tokens: 60,
         temperature: temperatures.secondary,
         top_p: 0.9,
@@ -282,15 +286,15 @@ function App() {
           buffer = lines.pop();
 
           lines.forEach(line => {
-            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            if (line.startsWith('data: ') && line.trim() !== 'data: [DONE]') {
               try {
                 const data = JSON.parse(line.slice(6));
                 if (data.choices && data.choices.length > 0) {
                   let { index, text, finish_reason, stop_reason } = data.choices[0];
                   if (data.choices[0].delta) {
-                    text = data.choices[0].delta.content;
-                    if (finish_reason == 'stop') { text = '.'; }
+                    text = data.choices[0].delta.content;                    
                   }
+                  if (finish_reason == 'stop') { text = '.'; }
                   if (stop_reason == '.') { text = '.'; }
                      
                   const suggestionIndex = startIndex + index;
