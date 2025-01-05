@@ -37,12 +37,10 @@ export const SuggestionList: React.FC = () => {
               <span className="suggestion-hint">{index + 1}</span>
               {error ? (
                 <span className="error">{error}</span>
-              ) : status === 'WAITING' || status === 'RUNNING' ? (
-                <span className="loading">
-                  {status === 'WAITING' ? 'Waiting...' : 'Generating...'}
-                </span>
+              ) : status === 'WAITING' ? (
+                <span className="loading">Waiting...</span>
               ) : (
-                suggestions[index] || '[No suggestion]'
+                suggestions[index] || (status === 'RUNNING' ? '' : '[No suggestion]')
               )}
               {model && (
                 <div 
