@@ -7,7 +7,8 @@ const initialState: EditorState = {
   selectedIndex: 0,
   mode: 'explore',
   currentEditText: '',
-  insertedSuggestions: []
+  insertedSuggestions: [],
+  generationPending: false
 };
 
 const editorSlice = createSlice({
@@ -21,6 +22,9 @@ const editorSlice = createSlice({
     },    
     clearInsertedSuggestions: (state) => {
       state.insertedSuggestions = [];
+    },
+    setGenerationPending: (state, action: PayloadAction<boolean>) => {
+      state.generationPending = action.payload;
     },
     insertSuggestion: (state, action: PayloadAction<{index: number, text: string}>) => {
       const { text } = action.payload;
@@ -112,7 +116,8 @@ export const {
   loadState,
   insertSuggestion,
   markSuggestionInserted,
-  clearInsertedSuggestions
+  clearInsertedSuggestions,
+  setGenerationPending
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

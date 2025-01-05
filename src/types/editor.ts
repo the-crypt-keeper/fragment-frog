@@ -11,4 +11,5 @@ export interface EditorState {
   mode: EditorMode;
   currentEditText: string;
   insertedSuggestions: number[];
+  generationPending: boolean;
 }
