@@ -1,7 +1,7 @@
 .fragment {
     display: inline;
     background-color: #f0f0f0;
-    padding: 2px 4px 2px 4px;
+    padding: 0px 4px 2px 4px;
     border: 1px dashed #666;
     border-radius: 2px;
   }
