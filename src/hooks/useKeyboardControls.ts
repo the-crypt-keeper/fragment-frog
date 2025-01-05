@@ -13,7 +13,8 @@ import {
   cancelEdit,
   insertSuggestion,
   markSuggestionInserted,
-  clearInsertedSuggestions
+  clearInsertedSuggestions,
+  setGenerationPending
 } from '../store/slices/editor';
 import { 
   setModelStatus, 
