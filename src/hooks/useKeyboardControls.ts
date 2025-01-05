@@ -229,7 +229,7 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
     }
-  }, [handleKeyDown]);
+  }, [handleKeyDown, isModalOpen]);
 
   // Watch for pending generation flag
   useEffect(() => {
