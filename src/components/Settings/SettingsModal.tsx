@@ -83,13 +83,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
       return;
     }
 
-    // Update grid offsets
-    let offset = 0;
-    const updatedModels = localModels.map(model => ({
-      ...model,
-      gridOffset: offset,
-      numCompletions: Math.min(model.numCompletions, totalSlots - offset)
-    }));
+    // Update grid offsets based on previous models' completions
+    const updatedModels = localModels.map((model, index) => {
+      const offset = localModels
+        .slice(0, index)
+        .reduce((sum, prevModel) => sum + prevModel.numCompletions, 0);
+      return {
+        ...model,
+        gridOffset: offset,
+        numCompletions: Math.min(model.numCompletions, totalSlots - offset)
+      };
+    });
 
     dispatch(updateSystemConfig(localConfig));
     dispatch(updateModelConfigs(updatedModels));
