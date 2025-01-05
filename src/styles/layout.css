@@ -40,3 +40,12 @@
     justify-content: center;
     gap: 10px;
   }
+
+  .title {
+    font-size: 2em;
+    background-color: greenyellow;
+    padding: 2px;
+    margin: 2px;
+    max-width: 100%;
+    text-align: center;
+  }  
