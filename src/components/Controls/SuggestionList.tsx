@@ -40,7 +40,8 @@ export const SuggestionList: React.FC = () => {
               ) : status === 'WAITING' ? (
                 <span className="loading">Waiting...</span>
               ) : (
-                suggestions[index] || (status === 'RUNNING' ? '' : '[No suggestion]')
+                suggestions[index] || (status === 'RUNNING' ? '' : 
+                  model ? `${model.model} (slot ${index - model.gridOffset + 1})` : 'Unassigned slot')
               )}
               {model && (
                 <div 
