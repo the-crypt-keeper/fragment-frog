@@ -23,7 +23,7 @@ const editorSlice = createSlice({
       state.insertedSuggestions = [];
     },
     insertSuggestion: (state, action: PayloadAction<{index: number, text: string}>) => {
-      const { index, text } = action.payload;
+      const { text } = action.payload;
       const insertIndex = state.selectedIndex + 1;
       
       // Create new fragment with the suggestion

@@ -211,7 +211,7 @@ export const useKeyboardControls = () => {
         }
       }
     },
-    [dispatch, fragments, selectedIndex, mode, currentEditText]
+    [dispatch, generateSuggestions, fragments, selectedIndex, mode, currentEditText, suggestions, systemConfig]
   );
 
   useEffect(() => {

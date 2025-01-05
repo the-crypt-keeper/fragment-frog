@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SystemConfig, ModelConfig, ModelStatus, CompletionUpdate } from '../../types/llm';
+import { SystemConfig, ModelConfig, ModelStatus } from '../../types/llm';
 import { LocalStorageService } from '../../services/localStorage';
 
 interface LLMState {
