@@ -204,7 +204,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                   value={
                     !model.tokenizer ? 'chat' :
                     model.tokenizer.includes('### Instruction:') ? 'alpaca' :
-                    model.tokenizer.includes('SYSTEM:') ? 'vicuna' : 'chat'
+                    model.tokenizer.includes('SYSTEM:') ? 'vicuna' :
+                    model.tokenizer === '{system}\n{prompt}' ? 'raw' : 'chat'
                   }
                   onChange={e => {
                     const newModels = [...localModels];
@@ -214,6 +215,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                       template = '### Instruction:\n{system}\n\n### Input:\n{prompt}\n\n### Response:';
                     } else if (value === 'vicuna') {
                       template = 'SYSTEM: {system}\n\nUSER: {prompt}\n\nA:';
+                    } else if (value === 'raw') {
+                      template = '{system}\n{prompt}';
                     }
                     newModels[index] = { ...model, tokenizer: template };
                     setLocalModels(newModels);
@@ -222,6 +225,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                   <option value="chat">Chat</option>
                   <option value="alpaca">Text (Alpaca)</option>
                   <option value="vicuna">Text (Vicuna)</option>
+                  <option value="raw">Text (Raw)</option>
                 </select>
 
                 <div className="temperature-control">
