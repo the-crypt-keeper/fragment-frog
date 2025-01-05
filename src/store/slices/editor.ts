@@ -13,13 +13,16 @@ const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
-    insertFragment: (state, action: PayloadAction<{ index: number; text: string }>) => {
-      const { index, text } = action.payload;
-      const newFragment: Fragment = {
-        id: uuidv4(),
-        text,
-      };
-      state.fragments.splice(index, 0, newFragment);
+    startInsert: (state, action: PayloadAction<number>) => {
+        // Create new empty fragment at the specified index
+        const newFragment: Fragment = {
+          id: uuidv4(),
+          text: '',
+        };
+        state.fragments.splice(action.payload, 0, newFragment);
+        state.selectedIndex = action.payload;
+        state.mode = 'insert';
+        state.currentEditText = '';
     },
     deleteFragment: (state, action: PayloadAction<number>) => {
       state.fragments.splice(action.payload, 1);
@@ -48,8 +51,12 @@ const editorSlice = createSlice({
       }
       state.mode = 'explore';
       state.currentEditText = '';
-    },
+    },  
     cancelEdit: (state) => {
+      if (state.mode === 'insert') {
+        // Remove the empty fragment if we're cancelling an insert
+        state.fragments.splice(state.selectedIndex, 1);
+      }
       state.mode = 'explore';
       state.currentEditText = '';
     },
@@ -63,7 +70,6 @@ const editorSlice = createSlice({
 });
 
 export const {
-  insertFragment,
   deleteFragment,
   moveFragment,
   setSelectedIndex,
@@ -72,6 +78,7 @@ export const {
   saveEdit,
   cancelEdit,
   clearEditor,
+  startInsert
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

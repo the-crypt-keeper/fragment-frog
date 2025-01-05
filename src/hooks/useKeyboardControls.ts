@@ -6,9 +6,9 @@ import {
   deleteFragment,
   setMode,
   setCurrentEditText,
+  startInsert,
   saveEdit,
   cancelEdit,
-  insertFragment,
 } from '../store/slices/editor';
 
 export const useKeyboardControls = () => {
@@ -53,8 +53,7 @@ export const useKeyboardControls = () => {
             e.preventDefault();
             if (selectedIndex === fragments.length) {
                 // If we're on the <new> element, treat space like insert
-                dispatch(setMode('insert'));
-                dispatch(setCurrentEditText(''));
+                dispatch(startInsert(selectedIndex));
             } else {
                 // Otherwise, go into edit mode
                 dispatch(setCurrentEditText(fragments[selectedIndex].text));
@@ -68,10 +67,7 @@ export const useKeyboardControls = () => {
             break;
 
           case 'i':
-            if (selectedIndex <= fragments.length) {
-              dispatch(setMode('insert'));
-              dispatch(setCurrentEditText(''));
-            }
+            dispatch(startInsert(selectedIndex + 1));
             e.preventDefault();
             break;
         }
@@ -87,12 +83,6 @@ export const useKeyboardControls = () => {
               dispatch(setCurrentEditText(newText));
             } else {
               // Save changes
-              if (mode === 'insert') {
-                dispatch(insertFragment({ 
-                  index: selectedIndex, 
-                  text: currentEditText 
-                }));
-              }
               dispatch(saveEdit());
             }
             e.preventDefault();
