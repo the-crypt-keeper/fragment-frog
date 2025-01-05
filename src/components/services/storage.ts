@@ -1,26 +1,6 @@
 import { RootState } from '../../store/index';
 
 export const StorageService = {
-  saveState: (state: RootState): void => {
-    try {
-      const serializedState = JSON.stringify(state);
-      localStorage.setItem('fragmentFrogState', serializedState);
-    } catch (err) {
-      console.error('Could not save state:', err);
-    }
-  },
-
-  loadState: (): RootState | undefined => {
-    try {
-      const serializedState = localStorage.getItem('fragmentFrogState');
-      if (!serializedState) return undefined;
-      return JSON.parse(serializedState);
-    } catch (err) {
-      console.error('Could not load state:', err);
-      return undefined;
-    }
-  },
-
   exportToFile: (state: RootState): void => {
     const blob = new Blob([JSON.stringify(state, null, 2)], { 
       type: 'application/json' 
@@ -38,9 +18,15 @@ export const StorageService = {
   importFromFile: async (file: File): Promise<RootState | undefined> => {
     try {
       const text = await file.text();
-      return JSON.parse(text);
+      const state = JSON.parse(text);
+      // Basic validation that this is a valid state file
+      if (state?.editor?.fragments !== undefined) {
+        return state as RootState;
+      }
+      throw new Error('Invalid state file');
     } catch (err) {
       console.error('Could not import file:', err);
+      alert('Error loading file: ' + (err instanceof Error ? err.message : 'Unknown error'));
       return undefined;
     }
   }

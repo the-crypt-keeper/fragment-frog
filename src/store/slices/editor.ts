@@ -1,6 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { Fragment, EditorMode, EditorState } from '../../types/editor';
+import { RootState } from '../index';
+
+// Define the type for our load state action
+interface LoadStateAction {
+    type: 'LOAD_STATE';
+    payload: RootState;
+}
 
 const initialState: EditorState = {
   fragments: [],
@@ -66,6 +73,16 @@ const editorSlice = createSlice({
       state.mode = 'explore';
       state.currentEditText = '';
     },
+    loadState: (state, action: PayloadAction<EditorState>) => {
+        // Replace entire state with loaded state
+        return action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    // Handle the LOAD_STATE action
+    builder.addCase('LOAD_STATE', (state, action: LoadStateAction) => {
+        return action.payload.editor;
+    });
   },
 });
 
@@ -78,7 +95,8 @@ export const {
   saveEdit,
   cancelEdit,
   clearEditor,
-  startInsert
+  startInsert,
+  loadState
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
