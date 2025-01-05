@@ -197,7 +197,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               <div className="model-controls-row">
                 <select
                   className="tokenizer-select"
-                  value={model.tokenizer || 'chat'}
+                  value={
+                    !model.tokenizer ? 'chat' :
+                    model.tokenizer.includes('### Instruction:') ? 'alpaca' :
+                    model.tokenizer.includes('SYSTEM:') ? 'vicuna' : 'chat'
+                  }
                   onChange={e => {
                     const newModels = [...localModels];
                     const value = e.target.value;
