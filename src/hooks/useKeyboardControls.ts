@@ -120,15 +120,18 @@ export const useKeyboardControls = () => {
             const suggestionIndex = parseInt(e.key) - 1;
             if (suggestionIndex < totalSlots && suggestions[suggestionIndex]) {
               e.preventDefault();
+              // First insert the suggestion and mark it as inserted
               dispatch(markSuggestionInserted(suggestionIndex));
               dispatch(insertSuggestion({
                 index: suggestionIndex,
                 text: suggestions[suggestionIndex] || ''
               }));
               
-              // Generate new suggestions unless Ctrl is held
+              // Generate new suggestions after a short delay unless Ctrl is held
               if (!e.ctrlKey) {
-                generateSuggestions();
+                setTimeout(() => {
+                  generateSuggestions();
+                }, 50); // Small delay to ensure state updates complete
               }
             }
             break;
