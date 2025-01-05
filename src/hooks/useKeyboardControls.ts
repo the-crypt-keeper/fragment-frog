@@ -67,7 +67,11 @@ export const useKeyboardControls = () => {
             break;
 
           case 'i':
-            dispatch(startInsert(selectedIndex + 1));
+            if (selectedIndex === fragments.length) {
+                dispatch(startInsert(selectedIndex));
+            } else {
+                dispatch(startInsert(selectedIndex + 1));
+            }
             e.preventDefault();
             break;
         }
