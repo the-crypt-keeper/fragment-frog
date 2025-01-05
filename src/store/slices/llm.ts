@@ -40,7 +40,10 @@ const llmSlice = createSlice({
     setSuggestion: (state, action: PayloadAction<{index: number, text: string | null}>) => {
       const { index, text } = action.payload;
       if (index < state.suggestions.length) {
-        state.suggestions[index] = text;
+        // Append new text to existing suggestion, or set if first update
+        state.suggestions[index] = state.suggestions[index] 
+          ? state.suggestions[index] + text
+          : text;
       }
     },
 
