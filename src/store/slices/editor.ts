@@ -1,13 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { Fragment, EditorMode, EditorState } from '../../types/editor';
-import { RootState } from '../index';
-
-// Define the type for our load state action
-interface LoadStateAction {
-    type: 'LOAD_STATE';
-    payload: RootState;
-}
 
 const initialState: EditorState = {
   fragments: [],
