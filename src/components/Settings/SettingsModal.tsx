@@ -11,6 +11,16 @@ interface SettingsModalProps {
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
+  // Prevent keyboard events from bubbling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      const handler = (e: KeyboardEvent) => {
+        e.stopPropagation();
+      };
+      window.addEventListener('keydown', handler, true);
+      return () => window.removeEventListener('keydown', handler, true);
+    }
+  }, [isOpen]);
   const dispatch = useAppDispatch();
   const { systemConfig, models } = useAppSelector(state => state.llm);
 

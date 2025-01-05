@@ -23,7 +23,11 @@ import {
   clearSuggestions 
 } from '../store/slices/llm';
 
-export const useKeyboardControls = () => {
+export interface KeyboardControlsProps {
+  isModalOpen?: boolean;
+}
+
+export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsProps = {}) => {
   const dispatch = useAppDispatch();
   const { 
     fragments, 
@@ -221,8 +225,10 @@ export const useKeyboardControls = () => {
   );
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    if (!isModalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
   }, [handleKeyDown]);
 
   // Watch for pending generation flag
