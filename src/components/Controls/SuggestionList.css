@@ -1,0 +1,31 @@
+.editor-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .suggestion-item {
+    flex: 1 1 calc(25% - 10px);
+    min-width: 200px;
+    padding: 10px;
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  
+  .suggestion-item.primary {
+    background-color: #e6f3ff;
+    border: 1px solid #b3d9ff;
+  }
+  
+  .suggestion-item.secondary {
+    background-color: #fff0e6;
+    border: 1px solid #ffd9b3;
+  }
+  
+  .suggestion-hint {
+    font-weight: bold;
+    margin-right: 5px;
+    padding: 0 4px;
+    border: 1px solid #000;
+  }
