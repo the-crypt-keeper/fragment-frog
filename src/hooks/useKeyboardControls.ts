@@ -28,7 +28,8 @@ export const useKeyboardControls = () => {
     fragments, 
     selectedIndex, 
     mode,
-    currentEditText
+    currentEditText,
+    generationPending
   } = useAppSelector(state => state.editor);
   const { 
     systemConfig, 
@@ -129,9 +130,9 @@ export const useKeyboardControls = () => {
                 text: suggestions[suggestionIndex] || ''
               }));
               
-              // Generate new suggestions immediately unless Ctrl is held
+              // Queue generation unless Ctrl is held
               if (!e.ctrlKey) {
-                generateSuggestions();
+                dispatch(setGenerationPending(true));
               }
             }
             break;
@@ -222,4 +223,12 @@ export const useKeyboardControls = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
+
+  // Watch for pending generation flag
+  useEffect(() => {
+    if (mode === 'explore' && generationPending) {
+      generateSuggestions();
+      dispatch(setGenerationPending(false));
+    }
+  }, [dispatch, generateSuggestions, mode, generationPending]);
 };
