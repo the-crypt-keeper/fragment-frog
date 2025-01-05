@@ -51,7 +51,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 stopAtPeriod: true,
                 numCompletions: 4,
                 color: '#0000FF',
-                gridOffset: 3
+                gridOffset: 4
               }
             ];
             setLocalModels(initialModels);
