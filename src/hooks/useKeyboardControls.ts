@@ -129,11 +129,9 @@ export const useKeyboardControls = () => {
                 text: suggestions[suggestionIndex] || ''
               }));
               
-              // Generate new suggestions after a short delay unless Ctrl is held
+              // Generate new suggestions immediately unless Ctrl is held
               if (!e.ctrlKey) {
-                setTimeout(() => {
-                  generateSuggestions();
-                }, 50); // Small delay to ensure state updates complete
+                generateSuggestions();
               }
             }
             break;
