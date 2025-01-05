@@ -46,6 +46,8 @@ export const useKeyboardControls = () => {
       .slice(0, selectedIndex + 1)
       .map(f => f.text)
       .join('');
+      
+    console.log('Generating completions with prompt:', context);
 
     // Set all models to waiting
     models.forEach(model => {
