@@ -10,4 +10,5 @@ export interface EditorState {
   selectedIndex: number;
   mode: EditorMode;
   currentEditText: string;
+  insertedSuggestions: number[];
 }

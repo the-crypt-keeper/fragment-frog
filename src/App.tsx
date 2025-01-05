@@ -1,14 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { ControlBar } from './components/Controls/ControlBar';
 import { FragmentList } from './components/Editor/FragmentList/FragmentList';
 import { SuggestionList } from './components/Controls/SuggestionList';
+import { SettingsModal } from './components/Settings/SettingsModal';
 import { useKeyboardControls } from './hooks/useKeyboardControls';
 import './styles/layout.css';
 
 const AppContent: React.FC = () => {
   const appRef = useRef<HTMLDivElement>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   useKeyboardControls();
 
   // Ensure app container maintains focus for keyboard controls
@@ -20,7 +22,7 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="app" ref={appRef} tabIndex={0}>
-      <ControlBar />
+      <ControlBar onSettingsClick={() => setIsSettingsOpen(true)} />
       <div className="main-content">
         <div className="fragment-container">
           <FragmentList />
@@ -41,6 +43,10 @@ const AppContent: React.FC = () => {
         </div>
       </div>
       <SuggestionList />
+      <SettingsModal 
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
     </div>
   );
 };

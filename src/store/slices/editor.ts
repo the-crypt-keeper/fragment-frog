@@ -7,12 +7,37 @@ const initialState: EditorState = {
   selectedIndex: 0,
   mode: 'explore',
   currentEditText: '',
+  insertedSuggestions: []
 };
 
 const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
+    markSuggestionInserted: (state, action: PayloadAction<number>) => {
+      if (!state.insertedSuggestions.includes(action.payload)) {
+        state.insertedSuggestions.push(action.payload);
+      }
+    },    
+    clearInsertedSuggestions: (state) => {
+      state.insertedSuggestions = [];
+    },
+    insertSuggestion: (state, action: PayloadAction<{index: number, text: string}>) => {
+      const { index, text } = action.payload;
+      const insertIndex = state.selectedIndex + 1;
+      
+      // Create new fragment with the suggestion
+      const newFragment: Fragment = {
+        id: uuidv4(),
+        text: text
+      };
+      
+      // Insert the new fragment after the current selection
+      state.fragments.splice(insertIndex, 0, newFragment);
+      
+      // Update selection to the new fragment
+      state.selectedIndex = insertIndex;
+    },    
     startInsert: (state, action: PayloadAction<number>) => {
         // Create new empty fragment at the specified index
         const newFragment: Fragment = {
@@ -65,6 +90,7 @@ const editorSlice = createSlice({
       state.selectedIndex = 0;
       state.mode = 'explore';
       state.currentEditText = '';
+      state.insertedSuggestions = [];
     },
     loadState: (state, action: PayloadAction<EditorState>) => {
         // Replace entire state with loaded state
@@ -83,7 +109,10 @@ export const {
   cancelEdit,
   clearEditor,
   startInsert,
-  loadState
+  loadState,
+  insertSuggestion,
+  markSuggestionInserted,
+  clearInsertedSuggestions
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

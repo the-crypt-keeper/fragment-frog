@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './redux';
+
+import { LLMService } from '../services/llm';
 import {
   setSelectedIndex,
   moveFragment,
@@ -9,18 +11,128 @@ import {
   startInsert,
   saveEdit,
   cancelEdit,
+  insertSuggestion,
+  markSuggestionInserted,
+  clearInsertedSuggestions
 } from '../store/slices/editor';
+import { 
+  setModelStatus, 
+  setModelError, 
+  setSuggestion,
+  clearSuggestions 
+} from '../store/slices/llm';
 
 export const useKeyboardControls = () => {
   const dispatch = useAppDispatch();
-  const { fragments, selectedIndex, mode, currentEditText } = useAppSelector(
-    (state) => state.editor
-  );
+  const { 
+    fragments, 
+    selectedIndex, 
+    mode,
+    currentEditText
+  } = useAppSelector(state => state.editor);
+  const { 
+    systemConfig, 
+    models, 
+    suggestions 
+  } = useAppSelector(state => state.llm);
+
+  const generateSuggestions = useCallback(async () => {
+    // Clear previous suggestions
+    dispatch(clearSuggestions());
+    dispatch(clearInsertedSuggestions());
+
+    // Get context from current fragments
+    const context = fragments
+      .slice(0, selectedIndex + 1)
+      .map(f => f.text)
+      .join('');
+
+    // Set all models to waiting
+    models.forEach(model => {
+      dispatch(setModelStatus({ modelId: model.id, status: 'WAITING' }));
+    });
+
+    const abortController = new AbortController();
+
+    try {
+      const generator = LLMService.generateCompletions(
+        models,
+        context,
+        systemConfig.systemPrompt,
+        abortController.signal
+      );
+
+      for await (const update of generator) {
+        if (update.error) {
+          dispatch(setModelError({ 
+            modelId: update.modelId, 
+            error: update.error 
+          }));
+        } else {
+          dispatch(setSuggestion({ 
+            index: update.slotIndex, 
+            text: update.text 
+          }));
+          if (update.isComplete) {
+            dispatch(setModelStatus({ 
+              modelId: update.modelId, 
+              status: 'IDLE' 
+            }));
+          } else {
+            dispatch(setModelStatus({ 
+              modelId: update.modelId, 
+              status: 'RUNNING' 
+            }));
+          }
+        }
+      }
+    } catch (error) {
+      models.forEach(model => {
+        dispatch(setModelError({ 
+          modelId: model.id, 
+          error: error instanceof Error ? error.message : 'Unknown error' 
+        }));
+      });
+    }
+  }, [dispatch, fragments, selectedIndex, models, systemConfig]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (mode === 'explore') {
+        const totalSlots = systemConfig.gridRows * systemConfig.gridColumns;
+
         switch (e.key) {
+          case 'Tab':
+            e.preventDefault();
+            generateSuggestions();
+            break;
+  
+          case '1':
+          case '2':
+          case '3':
+          case '4':
+          case '5':
+          case '6':
+          case '7':
+          case '8':
+          case '9': {
+            const suggestionIndex = parseInt(e.key) - 1;
+            if (suggestionIndex < totalSlots && suggestions[suggestionIndex]) {
+              e.preventDefault();
+              dispatch(markSuggestionInserted(suggestionIndex));
+              dispatch(insertSuggestion({
+                index: suggestionIndex,
+                text: suggestions[suggestionIndex] || ''
+              }));
+              
+              // Generate new suggestions unless Ctrl is held
+              if (!e.ctrlKey) {
+                generateSuggestions();
+              }
+            }
+            break;
+          }
+
           case 'ArrowLeft':
             if (e.ctrlKey) {
               if (selectedIndex > 0) {

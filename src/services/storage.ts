@@ -1,4 +1,4 @@
-import { RootState } from '../../store/index';
+import { RootState } from '../store/index';
 
 export const StorageService = {
   exportToFile: (state: RootState): void => {

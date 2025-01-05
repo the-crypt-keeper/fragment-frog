@@ -1,11 +1,16 @@
 import React, { useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { clearEditor, loadState } from '../../store/slices/editor';
-import { StorageService } from '../services/storage';
+import { StorageService } from '../../services/storage';
 import { RootState } from '../../store';
 import './ControlBar.css';
 
-export const ControlBar: React.FC = () => {
+interface ControlBarProps {
+  onSettingsClick: () => void;
+}
+
+export const ControlBar: React.FC<ControlBarProps> = ({ onSettingsClick }) => {
+ 
   const dispatch = useAppDispatch();
   const state = useAppSelector((state: RootState) => state);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -50,7 +55,7 @@ export const ControlBar: React.FC = () => {
       />
       <button className="control-button" onClick={handleSave}>Save</button>
       <button className="control-button" onClick={handleClear}>Clear</button>
-      <button className="control-button">Settings</button>
+      <button className="control-button" onClick={onSettingsClick}>Settings</button>
     </div>
   );
 };
