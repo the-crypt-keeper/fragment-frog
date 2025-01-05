@@ -62,18 +62,44 @@
     margin-bottom: 10px;
 }
 
-.model-config-item select,
-.model-config-item input[type="text"] {
-    width: 100%;
-    margin-bottom: 10px;
+.model-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.tokenizer-select {
+    width: 150px;
     padding: 5px;
 }
 
-.model-config-item label {
+.temperature-control {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 8px;
+}
+
+.temperature-control input[type="range"] {
+    width: 100px;
+}
+
+.stop-period-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.completions-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.completions-control input {
+    width: 60px;
+    padding: 3px;
 }
 
 .modal-buttons {

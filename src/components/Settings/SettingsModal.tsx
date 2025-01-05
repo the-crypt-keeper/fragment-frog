@@ -194,70 +194,72 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               
               {renderModelSelect(model, index)}
 
-              <select
-                value={model.tokenizer || 'chat'}
-                onChange={e => {
-                  const newModels = [...localModels];
-                  const value = e.target.value;
-                  let template = null;
-                  if (value === 'alpaca') {
-                    template = '### Instruction:\n{system}\n\n### Input:\n{prompt}\n\n### Response:';
-                  } else if (value === 'vicuna') {
-                    template = 'SYSTEM: {system}\n\nUSER: {prompt}\n\nA:';
-                  }
-                  newModels[index] = { ...model, tokenizer: template };
-                  setLocalModels(newModels);
-                }}
-              >
-                <option value="chat">Chat</option>
-                <option value="alpaca">Text (Alpaca)</option>
-                <option value="vicuna">Text (Vicuna)</option>
-              </select>
-
-              <label>
-                Temperature:
-                <input
-                  type="range"
-                  min="0"
-                  max="2"
-                  step="0.1"
-                  value={model.temperature}
+              <div className="model-controls-row">
+                <select
+                  className="tokenizer-select"
+                  value={model.tokenizer || 'chat'}
                   onChange={e => {
                     const newModels = [...localModels];
-                    newModels[index] = { ...model, temperature: parseFloat(e.target.value) };
+                    const value = e.target.value;
+                    let template = null;
+                    if (value === 'alpaca') {
+                      template = '### Instruction:\n{system}\n\n### Input:\n{prompt}\n\n### Response:';
+                    } else if (value === 'vicuna') {
+                      template = 'SYSTEM: {system}\n\nUSER: {prompt}\n\nA:';
+                    }
+                    newModels[index] = { ...model, tokenizer: template };
                     setLocalModels(newModels);
                   }}
-                />
-                <span>{model.temperature.toFixed(1)}</span>
-              </label>
+                >
+                  <option value="chat">Chat</option>
+                  <option value="alpaca">Text (Alpaca)</option>
+                  <option value="vicuna">Text (Vicuna)</option>
+                </select>
 
-              <label>
-                <input
-                  type="checkbox"
-                  checked={model.stopAtPeriod}
-                  onChange={e => {
-                    const newModels = [...localModels];
-                    newModels[index] = { ...model, stopAtPeriod: e.target.checked };
-                    setLocalModels(newModels);
-                  }}
-                />
-                Stop at period
-              </label>
+                <div className="temperature-control">
+                  <span>Temp: {model.temperature.toFixed(1)}</span>
+                  <input
+                    type="range"
+                    min="0"
+                    max="2"
+                    step="0.1"
+                    value={model.temperature}
+                    onChange={e => {
+                      const newModels = [...localModels];
+                      newModels[index] = { ...model, temperature: parseFloat(e.target.value) };
+                      setLocalModels(newModels);
+                    }}
+                  />
+                </div>
 
-              <label>
-                Completions:
-                <input
-                  type="number"
-                  min="1"
-                  max={localConfig.gridRows * localConfig.gridColumns}
-                  value={model.numCompletions}
-                  onChange={e => {
-                    const newModels = [...localModels];
-                    newModels[index] = { ...model, numCompletions: parseInt(e.target.value) || 1 };
-                    setLocalModels(newModels);
-                  }}
-                />
-              </label>
+                <label className="stop-period-control">
+                  <input
+                    type="checkbox"
+                    checked={model.stopAtPeriod}
+                    onChange={e => {
+                      const newModels = [...localModels];
+                      newModels[index] = { ...model, stopAtPeriod: e.target.checked };
+                      setLocalModels(newModels);
+                    }}
+                  />
+                  Stop at period
+                </label>
+
+                <div className="completions-control">
+                  <span>Completions:</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max={localConfig.gridRows * localConfig.gridColumns}
+                    value={model.numCompletions}
+                    onChange={e => {
+                      const newModels = [...localModels];
+                      newModels[index] = { ...model, numCompletions: parseInt(e.target.value) || 1 };
+                      setLocalModels(newModels);
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           ))}
         </section>
