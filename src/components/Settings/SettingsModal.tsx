@@ -63,7 +63,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           setIsLoading(false);
         });
     }
-  }, [isOpen]);
+  }, [isOpen, localModels]);
 
   // Reset local state when modal opens
   useEffect(() => {

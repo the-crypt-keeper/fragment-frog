@@ -95,6 +95,7 @@ const editorSlice = createSlice({
       state.mode = 'explore';
       state.currentEditText = '';
       state.insertedSuggestions = [];
+      state.generationPending = false;
     },
     loadState: (state, action: PayloadAction<EditorState>) => {
         // Replace entire state with loaded state

@@ -25,6 +25,7 @@ describe('editor reducer', () => {
     mode: 'explore',
     currentEditText: '',
     insertedSuggestions: [],
+    generationPending: false
   };
 
   it('should handle initial state', () => {
