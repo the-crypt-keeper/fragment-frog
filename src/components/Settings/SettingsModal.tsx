@@ -38,8 +38,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 model: models[0].id,
                 tokenizer: null,
                 temperature: 0.7,
-                stopAtPeriod: false,
-                numCompletions: 3,
+                stopAtPeriod: true,
+                numCompletions: 4,
                 color: '#FF0000',
                 gridOffset: 0
               },
@@ -48,8 +48,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 model: models[1].id,
                 tokenizer: null,
                 temperature: 0.7,
-                stopAtPeriod: false,
-                numCompletions: 3,
+                stopAtPeriod: true,
+                numCompletions: 4,
                 color: '#0000FF',
                 gridOffset: 3
               }
@@ -194,16 +194,25 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               
               {renderModelSelect(model, index)}
 
-              <input
-                type="text"
-                placeholder="Tokenizer (optional)"
-                value={model.tokenizer || ''}
+              <select
+                value={model.tokenizer || 'chat'}
                 onChange={e => {
                   const newModels = [...localModels];
-                  newModels[index] = { ...model, tokenizer: e.target.value || null };
+                  const value = e.target.value;
+                  let template = null;
+                  if (value === 'alpaca') {
+                    template = '### Instruction:\n{system}\n\n### Input:\n{prompt}\n\n### Response:';
+                  } else if (value === 'vicuna') {
+                    template = 'SYSTEM: {system}\n\nUSER: {prompt}\n\nA:';
+                  }
+                  newModels[index] = { ...model, tokenizer: template };
                   setLocalModels(newModels);
                 }}
-              />
+              >
+                <option value="chat">Chat</option>
+                <option value="alpaca">Text (Alpaca)</option>
+                <option value="vicuna">Text (Vicuna)</option>
+              </select>
 
               <label>
                 Temperature:
