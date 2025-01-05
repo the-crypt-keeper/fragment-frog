@@ -63,29 +63,23 @@ export const useKeyboardControls = () => {
       );
 
       for await (const update of generator) {
-        console.log('Received update:', update);
-        
         if (update.error) {
-          console.error('Model error:', update.modelId, update.error);
           dispatch(setModelError({ 
             modelId: update.modelId, 
             error: update.error 
           }));
         } else {
-          console.log('Setting suggestion:', update.slotIndex, update.text);
           dispatch(setSuggestion({ 
             index: update.slotIndex, 
             text: update.text 
           }));
           
           if (update.isComplete) {
-            console.log('Model complete:', update.modelId);
             dispatch(setModelStatus({ 
               modelId: update.modelId, 
               status: 'IDLE' 
             }));
           } else {
-            console.log('Model running:', update.modelId);
             dispatch(setModelStatus({ 
               modelId: update.modelId, 
               status: 'RUNNING' 
