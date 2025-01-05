@@ -84,7 +84,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
         <option>Loading models...</option>
       ) : error ? (
         <option>Error loading models</option>
-      ) : (
+      ) : (        
         availableModels.map(m => (
           <option key={m.id} value={m.id}>{m.id}</option>
         ))
