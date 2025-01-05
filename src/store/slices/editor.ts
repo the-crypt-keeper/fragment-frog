@@ -77,13 +77,7 @@ const editorSlice = createSlice({
         // Replace entire state with loaded state
         return action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    // Handle the LOAD_STATE action
-    builder.addCase('LOAD_STATE', (state, action: LoadStateAction) => {
-        return action.payload.editor;
-    });
-  },
+  }
 });
 
 export const {

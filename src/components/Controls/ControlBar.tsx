@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { clearEditor } from '../../store/slices/editor';
+import { clearEditor, loadState } from '../../store/slices/editor';
 import { StorageService } from '../services/storage';
 import { RootState } from '../../store';
 import './ControlBar.css';
@@ -29,11 +29,10 @@ export const ControlBar: React.FC = () => {
     if (file) {
       const loadedState = await StorageService.importFromFile(file);
       if (loadedState) {
-        // We need to dispatch all the loaded state
-        dispatch({ type: 'LOAD_STATE', payload: loadedState });
+        dispatch(loadState(loadedState.editor));
       }
     }
-    // Reset the input so the same file can be loaded again
+    // Reset the input
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
