@@ -39,12 +39,22 @@ export class LLMService {
                     text = choice.delta.content;
                   }
                   
-                  yield {
-                    modelId,
-                    slotIndex,
-                    text: text || '',
-                    isComplete: (choice.finish_reason !== null)
-                  };
+                  if (choice.finish_reason === 'stop') {
+                    let stop_text = choice.stop_reason ?? '.'; // TODO: Not all backends return this
+                    yield {
+                      modelId,
+                      slotIndex,
+                      text: stop_text,
+                      isComplete: true
+                    };    
+                  } else {
+                    yield {
+                      modelId,
+                      slotIndex,
+                      text: text || '',
+                      isComplete: (choice.finish_reason !== null)
+                    };
+                  }
                 }
               }
             } catch (e) {
