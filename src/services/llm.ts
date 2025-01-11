@@ -43,7 +43,7 @@ export class LLMService {
                     modelId,
                     slotIndex,
                     text: text || '',
-                    isComplete: choice.finish_reason === 'stop'
+                    isComplete: (choice.finish_reason !== null)
                   };
                 }
               }
