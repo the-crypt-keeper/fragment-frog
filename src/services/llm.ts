@@ -130,19 +130,19 @@ export class LLMService {
     }
 
     // Process all streams concurrently using an async generator
-    const pending = new Set(generators);
-    
-    while (pending.size > 0) {
-      const nextPromises = Array.from(pending).map(g => 
-        g.next().then(result => ({ generator: g, result }))
-      );
+    const generatorPromises = new Map(
+      generators.map(g => [g, g.next().then(result => ({ generator: g, result }))])
+    );
 
-      const updates = await Promise.race(nextPromises);
-      
-      if (updates.result.done) {
-        pending.delete(updates.generator);
+    while (generatorPromises.size > 0) {
+      const winner = await Promise.race(generatorPromises.values());
+      const generator = winner.generator;
+
+      if (winner.result.done) {
+        generatorPromises.delete(generator);
       } else {
-        yield updates.result.value;
+        yield winner.result.value;
+        generatorPromises.set(generator, generator.next().then(result => ({ generator, result })));
       }
     }
   }
