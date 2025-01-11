@@ -21,7 +21,7 @@ export const Fragment: React.FC<FragmentProps> = ({
   // Function to process text for display
   const processText = (text: string) => {
     if (!text) return '<empty>';
-    if (text.startsWith('\n')) return `↵ ${text}`;
+    if (text.startsWith('\n')) return text.replaceAll('\n','↵ \n');
     return text;
   };
 
