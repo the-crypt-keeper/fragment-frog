@@ -45,7 +45,7 @@ export const ControlBar: React.FC<ControlBarProps> = ({ onSettingsClick }) => {
 
   return (
     <div className="control-bar">
-      <button className="control-button" onClick={handleLoad}>Load</button>
+      <button className="control-button" onClick={handleLoad}>⬆️ Load</button>
       <input
         type="file"
         ref={fileInputRef}
@@ -53,9 +53,9 @@ export const ControlBar: React.FC<ControlBarProps> = ({ onSettingsClick }) => {
         onChange={handleFileSelect}
         accept=".json"
       />
-      <button className="control-button" onClick={handleSave}>Save</button>
-      <button className="control-button" onClick={handleClear}>Clear</button>
-      <button className="control-button" onClick={onSettingsClick}>Settings</button>
+      <button className="control-button" onClick={handleSave}>⬇️ Save</button>
+      <button className="control-button" onClick={handleClear}>💣 Clear</button>
+      <button className="control-button" onClick={onSettingsClick}>⚙️ Settings</button>
     </div>
   );
 };
