@@ -129,19 +129,22 @@ export class LLMService {
       }
     }
 
-    // Process all streams concurrently
-    const promises = generators.map(async (generator) => {
-      try {
-        for await (const update of generator) {
-          yield update;
-        }
-      } catch (error) {
-        console.error('Stream processing error:', error);
-      }
-    });
+    // Process all streams concurrently using an async generator
+    const pending = new Set(generators);
+    
+    while (pending.size > 0) {
+      const nextPromises = Array.from(pending).map(g => 
+        g.next().then(result => ({ generator: g, result }))
+      );
 
-    // Wait for all streams to complete
-    await Promise.all(promises);
+      const updates = await Promise.race(nextPromises);
+      
+      if (updates.result.done) {
+        pending.delete(updates.generator);
+      } else {
+        yield updates.result.value;
+      }
+    }
   }
 
   static async getAvailableModels(): Promise<ModelInfo[]> {
