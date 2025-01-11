@@ -42,7 +42,7 @@ export const SuggestionList: React.FC = () => {
               ) : (
                 suggestions[index] === null ? 
                   (model ? `${model.model} (slot ${index - model.gridOffset + 1})` : 'Unassigned slot') :
-                  suggestions[index] || (status === 'RUNNING' ? '' : '[empty]')
+                  (suggestions[index]?.replace(/\n/g, '↵') || (status === 'RUNNING' ? '' : '[empty]'))
               )}
               {model && (
                 <div 
