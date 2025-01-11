@@ -129,21 +129,19 @@ export class LLMService {
       }
     }
 
-    // Merge all streams
-    while (generators.length > 0) {
-      const results = await Promise.all(
-        generators.map(g => g.next())
-      );
-
-      for (let i = results.length - 1; i >= 0; i--) {
-        const result = results[i];
-        if (result.done) {
-          generators.splice(i, 1);
-        } else {
-          yield result.value;
+    // Process all streams concurrently
+    const promises = generators.map(async (generator) => {
+      try {
+        for await (const update of generator) {
+          yield update;
         }
+      } catch (error) {
+        console.error('Stream processing error:', error);
       }
-    }
+    });
+
+    // Wait for all streams to complete
+    await Promise.all(promises);
   }
 
   static async getAvailableModels(): Promise<ModelInfo[]> {
