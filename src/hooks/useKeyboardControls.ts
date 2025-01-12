@@ -12,15 +12,8 @@ import {
   cancelEdit,
   insertSuggestion,
   markSuggestionInserted,
-  clearInsertedSuggestions,
   setGenerationPending
 } from '../store/slices/editor';
-import { 
-  setModelStatus, 
-  setModelError, 
-  setSuggestion,
-  clearSuggestions 
-} from '../store/slices/llm';
 
 export interface KeyboardControlsProps {
   isModalOpen?: boolean;
@@ -45,12 +38,12 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
 
   const generateSuggestions = useCallback(async () => {
     const context = fragments
-      .slice(0, selectedIndex + 1)
+      .slice(0, selectedIndex)
       .map(f => f.text)
       .join('');
       
     await generateCompletions(models, context, systemConfig.systemPrompt);
-  }, [dispatch, fragments, selectedIndex, models, systemConfig]);
+  }, [fragments, selectedIndex, models, systemConfig, generateCompletions]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
