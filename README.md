@@ -109,6 +109,10 @@ src/
     FragmentList     # Container managing fragments and selection
     SettingsModal    # Configuration UI for models and system settings
     SuggestionList   # Grid display of model completions
+  hooks/             # Custom React hooks
+    redux.ts         # Type-safe Redux hooks
+    useCompletion.ts # LLM completion generation hook
+    useKeyboardControls.ts # Keyboard interaction manager
   services/          # External service integration
     llm.ts           # Language model API communication
     storage.ts       # Document import/export
