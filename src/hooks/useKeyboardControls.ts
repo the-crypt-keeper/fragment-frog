@@ -55,7 +55,8 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
             e.preventDefault();
             dispatch(setGenerationPending(true));
             break;
-  
+
+          case '0':
           case '1':
           case '2':
           case '3':
@@ -65,7 +66,7 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
           case '7':
           case '8':
           case '9': {
-            const suggestionIndex = parseInt(e.key) - 1;
+            const suggestionIndex = (parseInt(e.key) == 0) ? 9 : parseInt(e.key) - 1;
             if (suggestionIndex < totalSlots && suggestions[suggestionIndex]) {
               e.preventDefault();
               // First insert the suggestion and mark it as inserted
