@@ -100,13 +100,13 @@ The project follows a flat component structure with clear separation of concerns
 
 ```
 src/
-  components/           # React components
-    ControlBar         # Document-level operations (save/load/clear/settings)
-    Fragment          # Individual text fragment rendering and editing
-    FragmentList      # Container managing fragments and selection
-    SettingsModal     # Configuration UI for models and system settings
-    SuggestionList    # Grid display of model completions
-  services/           # External service integration
+  components/        # React components
+    ControlBar       # Document-level operations (save/load/clear/settings)
+    Fragment         # Individual text fragment rendering and editing
+    FragmentList     # Container managing fragments and selection
+    SettingsModal    # Configuration UI for models and system settings
+    SuggestionList   # Grid display of model completions
+  services/          # External service integration
     llm.ts           # Language model API communication
     storage.ts       # Document import/export
     localStorage.ts  # Settings persistence
