@@ -96,29 +96,35 @@ The system supports flexible configuration of:
 
 ### Project Structure
 
-[TODO: this is not useful]
+The project follows a flat component structure with clear separation of concerns:
 
 ```
 src/
-  components/
-    Editor/
-      FragmentList/
-      Fragment/
-      Controls/
-    Settings/
-    SuggestionGrid/
-  services/
-    llm.ts
-    storage.ts
-    localStorage.ts
-  store/
+  components/           # React components
+    ControlBar         # Document-level operations (save/load/clear/settings)
+    Fragment          # Individual text fragment rendering and editing
+    FragmentList      # Container managing fragments and selection
+    SettingsModal     # Configuration UI for models and system settings
+    SuggestionList    # Grid display of model completions
+  services/           # External service integration
+    llm.ts           # Language model API communication
+    storage.ts       # Document import/export
+    localStorage.ts  # Settings persistence
+  store/             # Redux state management
     slices/
-      editor.ts
-      llm.ts
-  types/
-    editor.ts
-    llm.ts
+      editor.ts      # Document and editing state
+      llm.ts         # Model configuration and completion state
+  types/             # TypeScript type definitions
+    editor.ts        # Editor-related types
+    llm.ts           # LLM-related types
 ```
+
+Each component has a focused responsibility:
+- **ControlBar**: Provides document-level operations like save/load/clear and settings access
+- **Fragment**: Renders individual text fragments with editing capabilities
+- **FragmentList**: Manages the document structure and fragment selection
+- **SettingsModal**: Complex form for configuring system and model parameters
+- **SuggestionList**: Displays the grid of model completions with status indicators
 
 ### Testing
 The project includes comprehensive tests for:
