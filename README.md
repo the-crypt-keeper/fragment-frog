@@ -120,6 +120,7 @@ src/
 ```
 
 Each component has a focused responsibility:
+- **App**: Root component managing layout and keyboard focus
 - **ControlBar**: Provides document-level operations like save/load/clear and settings access
 - **Fragment**: Renders individual text fragments with editing capabilities
 - **FragmentList**: Manages the document structure and fragment selection
