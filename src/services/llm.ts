@@ -68,6 +68,62 @@ export class LLMService {
     }
   }
 
+  static async* generateCompletion(
+    config: ModelConfig,
+    prompt: string,
+    systemPrompt: string,
+    signal: AbortSignal
+  ): AsyncGenerator<CompletionUpdate> {
+    let payload;
+    if (config.tokenizer) {
+      payload = {
+        model: config.model,
+        prompt: config.tokenizer
+          .replace('{system}', systemPrompt)
+          .replace('{prompt}', prompt),
+        max_tokens: 50,
+        temperature: config.temperature,
+        top_p: 0.9,
+        n: config.numCompletions,
+        stop: config.stopAtPeriod ? ['.'] : undefined,
+        stream: true,
+      };
+    } else {
+      payload = {
+        model: config.model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: prompt }
+        ],
+        max_tokens: 50,
+        temperature: config.temperature,
+        top_p: 0.9,
+        n: config.numCompletions,
+        stop: config.stopAtPeriod ? ['.'] : undefined,
+        stream: true,
+      };
+    }
+
+    const response = await fetch(
+      `${process.env.REACT_APP_OPENAI_API_ENDPOINT}/${config.tokenizer ? 'v1/completions' : 'v1/chat/completions'}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
+        },
+        body: JSON.stringify(payload),
+        signal
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    yield* this.processStream(response, config.id, config.gridOffset);
+  }
+
   static async* generateCompletions(
     configs: ModelConfig[],
     prompt: string,

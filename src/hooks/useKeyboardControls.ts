@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './redux';
-
-import { LLMService } from '../services/llm';
+import { useCompletion } from './useCompletion';
 import {
   setSelectedIndex,
   moveFragment,
@@ -42,70 +41,15 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
     suggestions 
   } = useAppSelector(state => state.llm);
 
-  const generateSuggestions = useCallback(async () => {
-    // Clear previous suggestions
-    dispatch(clearSuggestions());
-    dispatch(clearInsertedSuggestions());
+  const { generateCompletions } = useCompletion();
 
-    // Get context from current fragments
+  const generateSuggestions = useCallback(async () => {
     const context = fragments
       .slice(0, selectedIndex + 1)
       .map(f => f.text)
       .join('');
       
-    console.log('Generating started');
-    console.log(context);
-
-    // Set all models to waiting
-    models.forEach(model => {
-      dispatch(setModelStatus({ modelId: model.id, status: 'WAITING' }));
-    });
-
-    const abortController = new AbortController();
-
-    try {
-      const generator = LLMService.generateCompletions(
-        models,
-        context,
-        systemConfig.systemPrompt,
-        abortController.signal
-      );
-
-      for await (const update of generator) {
-        if (update.error) {
-          dispatch(setModelError({ 
-            modelId: update.modelId, 
-            error: update.error 
-          }));
-        } else {
-          dispatch(setSuggestion({ 
-            index: update.slotIndex, 
-            text: update.text 
-          }));
-          
-          if (update.isComplete) {
-            dispatch(setModelStatus({ 
-              modelId: update.modelId, 
-              status: 'IDLE' 
-            }));
-          } else {
-            dispatch(setModelStatus({ 
-              modelId: update.modelId, 
-              status: 'RUNNING' 
-            }));
-          }
-        }
-      }
-    } catch (error) {
-      models.forEach(model => {
-        dispatch(setModelError({ 
-          modelId: model.id, 
-          error: error instanceof Error ? error.message : 'Unknown error' 
-        }));
-      });
-    }
-
-    console.log('Generating done.')
+    await generateCompletions(models, context, systemConfig.systemPrompt);
   }, [dispatch, fragments, selectedIndex, models, systemConfig]);
 
   const handleKeyDown = useCallback(
