@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { Fragment } from '../Fragment/Fragment';
-import { useAppSelector, useAppDispatch } from '../../../hooks/redux';
-import { setCurrentEditText } from '../../../store/slices/editor';
-import { RootState } from '../../../store';
+import { Fragment } from './Fragment';
+import { useAppSelector, useAppDispatch } from '../hooks/redux';
+import { setCurrentEditText } from '../store/slices/editor';
+import { RootState } from '../store';
 import './FragmentList.css';
 
 export const FragmentList: React.FC = () => {

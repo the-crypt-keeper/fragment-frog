@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { clearEditor, loadState } from '../../store/slices/editor';
-import { StorageService } from '../../services/storage';
-import { RootState } from '../../store';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { clearEditor, loadState } from '../store/slices/editor';
+import { StorageService } from '../services/storage';
+import { RootState } from '../store';
 import './ControlBar.css';
 
 interface ControlBarProps {

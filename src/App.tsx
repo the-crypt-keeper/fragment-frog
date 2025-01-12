@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { ControlBar } from './components/Controls/ControlBar';
-import { FragmentList } from './components/Editor/FragmentList/FragmentList';
-import { SuggestionList } from './components/Controls/SuggestionList';
-import { SettingsModal } from './components/Settings/SettingsModal';
+import { ControlBar } from './components/ControlBar';
+import { FragmentList } from './components/FragmentList';
+import { SuggestionList } from './components/SuggestionList';
+import { SettingsModal } from './components/SettingsModal';
 import { useKeyboardControls } from './hooks/useKeyboardControls';
 import './styles/layout.css';
 

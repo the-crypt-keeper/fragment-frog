@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { SystemConfig, ModelConfig } from '../../types/llm';
-import { updateSystemConfig, updateModelConfigs } from '../../store/slices/llm';
-import { LLMService, ModelInfo } from '../../services/llm';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { SystemConfig, ModelConfig } from '../types/llm';
+import { updateSystemConfig, updateModelConfigs } from '../store/slices/llm';
+import { LLMService, ModelInfo } from '../services/llm';
 import './SettingsModal.css';
 
 interface SettingsModalProps {

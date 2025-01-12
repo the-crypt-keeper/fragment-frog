@@ -143,6 +143,7 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
               index: selectedIndex,
               text: '\n\n---\n\n'
             }));
+            dispatch(setGenerationPending(true));
             e.preventDefault();
             break;
         }

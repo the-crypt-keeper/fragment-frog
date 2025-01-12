@@ -1,4 +1,4 @@
-# 🐸 FragmentFrog
+# 🐸 FragmentFrog2
 
 FragmentFrog is a non-linear AI-enabled text editing environment.
 
@@ -9,7 +9,7 @@ It helps compose stories, documents, emails, or any other text quickly by select
 ![FragmentFrog screenshot of explore mode](doc/fragmentfrog-annotated.png "FragmentFrog screenshot of explore mode")
 
 1. Model Selection - Pick models and configure their parameters in Settings
-2. Control Panel [TODO: restore the icons]
+2. Control Panel
    - ⬇️ - Download (Export)
    - ⬆️ - Upload (Import)
    - 💣 - Reset

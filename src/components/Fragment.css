@@ -32,10 +32,10 @@
 
   .fragment-hr {
     display: block;
-    height: 2px;
+    height: 4px;
     border: 0;
-    border-top: 2px solid #666;
-    margin: 4px auto;
+    border-top: 4px dashed #666;
+    margin: 8px auto;
     padding: 0;
     width: 50%;
   }
