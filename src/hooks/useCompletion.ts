@@ -61,8 +61,8 @@ export const useCompletion = () => {
             }));
           }
         }
-      } catch (error) {
-        if (error.name === 'AbortError') {
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'AbortError') {
           // Ignore abort errors
           return;
         }
