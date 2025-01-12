@@ -100,6 +100,8 @@ The project follows a flat component structure with clear separation of concerns
 
 ```
 src/
+  App.tsx           # Root application component
+  index.tsx         # Application entry point
   components/        # React components
     ControlBar       # Document-level operations (save/load/clear/settings)
     Fragment         # Individual text fragment rendering and editing
