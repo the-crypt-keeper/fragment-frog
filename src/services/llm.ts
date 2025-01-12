@@ -77,6 +77,8 @@ export class LLMService {
     const generators: AsyncGenerator<CompletionUpdate>[] = [];
 
     for (const config of configs) {
+      console.log('generateCompletions() starting', config);
+
       let payload;
       if (config.tokenizer) {
         // Completion mode
@@ -121,14 +123,15 @@ export class LLMService {
             body: JSON.stringify(payload),
             signal
           }
-        );
+        )
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        } 
 
         generators.push(this.processStream(response, config.id, config.gridOffset));
       } catch (error) {
+        console.log('Before err')
         yield {
           modelId: config.id,
           slotIndex: config.gridOffset,
@@ -136,8 +139,11 @@ export class LLMService {
           isComplete: true,
           error: error instanceof Error ? error.message : 'Unknown error'
         };
+        console.log('After err')
       }
     }
+
+    console.log('generateCompletions() resolving');
 
     // Process all streams concurrently using an async generator
     const generatorPromises = new Map(
@@ -155,6 +161,8 @@ export class LLMService {
         generatorPromises.set(generator, generator.next().then(result => ({ generator, result })));
       }
     }
+
+    console.log('generateCompletions() done');
   }
 
   static async getAvailableModels(): Promise<ModelInfo[]> {

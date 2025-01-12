@@ -53,7 +53,8 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
       .map(f => f.text)
       .join('');
       
-    console.log('Generating completions with prompt:', context);
+    console.log('Generating started');
+    console.log(context);
 
     // Set all models to waiting
     models.forEach(model => {
@@ -103,6 +104,8 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
         }));
       });
     }
+
+    console.log('Generating done.')
   }, [dispatch, fragments, selectedIndex, models, systemConfig]);
 
   const handleKeyDown = useCallback(
@@ -113,7 +116,7 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
         switch (e.key) {
           case 'Tab':
             e.preventDefault();
-            generateSuggestions();
+            dispatch(setGenerationPending(true));
             break;
   
           case '1':
@@ -221,7 +224,7 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
         }
       }
     },
-    [dispatch, generateSuggestions, fragments, selectedIndex, mode, currentEditText, suggestions, systemConfig]
+    [dispatch, fragments, selectedIndex, mode, currentEditText, suggestions, systemConfig]
   );
 
   useEffect(() => {
