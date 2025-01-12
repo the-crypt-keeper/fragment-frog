@@ -130,6 +130,24 @@ Each component has a focused responsibility:
 - **SettingsModal**: Complex form for configuring system and model parameters
 - **SuggestionList**: Displays the grid of model completions with status indicators
 
+### Hooks
+The application uses custom hooks to manage complex behaviors:
+
+- **redux.ts**: Type-safe hooks for Redux integration
+  - `useAppDispatch`: Typed dispatch hook for actions
+  - `useAppSelector`: Typed selector hook for state access
+
+- **useCompletion**: Manages LLM completion generation
+  - Handles multiple model requests concurrently
+  - Manages abort controllers for cancellation
+  - Updates model status and suggestions in store
+
+- **useKeyboardControls**: Central keyboard interaction manager
+  - Handles all keyboard shortcuts
+  - Manages mode-specific behaviors (explore/edit/insert)
+  - Controls suggestion insertion and generation
+  - Coordinates fragment manipulation (move/delete/edit)
+
 ### Testing
 The project includes comprehensive tests for:
 - Redux reducers
