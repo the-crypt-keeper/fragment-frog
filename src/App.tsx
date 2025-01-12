@@ -36,6 +36,7 @@ const AppContent: React.FC = () => {
             ctrl+left/right to move<br/>
             d to delete<br/>
             i to insert<br/>
+            b to insert break<br/>
             tab to (re-)suggest<br/>
             ctrl+[1-8] to accept<br/>
             [1-8] to accept and re-suggest

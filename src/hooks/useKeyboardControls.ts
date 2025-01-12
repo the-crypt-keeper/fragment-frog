@@ -137,6 +137,13 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
             }
             e.preventDefault();
             break;
+
+          case 'b':
+            dispatch(startInsert(selectedIndex + 1));
+            dispatch(setCurrentEditText('\n\n---\n\n'));
+            dispatch(saveEdit());
+            e.preventDefault();
+            break;
         }
       } else if (mode === 'edit' || mode === 'insert') {
         switch (e.key) {
