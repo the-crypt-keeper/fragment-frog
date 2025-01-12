@@ -21,7 +21,15 @@ export const Fragment: React.FC<FragmentProps> = ({
   // Function to process text for display
   const processText = (text: string) => {
     if (!text) return '<empty>';
-    return text.replaceAll('\n','↵ \n');
+    
+    // Split on horizontal rule marker and process each part
+    const parts = text.split('\n---\n');
+    return parts.map((part, i) => (
+      <React.Fragment key={i}>
+        {i > 0 && <hr className="fragment-hr" />}
+        {part.replaceAll('\n','↵ \n')}
+      </React.Fragment>
+    ));
   };
 
   if (isEditing) {
