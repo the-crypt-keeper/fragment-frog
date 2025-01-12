@@ -139,9 +139,10 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
             break;
 
           case 'b':
-            dispatch(startInsert(selectedIndex + 1));
-            dispatch(setCurrentEditText('\n\n---\n\n'));
-            dispatch(saveEdit());
+            dispatch(insertSuggestion({
+              index: selectedIndex,
+              text: '\n\n---\n\n'
+            }));
             e.preventDefault();
             break;
         }
