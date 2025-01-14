@@ -17,6 +17,11 @@ export interface SystemConfig {
   
   export type ModelStatus = 'IDLE' | 'WAITING' | 'RUNNING' | 'ERROR';
   
+  export interface Suggestion {
+    text: string | null;
+    inserted: boolean;
+  }
+
   export interface CompletionUpdate {
     modelId: string;
     slotIndex: number;
