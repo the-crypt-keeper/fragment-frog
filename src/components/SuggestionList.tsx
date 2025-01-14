@@ -4,7 +4,6 @@ import './SuggestionList.css';
 
 export const SuggestionList: React.FC = () => {
   const { systemConfig, models, suggestions, modelStatuses, errors } = useAppSelector(state => state.llm);
-  const insertedSuggestions = useAppSelector(state => state.editor.insertedSuggestions);
 
   // Create grid template based on configuration
   const gridStyle = {
@@ -31,7 +30,7 @@ export const SuggestionList: React.FC = () => {
           return (
             <div
               key={index}
-              className={`suggestion-item ${insertedSuggestions.includes(index) ? 'fade-out' : ''}`}
+              className={`suggestion-item ${suggestions[index]?.inserted ? 'fade-out' : ''}`}
               style={{ backgroundColor: model ? `${model.color}20` : '#f0f0f0' }}
             >
               <span className="suggestion-hint">{index + 1}</span>
@@ -40,9 +39,9 @@ export const SuggestionList: React.FC = () => {
               ) : status === 'WAITING' ? (
                 <span className="loading">Waiting...</span>
               ) : (
-                suggestions[index] === null ? 
+                !suggestions[index]?.text ? 
                   (model ? `${model.model} (slot ${index - model.gridOffset + 1})` : 'Unassigned slot') :
-                  (suggestions[index]?.replace(/\n/g, '↵') || (status === 'RUNNING' ? '' : '[empty]'))
+                  (suggestions[index].text?.replace(/\n/g, '↵') || (status === 'RUNNING' ? '' : '[empty]'))
               )}
               {model && (
                 <div 
