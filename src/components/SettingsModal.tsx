@@ -115,7 +115,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
       value={model.model}
       onChange={e => {
         const newModels = [...localModels];
-        newModels[index] = { ...model, model: e.target.value };
+        newModels[index] = { 
+          ...model, 
+          model: e.target.value,
+          id: e.target.value 
+        };
         setLocalModels(newModels);
       }}
       disabled={isLoading}
