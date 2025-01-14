@@ -5,8 +5,7 @@ import { RootState } from '../store';
 
 export const SidePanel: React.FC = () => {
   const fragments = useAppSelector((state: RootState) => state.editor.fragments);
-  const models = useAppSelector((state: RootState) => state.llm.models);
-
+  
   const modelCounts = React.useMemo(() => {
     const counts: Record<string, number> = {};
     fragments.forEach(fragment => {
@@ -36,17 +35,17 @@ export const SidePanel: React.FC = () => {
       
       <h3>Model Usage</h3>
       <div className="histogram">
-        {models.map(model => (
-          <div key={model.id} className="histogram-bar">
-            <div className="bar-label">{model.id}</div>
+        {Object.entries(modelCounts).map(([modelId, count]) => (
+          <div key={modelId} className="histogram-bar">
+            <div className="bar-label">{modelId}</div>
             <div 
               className="bar" 
               style={{
-                width: `${((modelCounts[model.id] || 0) / maxCount) * 100}%`,
-                backgroundColor: model.color
+                width: `${(count / maxCount) * 100}%`,
+                backgroundColor: 'var(--accent)'
               }}
             >
-              <span className="bar-value">{modelCounts[model.id] || 0}</span>
+              <span className="bar-value">{count}</span>
             </div>
           </div>
         ))}
