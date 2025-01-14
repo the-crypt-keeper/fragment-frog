@@ -44,7 +44,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           if (localModels.length === 0 && models.length >= 2) {
             const initialModels: ModelConfig[] = [
               {
-                id: 'model1',
+                id: models[0].id,
                 model: models[0].id,
                 tokenizer: null,
                 temperature: 0.7,
@@ -54,7 +54,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 gridOffset: 0
               },
               {
-                id: 'model2',
+                id: models[1].id,
                 model: models[1].id,
                 tokenizer: null,
                 temperature: 0.7,
@@ -195,15 +195,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             <div key={model.id} className="model-config-item">
               <div className="model-header">
                 <h4>Model {index + 1}</h4>
-                <input
-                  type="color"
-                  value={model.color}
-                  onChange={e => {
-                    const newModels = [...localModels];
-                    newModels[index] = { ...model, color: e.target.value };
-                    setLocalModels(newModels);
-                  }}
-                />
+                <div className="model-header-controls">
+                  <input
+                    type="text"
+                    value={model.id}
+                    onChange={e => {
+                      const newModels = [...localModels];
+                      newModels[index] = { ...model, id: e.target.value };
+                      setLocalModels(newModels);
+                    }}
+                    placeholder="Model ID"
+                    className="model-id-input"
+                  />
+                  <input
+                    type="color"
+                    value={model.color}
+                    onChange={e => {
+                      const newModels = [...localModels];
+                      newModels[index] = { ...model, color: e.target.value };
+                      setLocalModels(newModels);
+                    }}
+                  />
+                </div>
               </div>
               
               {renderModelSelect(model, index)}
