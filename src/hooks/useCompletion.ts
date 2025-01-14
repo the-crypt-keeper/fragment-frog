@@ -50,7 +50,8 @@ export const useCompletion = () => {
           } else {
             dispatch(setSuggestion({ 
               index: update.slotIndex, 
-              text: update.text 
+              text: update.text,
+              modelId: update.modelId
             }));
             
             dispatch(setModelStatus({ 

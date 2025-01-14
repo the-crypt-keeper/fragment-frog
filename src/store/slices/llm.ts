@@ -37,13 +37,14 @@ const llmSlice = createSlice({
       state.errors = {};
     },
 
-    setSuggestion: (state, action: PayloadAction<{index: number, text: string | null}>) => {
-      const { index, text } = action.payload;
+    setSuggestion: (state, action: PayloadAction<{index: number, text: string | null, modelId: string}>) => {
+      const { index, text, modelId } = action.payload;
       if (index < state.suggestions.length) {
         const currentSuggestion = state.suggestions[index]?.text ?? '';
         state.suggestions[index] = {
           text: (currentSuggestion) + (text ?? ''),
-          inserted: false
+          inserted: false,
+          modelId
         };
       }
     },
@@ -72,7 +73,7 @@ const llmSlice = createSlice({
     clearSuggestions: (state) => {
       state.suggestions = new Array(state.systemConfig.gridRows * state.systemConfig.gridColumns)
         .fill(null)
-        .map(() => ({ text: null, inserted: false }));
+        .map(() => ({ text: null, inserted: false, modelId: null }));
       state.modelStatuses = {};
       state.errors = {};
     }

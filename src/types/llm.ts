@@ -20,6 +20,7 @@ export interface SystemConfig {
   export interface Suggestion {
     text: string | null;
     inserted: boolean;
+    modelId: string | null;
   }
 
   export interface CompletionUpdate {
