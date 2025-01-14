@@ -36,6 +36,18 @@ export const SidePanel: React.FC = () => {
       
       <h3>Model Usage</h3>
       <div className="histogram">
+        <div className="histogram-bar">
+          <div className="bar-label">Human</div>
+          <div 
+            className="bar" 
+            style={{
+              width: `${((modelCounts['human'] || 0) / maxCount) * 100}%`,
+              backgroundColor: '#000000'
+            }}
+          >
+            <span className="bar-value">{modelCounts['human'] || 0}</span>
+          </div>
+        </div>
         {models.map(model => (
           <div key={model.id} className="histogram-bar">
             <div className="bar-label">{model.model}</div>
