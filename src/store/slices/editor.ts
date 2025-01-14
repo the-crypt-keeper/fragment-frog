@@ -7,7 +7,6 @@ const initialState: EditorState = {
   selectedIndex: 0,
   mode: 'explore',
   currentEditText: '',
-  insertedSuggestions: [],
   generationPending: false
 };
 
@@ -86,7 +85,6 @@ const editorSlice = createSlice({
       state.selectedIndex = 0;
       state.mode = 'explore';
       state.currentEditText = '';
-      state.insertedSuggestions = [];
       state.generationPending = false;
     },
     loadState: (state, action: PayloadAction<EditorState>) => {
