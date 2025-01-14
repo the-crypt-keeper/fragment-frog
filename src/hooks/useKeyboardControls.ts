@@ -11,9 +11,9 @@ import {
   saveEdit,
   cancelEdit,
   insertSuggestion,
-  markSuggestionInserted,
   setGenerationPending
 } from '../store/slices/editor';
+import { markSuggestionInserted } from '../store/slices/llm';
 
 export interface KeyboardControlsProps {
   isModalOpen?: boolean;
@@ -73,7 +73,7 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
               dispatch(markSuggestionInserted(suggestionIndex));
               dispatch(insertSuggestion({
                 index: suggestionIndex,
-                text: suggestions[suggestionIndex] || ''
+                text: suggestions[suggestionIndex]?.text || ''
               }));
               
               // Queue generation unless Ctrl is held

@@ -8,7 +8,6 @@ import {
   setSuggestion,
   clearSuggestions
 } from '../store/slices/llm';
-import { clearInsertedSuggestions } from '../store/slices/editor';
 
 export const useCompletion = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +20,6 @@ export const useCompletion = () => {
   ) => {
     // Clear previous suggestions and abort any ongoing requests
     dispatch(clearSuggestions());
-    dispatch(clearInsertedSuggestions());
     
     Object.values(abortControllersRef.current).forEach(controller => {
       controller.abort();
