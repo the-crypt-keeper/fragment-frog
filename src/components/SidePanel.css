@@ -5,6 +5,8 @@
     border: 1px solid #ccc;
     box-sizing: border-box;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
   }
 
 .clipstack-panel .title {
@@ -25,6 +27,8 @@
 
 .histogram {
   margin-top: 10px;
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
 .histogram-bar {
