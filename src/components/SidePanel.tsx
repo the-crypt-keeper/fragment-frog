@@ -41,11 +41,11 @@ export const SidePanel: React.FC = () => {
           <div 
             className="bar" 
             style={{
-              width: `${((modelCounts['human'] || 0) / maxCount) * 100}%`,
+              width: `${((modelCounts['Human'] || 0) / maxCount) * 100}%`,
               backgroundColor: '#000000'
             }}
           >
-            <span className="bar-value">{modelCounts['human'] || 0}</span>
+            <span className="bar-value">{modelCounts['Human'] || 0}</span>
           </div>
         </div>
         {models.map(model => (
