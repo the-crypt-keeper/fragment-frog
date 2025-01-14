@@ -1,11 +1,11 @@
   
 .clipstack-panel {
-  width: 250px;
-  height: 100%;
-  padding: 20px;
-  background: var(--surface-2);
-  border-left: 1px solid var(--border);
-}
+    width: 20%;
+    height: 100%;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 10px;
+  }
 
 .clipstack-panel .title {
   font-size: 1.5em;
@@ -38,19 +38,16 @@
 
 .histogram-bar .bar {
   height: 20px;
-  min-width: 30px;
+  min-width: 2px;
   border-radius: 3px;
   position: relative;
   transition: width 0.3s ease;
-  background-color: black;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 8px;
-  box-sizing: border-box;
 }
 
 .histogram-bar .bar-value {
+  position: absolute;
+  right: 4px;
   color: white;
   font-size: 0.8em;
+  line-height: 20px;
 }
