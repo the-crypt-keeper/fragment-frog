@@ -20,4 +20,34 @@
 
 .clipstack-panel .help-text {
   line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.histogram {
+  margin-top: 10px;
+}
+
+.histogram-bar {
+  margin: 8px 0;
+}
+
+.histogram-bar .bar-label {
+  font-size: 0.9em;
+  margin-bottom: 2px;
+}
+
+.histogram-bar .bar {
+  height: 20px;
+  min-width: 2px;
+  border-radius: 3px;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+.histogram-bar .bar-value {
+  position: absolute;
+  right: 4px;
+  color: white;
+  font-size: 0.8em;
+  line-height: 20px;
 }
