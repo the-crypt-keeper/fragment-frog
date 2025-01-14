@@ -38,18 +38,19 @@
 
 .histogram-bar .bar {
   height: 20px;
-  min-width: 2px;
+  min-width: 30px;
   border-radius: 3px;
   position: relative;
   transition: width 0.3s ease;
-  background-color: var(--accent);
+  background-color: black;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding-right: 8px;
+  box-sizing: border-box;
 }
 
 .histogram-bar .bar-value {
-  color: var(--text-on-accent);
+  color: white;
   font-size: 0.8em;
 }

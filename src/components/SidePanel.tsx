@@ -41,8 +41,7 @@ export const SidePanel: React.FC = () => {
             <div 
               className="bar" 
               style={{
-                width: `${(count / maxCount) * 100}%`,
-                backgroundColor: 'var(--accent)'
+                width: `${(count / maxCount) * 100}%`
               }}
             >
               <span className="bar-value">{count}</span>
