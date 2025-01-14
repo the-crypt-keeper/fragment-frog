@@ -36,32 +36,24 @@ export const SidePanel: React.FC = () => {
       
       <h3>Model Usage</h3>
       <div className="histogram">
-        <div className="histogram-bar">
-          <div className="bar-label">Human</div>
-          <div 
-            className="bar" 
-            style={{
-              width: `${((modelCounts['Human'] || 0) / maxCount) * 100}%`,
-              backgroundColor: '#000000'
-            }}
-          >
-            <span className="bar-value">{modelCounts['Human'] || 0}</span>
-          </div>
-        </div>
-        {models.map(model => (
-          <div key={model.id} className="histogram-bar">
-            <div className="bar-label">{model.model}</div>
-            <div 
-              className="bar" 
-              style={{
-                width: `${((modelCounts[model.id] || 0) / maxCount) * 100}%`,
-                backgroundColor: model.color
-              }}
-            >
-              <span className="bar-value">{modelCounts[model.id] || 0}</span>
+        {Object.entries(modelCounts).map(([modelId, count]) => {
+          const model = models.find(m => m.id === modelId);
+          const label = modelId === 'Human' ? 'Human' : (model?.model || modelId);
+          return (
+            <div key={modelId} className="histogram-bar">
+              <div className="bar-label">{label}</div>
+              <div 
+                className="bar" 
+                style={{
+                  width: `${(count / maxCount) * 100}%`,
+                  backgroundColor: model?.color || '#000000'
+                }}
+              >
+                <span className="bar-value">{count}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
