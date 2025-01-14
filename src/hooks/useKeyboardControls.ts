@@ -73,7 +73,8 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
               dispatch(markSuggestionInserted(suggestionIndex));
               dispatch(insertSuggestion({
                 index: suggestionIndex,
-                text: suggestions[suggestionIndex]?.text || ''
+                text: suggestions[suggestionIndex]?.text || '',
+                modelId: suggestions[suggestionIndex]?.modelId || 'Human'
               }));
               
               // Queue generation unless Ctrl is held
@@ -141,7 +142,8 @@ export const useKeyboardControls = ({ isModalOpen = false }: KeyboardControlsPro
           case 'b':
             dispatch(insertSuggestion({
               index: selectedIndex,
-              text: '\n\n---\n\n'
+              text: '\n\n---\n\n',
+              modelId: 'Human'
             }));
             dispatch(setGenerationPending(true));
             e.preventDefault();

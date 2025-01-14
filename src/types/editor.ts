@@ -1,6 +1,7 @@
 export interface Fragment {
   id: string;
   text: string;
+  modelId: string;
 }
 
 export type EditorMode = 'explore' | 'edit' | 'insert';
