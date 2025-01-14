@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ModelIdInput } from './ModelIdInput';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { SystemConfig, ModelConfig } from '../types/llm';
 import { updateSystemConfig, updateModelConfigs } from '../store/slices/llm';
@@ -200,16 +201,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               <div className="model-header">
                 <h4>Model {index + 1}</h4>
                 <div className="model-header-controls">
-                  <input
-                    type="text"
-                    value={model.id}
-                    onChange={e => {
+                  <ModelIdInput
+                    initialValue={model.id}
+                    onChange={value => {
                       const newModels = [...localModels];
-                      newModels[index] = { ...model, id: e.target.value };
+                      newModels[index] = { ...model, id: value };
                       setLocalModels(newModels);
                     }}
-                    placeholder="Model ID"
-                    className="model-id-input"
                   />
                   <input
                     type="color"
