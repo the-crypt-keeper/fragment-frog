@@ -38,7 +38,7 @@ export const SidePanel: React.FC = () => {
       <div className="histogram">
         {models.map(model => (
           <div key={model.id} className="histogram-bar">
-            <div className="bar-label">{model.id}</div>
+            <div className="bar-label">{model.model}</div>
             <div 
               className="bar" 
               style={{
