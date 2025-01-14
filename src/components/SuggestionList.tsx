@@ -31,7 +31,11 @@ export const SuggestionList: React.FC = () => {
             <div
               key={index}
               className={`suggestion-item ${suggestions[index]?.inserted ? 'fade-out' : ''}`}
-              style={{ backgroundColor: model ? `${model.color}20` : '#f0f0f0' }}
+              style={{ 
+                backgroundColor: suggestions[index]?.modelId === 'human' ? 
+                  '#e0e0e0' : 
+                  (model ? `${model.color}20` : '#f0f0f0') 
+              }}
             >
               <span className="suggestion-hint">{index + 1}</span>
               {error ? (
@@ -40,7 +44,8 @@ export const SuggestionList: React.FC = () => {
                 <span className="loading">Waiting...</span>
               ) : (
                 !suggestions[index]?.text ? 
-                  (model ? `${model.model} (slot ${index - model.gridOffset + 1})` : 'Unassigned slot') :
+                  (suggestions[index]?.modelId === 'human' ? 'Human' :
+                    (model ? `${model.model} (slot ${index - model.gridOffset + 1})` : 'Unassigned slot')) :
                   (suggestions[index].text?.replace(/\n/g, '↵') || (status === 'RUNNING' ? '' : '[empty]'))
               )}
               {model && (
