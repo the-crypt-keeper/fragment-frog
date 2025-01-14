@@ -17,12 +17,9 @@ const editorSlice = createSlice({
     setGenerationPending: (state, action: PayloadAction<boolean>) => {
       state.generationPending = action.payload;
     },
-    insertSuggestion: (state, action: PayloadAction<{index: number, text: string}>) => {
-      const { text, index } = action.payload;
+    insertSuggestion: (state, action: PayloadAction<{index: number, text: string, modelId: string}>) => {
+      const { text, modelId } = action.payload;
       const insertIndex = state.selectedIndex + 1;
-      
-      // Get modelId from suggestions
-      const modelId = state.suggestions[index]?.modelId || 'Human';
       
       // Create new fragment with the suggestion
       const newFragment: Fragment = {
