@@ -15,14 +15,6 @@ const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
-    markSuggestionInserted: (state, action: PayloadAction<number>) => {
-      if (!state.insertedSuggestions.includes(action.payload)) {
-        state.insertedSuggestions.push(action.payload);
-      }
-    },    
-    clearInsertedSuggestions: (state) => {
-      state.insertedSuggestions = [];
-    },
     setGenerationPending: (state, action: PayloadAction<boolean>) => {
       state.generationPending = action.payload;
     },
@@ -116,8 +108,6 @@ export const {
   startInsert,
   loadState,
   insertSuggestion,
-  markSuggestionInserted,
-  clearInsertedSuggestions,
   setGenerationPending
 } = editorSlice.actions;
 

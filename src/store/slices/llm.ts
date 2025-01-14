@@ -5,7 +5,7 @@ import { LocalStorageService } from '../../services/localStorage';
 interface LLMState {
   systemConfig: SystemConfig;
   models: ModelConfig[];
-  suggestions: (string | null)[];
+  suggestions: Suggestion[];
   modelStatuses: Record<string, ModelStatus>;
   errors: Record<string, string>;
 }
@@ -40,8 +40,18 @@ const llmSlice = createSlice({
     setSuggestion: (state, action: PayloadAction<{index: number, text: string | null}>) => {
       const { index, text } = action.payload;
       if (index < state.suggestions.length) {
-        // Append new text to existing suggestion, or set if first update
-        state.suggestions[index] = (state.suggestions[index] ?? '') + (text ?? '');
+        const currentSuggestion = state.suggestions[index]?.text ?? '';
+        state.suggestions[index] = {
+          text: (currentSuggestion) + (text ?? ''),
+          inserted: false
+        };
+      }
+    },
+
+    markSuggestionInserted: (state, action: PayloadAction<number>) => {
+      const { payload: index } = action;
+      if (index < state.suggestions.length && state.suggestions[index]) {
+        state.suggestions[index].inserted = true;
       }
     },
 
@@ -60,7 +70,9 @@ const llmSlice = createSlice({
     },
 
     clearSuggestions: (state) => {
-      state.suggestions = new Array(state.systemConfig.gridRows * state.systemConfig.gridColumns).fill(null);
+      state.suggestions = new Array(state.systemConfig.gridRows * state.systemConfig.gridColumns)
+        .fill(null)
+        .map(() => ({ text: null, inserted: false }));
       state.modelStatuses = {};
       state.errors = {};
     }
@@ -73,7 +85,8 @@ export const {
   setSuggestion,
   setModelStatus,
   setModelError,
-  clearSuggestions
+  clearSuggestions,
+  markSuggestionInserted
 } = llmSlice.actions;
 
 export default llmSlice.reducer;
