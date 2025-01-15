@@ -94,7 +94,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
       stopAtPeriod: true,
       numCompletions: 4,
       color: '#' + Math.floor(Math.random()*0xCFFFFF + 0x300000).toString(16),
-      gridOffset: localModels.reduce((sum, model) => sum + model.numCompletions, 0)
+      gridOffset: localModels.reduce((sum, model) => sum + model.numCompletions, 0),
+      maxTokens: 50
     };
     setLocalModels([...localModels, newModel]);
   };
@@ -326,6 +327,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                     onChange={e => {
                       const newModels = [...localModels];
                       newModels[index] = { ...model, numCompletions: parseInt(e.target.value) || 1 };
+                      setLocalModels(newModels);
+                    }}
+                  />
+                </div>
+
+                <div className="max-tokens-control">
+                  <span>Max tokens:</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max="2048"
+                    value={model.maxTokens}
+                    onChange={e => {
+                      const newModels = [...localModels];
+                      newModels[index] = { ...model, maxTokens: parseInt(e.target.value) || 50 };
                       setLocalModels(newModels);
                     }}
                   />

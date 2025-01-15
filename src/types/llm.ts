@@ -13,6 +13,7 @@ export interface SystemConfig {
     numCompletions: number;
     color: string;
     gridOffset: number;  // Starting position in the suggestion grid
+    maxTokens: number;
   }
   
   export type ModelStatus = 'IDLE' | 'WAITING' | 'RUNNING' | 'ERROR';

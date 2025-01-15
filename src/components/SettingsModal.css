@@ -162,6 +162,17 @@
     padding: 3px;
 }
 
+.max-tokens-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.max-tokens-control input {
+    width: 60px;
+    padding: 3px;
+}
+
 .modal-buttons {
     display: flex;
     justify-content: flex-end;

@@ -106,7 +106,7 @@ export class LLMService {
         prompt: config.tokenizer
           .replace('{system}', systemPrompt)
           .replace('{prompt}', prompt),
-        max_tokens: 50,
+        max_tokens: config.maxTokens,
         temperature: config.temperature,
         top_p: 0.9,
         n: config.numCompletions,
