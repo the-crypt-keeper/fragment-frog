@@ -1,0 +1,9 @@
+.fragment-list {
+    width: 100%;
+    height: 100%;
+    padding: 4px 4px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }

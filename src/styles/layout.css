@@ -1,0 +1,43 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  .main-content {
+    display: flex;
+    width: 100%;
+    height: 70%;
+  }
+  
+  .fragment-container {
+    width: 80%;
+    height: 100%;
+  }
+  
+  .suggestions-panel {
+    width: 100%;
+    height: 30%;
+    border-top: 1px solid #ccc;
+    padding: 2px;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+  
+  .control-bar {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 2em;
+    background-color: greenyellow;
+    padding: 2px;
+    margin: 2px;
+    max-width: 100%;
+    text-align: center;
+  }  

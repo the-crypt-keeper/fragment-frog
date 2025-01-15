@@ -1,0 +1,57 @@
+  
+.clipstack-panel {
+    width: 20%;
+    height: 100%;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+.clipstack-panel .title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.clipstack-panel h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.clipstack-panel .help-text {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.histogram {
+  margin-top: 10px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.histogram-bar {
+  margin: 8px 0;
+}
+
+.histogram-bar .bar-label {
+  font-size: 0.9em;
+  margin-bottom: 2px;
+}
+
+.histogram-bar .bar {
+  height: 20px;
+  min-width: 2px;
+  border-radius: 3px;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+.histogram-bar .bar-value {
+  position: absolute;
+  right: 4px;
+  color: white;
+  font-size: 0.8em;
+  line-height: 20px;
+}

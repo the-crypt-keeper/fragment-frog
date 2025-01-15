@@ -1,0 +1,73 @@
+.editor-suggestions {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  height: calc(100% - 20px);
+}
+
+.suggestion-item {
+  position: relative;
+  padding: 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.suggestion-hint {
+  font-weight: bold;
+  margin-right: 5px;
+  padding: 0 4px;
+  border: 1px solid #000;
+  border-radius: 2px;
+}
+
+.status-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 4px;
+  opacity: 0.7;
+}
+
+.status-indicator.idle {
+  opacity: 0.3;
+}
+
+.status-indicator.waiting {
+  animation: pulse 1.5s infinite;
+}
+
+.status-indicator.running {
+  animation: pulse 0.75s infinite;
+}
+
+.status-indicator.error {
+  animation: none;
+  opacity: 1;
+}
+
+.suggestion-item .error {
+  color: #d32f2f;
+  font-style: italic;
+}
+
+.suggestion-item .loading {
+  color: #666;
+  font-style: italic;
+}
+
+.suggestion-item.fade-out {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}

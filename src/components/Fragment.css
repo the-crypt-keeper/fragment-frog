@@ -1,0 +1,41 @@
+.fragment {
+    display: inline;
+    background-color: #f0f0f0;
+    padding: 0px 4px 2px 4px;
+    border: 1px dashed #666;
+    border-radius: 2px;
+  }
+  
+  .fragment.selected {
+    background-color: #d0ffd0 !important;
+  }
+  
+  .fragment.new {
+    background-color: #ffefd0;
+  }
+  
+  .fragment.editing {
+    display: inline-block;
+    min-width: 200px;
+  }
+  
+  .fragment textarea {
+    width: 100%;
+    min-width: 200px;
+    padding: 2px;
+    margin: 0;
+    border: 1px solid #666;
+    font-family: inherit;
+    font-size: inherit;
+    resize: both;
+  }
+
+  .fragment-hr {
+    display: block;
+    height: 4px;
+    border: 0;
+    border-top: 4px dashed #666;
+    margin: 8px auto;
+    padding: 0;
+    width: 50%;
+  }
