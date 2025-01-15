@@ -180,7 +180,29 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           {localModels.map((model, index) => (
             <div key={model.id} className="model-config-item">
               <div className="model-header">
-                <h4>{model.id}</h4>
+                <input
+                  type="text"
+                  value={modelIdEdits[model.id] ?? model.id}
+                  onChange={e => {
+                    setModelIdEdits({
+                      ...modelIdEdits,
+                      [model.id]: e.target.value
+                    });
+                  }}
+                  onBlur={() => {
+                    if (modelIdEdits[model.id]) {
+                      const newModels = [...localModels];
+                      newModels[index] = { 
+                        ...model, 
+                        id: modelIdEdits[model.id],
+                      };
+                      setLocalModels(newModels);
+                      setModelIdEdits({});
+                    }
+                  }}
+                  placeholder="Model ID"
+                  className="model-id-input"
+                />
                 <div className="model-header-controls">
                   <input
                     type="color"
