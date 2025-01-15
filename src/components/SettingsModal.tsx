@@ -333,7 +333,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 </div>
 
                 <div className="max-tokens-control">
-                  <span>Max tokens:</span>
+                  <span>Tokens:</span>
                   <input
                     type="number"
                     min="1"
