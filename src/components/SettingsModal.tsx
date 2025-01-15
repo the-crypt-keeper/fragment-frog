@@ -85,31 +85,38 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     onClose();
   };
 
-  const renderModelSelect = (model: ModelConfig, index: number) => (
-    <select
-      value={model.model}
-      onChange={e => {
-        const newModels = [...localModels];
-        newModels[index] = { 
-          ...model, 
-          model: e.target.value,
-          id: e.target.value 
-        };
-        setLocalModels(newModels);
-      }}
-      disabled={isLoading}
-    >
-      {isLoading ? (
-        <option>Loading models...</option>
-      ) : error ? (
-        <option>Error loading models</option>
-      ) : (        
-        availableModels.map(m => (
-          <option key={m.id} value={m.id}>{m.id}</option>
-        ))
-      )}
-    </select>
-  );
+  const addNewModel = (modelInfo: ModelInfo) => {
+    const newModel: ModelConfig = {
+      id: modelInfo.id,
+      model: modelInfo.id,
+      tokenizer: null,
+      temperature: 1.0,
+      stopAtPeriod: true,
+      numCompletions: 1,
+      color: '#' + Math.floor(Math.random()*16777215).toString(16),
+      gridOffset: localModels.reduce((sum, model) => sum + model.numCompletions, 0)
+    };
+    setLocalModels([...localModels, newModel]);
+  };
+
+  const moveModel = (fromIndex: number, direction: 'up' | 'down') => {
+    if (
+      (direction === 'up' && fromIndex === 0) || 
+      (direction === 'down' && fromIndex === localModels.length - 1)
+    ) return;
+
+    const toIndex = direction === 'up' ? fromIndex - 1 : fromIndex + 1;
+    const newModels = [...localModels];
+    const [model] = newModels.splice(fromIndex, 1);
+    newModels.splice(toIndex, 0, model);
+    setLocalModels(newModels);
+  };
+
+  const deleteModel = (index: number) => {
+    const newModels = [...localModels];
+    newModels.splice(index, 1);
+    setLocalModels(newModels);
+  };
 
   if (!isOpen) return null;
 
@@ -169,32 +176,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
         </section>
 
         <section className="model-config">
-          <h3>Model Configuration</h3>
+          <h3>Configured Models</h3>
           {localModels.map((model, index) => (
             <div key={model.id} className="model-config-item">
               <div className="model-header">
-                <h4>Model {index + 1}</h4>
+                <h4>{model.id}</h4>
                 <div className="model-header-controls">
-                  <input
-                    type="text"
-                    value={modelIdEdits[model.id] ?? model.id}
-                    onChange={e => {
-                      setModelIdEdits({
-                        ...modelIdEdits,
-                        [model.id]: e.target.value
-                      });
-                    }}
-                    onBlur={() => {
-                      if (modelIdEdits[model.id]) {
-                        const newModels = [...localModels];
-                        newModels[index] = { ...model, id: modelIdEdits[model.id] };
-                        setLocalModels(newModels);
-                        setModelIdEdits({});
-                      }
-                    }}
-                    placeholder="Model ID"
-                    className="model-id-input"
-                  />
                   <input
                     type="color"
                     value={model.color}
@@ -204,10 +191,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                       setLocalModels(newModels);
                     }}
                   />
+                  <button 
+                    onClick={() => moveModel(index, 'up')}
+                    disabled={index === 0}
+                    className="model-control-button"
+                  >
+                    ↑
+                  </button>
+                  <button 
+                    onClick={() => moveModel(index, 'down')}
+                    disabled={index === localModels.length - 1}
+                    className="model-control-button"
+                  >
+                    ↓
+                  </button>
+                  <button 
+                    onClick={() => deleteModel(index)}
+                    className="model-control-button delete"
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
-              
-              {renderModelSelect(model, index)}
 
               <div className="model-controls-row">
                 <select
@@ -285,6 +290,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               </div>
             </div>
           ))}
+        </section>
+
+        <section className="add-model-section">
+          <h3>Add Model</h3>
+          {isLoading ? (
+            <div>Loading available models...</div>
+          ) : error ? (
+            <div className="error-message">{error}</div>
+          ) : (
+            <div className="available-models-grid">
+              {availableModels.map(model => (
+                <button
+                  key={model.id}
+                  onClick={() => addNewModel(model)}
+                  className="add-model-button"
+                  disabled={localModels.some(m => m.model === model.id)}
+                >
+                  {model.id}
+                </button>
+              ))}
+            </div>
+          )}
         </section>
 
         <div className="modal-buttons">
