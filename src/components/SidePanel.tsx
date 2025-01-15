@@ -38,10 +38,9 @@ export const SidePanel: React.FC = () => {
       <div className="histogram">
         {Object.entries(modelCounts).map(([modelId, count]) => {
           const model = models.find(m => m.id === modelId);
-          const label = modelId === 'Human' ? 'Human' : (model?.model || modelId);
           return (
             <div key={modelId} className="histogram-bar">
-              <div className="bar-label">{label}</div>
+              <div className="bar-label">{modelId}</div>
               <div 
                 className="bar" 
                 style={{
