@@ -20,9 +20,9 @@ It helps compose stories, documents, emails, or any other text quickly by select
    - ⚙️ - Settings
 2. Fragment list - See the text so far :construction:
 3. Current selected fragment is highlighted in green, press `<Tab>` to get suggestions for this fragment from configured models.
-5. Quick Help / Modal Usage :construction:
-6. Suggestion Grid - Press the number to insert suggestion at the highlighted point and automatically get new suggestions. Hold `<Ctrl>` to avoid the automatic re-suggest.
-7. LLM Status indicators - Shows status for each configured model
+4. Quick Help / Modal Usage :construction:
+5. Suggestion Grid - Press the number to insert suggestion at the highlighted point and automatically get new suggestions. Hold `<Ctrl>` to avoid the automatic re-suggest.
+6. LLM Status indicators - Shows status for each configured model
 
 ## Running
 

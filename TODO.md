@@ -8,7 +8,7 @@
 
 - FEAT: configure more than 2 models
     - start with 0 models, have model add/delete buttons
-      - suggestions should be gray and say to open settings to setup suggestions
+      - unmapped suggestions should be gray and say to open settings to setup suggestions
     - model reorder mechanism
 
 - FEAT: resurrect the clipstack
@@ -18,11 +18,6 @@
 - BUG: handle litellm proxy errors that look like this:
 
 data: {"error": {"message": "litellm.APIError: APIError: OpenAIException - litellm.APIConnectionError: APIConnectionError: Text-completion-openaiException - An error occurred during streaming", "type": null, "param": null, "code": "500"}}
-
-- BUG: github supports only chat and only n=1 returns stream that ends like this
-
-data: {"id":"ccc8c4e2965d4266b3c242f1b32e50e8","created":1736120182,"model":"Mistral-large","object":"chat.completion.chunk","choices":[{"finish_reason":"length","index":0,"delta":{}}]}
-data: [DONE]
 
 - TEST: LLM parsing
 
