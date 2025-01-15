@@ -175,6 +175,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           />
         </section>
 
+        <section className="add-model-section">
+          <h3>Add Model</h3>
+          {isLoading ? (
+            <div>Loading available models...</div>
+          ) : error ? (
+            <div className="error-message">{error}</div>
+          ) : (
+            <div className="available-models-grid">
+              {availableModels.map(model => (
+                <button
+                  key={model.id}
+                  onClick={() => addNewModel(model)}
+                  className={`add-model-button ${localModels.some(m => m.model === model.id) ? 'already-added' : ''}`}
+                >
+                  {model.id}
+                </button>
+              ))}
+            </div>
+          )}
+        </section>
+
         <section className="model-config">
           <h3>Configured Models</h3>
           {localModels.map((model, index) => (
@@ -314,27 +335,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           ))}
         </section>
 
-        <section className="add-model-section">
-          <h3>Add Model</h3>
-          {isLoading ? (
-            <div>Loading available models...</div>
-          ) : error ? (
-            <div className="error-message">{error}</div>
-          ) : (
-            <div className="available-models-grid">
-              {availableModels.map(model => (
-                <button
-                  key={model.id}
-                  onClick={() => addNewModel(model)}
-                  className="add-model-button"
-                  disabled={localModels.some(m => m.model === model.id)}
-                >
-                  {model.id}
-                </button>
-              ))}
-            </div>
-          )}
-        </section>
 
         <div className="modal-buttons">
           <button onClick={onClose}>Cancel</button>
