@@ -1,6 +1,7 @@
   
 .clipstack-panel {
     width: 20%;
+    min-width: 300px;
     height: 100%;
     border: 1px solid #ccc;
     box-sizing: border-box;
