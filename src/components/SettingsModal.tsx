@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { ModelIdInput } from './ModelIdInput';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { SystemConfig, ModelConfig } from '../types/llm';
 import { updateSystemConfig, updateModelConfigs } from '../store/slices/llm';
@@ -31,6 +30,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const [availableModels, setAvailableModels] = useState<ModelInfo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [modelIdEdits, setModelIdEdits] = useState<Record<string, string>>({});
 
   // Fetch available models when modal opens
   useEffect(() => {
@@ -201,13 +201,25 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               <div className="model-header">
                 <h4>Model {index + 1}</h4>
                 <div className="model-header-controls">
-                  <ModelIdInput
-                    initialValue={model.id}
-                    onChange={value => {
-                      const newModels = [...localModels];
-                      newModels[index] = { ...model, id: value };
-                      setLocalModels(newModels);
+                  <input
+                    type="text"
+                    value={modelIdEdits[model.id] ?? model.id}
+                    onChange={e => {
+                      setModelIdEdits({
+                        ...modelIdEdits,
+                        [model.id]: e.target.value
+                      });
                     }}
+                    onBlur={() => {
+                      if (modelIdEdits[model.id]) {
+                        const newModels = [...localModels];
+                        newModels[index] = { ...model, id: modelIdEdits[model.id] };
+                        setLocalModels(newModels);
+                        setModelIdEdits({});
+                      }
+                    }}
+                    placeholder="Model ID"
+                    className="model-id-input"
                   />
                   <input
                     type="color"
