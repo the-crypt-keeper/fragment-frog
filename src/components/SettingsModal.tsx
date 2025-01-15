@@ -89,10 +89,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     const newModel: ModelConfig = {
       id: modelInfo.id,
       model: modelInfo.id,
-      tokenizer: null,
+      tokenizer: '{system}\n{prompt}',
       temperature: 1.0,
       stopAtPeriod: true,
-      numCompletions: 1,
+      numCompletions: 4,
       color: '#' + Math.floor(Math.random()*16777215).toString(16),
       gridOffset: localModels.reduce((sum, model) => sum + model.numCompletions, 0)
     };
