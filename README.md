@@ -13,17 +13,46 @@ It helps compose stories, documents, emails, or any other text quickly by select
 
 :construction: Out of date :construction:
 
-1. Model Selection - Pick models and configure their parameters in Settings
-2. Control Panel
+1. Control Panel
    - ⬇️ - Download (Export)
    - ⬆️ - Upload (Import)
    - 💣 - Reset
    - ⚙️ - Settings
-3. Fragment list
-4. Current selected fragment is highlighted in green, press `<Tab>` to get suggestions for this fragment from configured models.
-5. Quick Help / Clipboard - Non-linear editing features
+2. Fragment list - See the text so far :construction:
+3. Current selected fragment is highlighted in green, press `<Tab>` to get suggestions for this fragment from configured models.
+5. Quick Help / Modal Usage :construction:
 6. Suggestion Grid - Press the number to insert suggestion at the highlighted point and automatically get new suggestions. Hold `<Ctrl>` to avoid the automatic re-suggest.
 7. LLM Status indicators - Shows status for each configured model
+
+## Running
+
+- `node -v` should be `v20.15.1`
+- `npm ci`
+- create `.env`
+    - `REACT_APP_OPENAI_API_ENDPOINT=...`
+    - `REACT_APP_OPENAI_API_KEY=...`
+- `npm run start`
+
+
+## Keyboard Controls
+
+### Explore Mode (Default)
+- Left/Right Arrows: Change selected fragment
+- CTRL+Left/Right Arrows: Moved the currently selected fragment left or right
+- Space: Edits the selected fragment
+- 'i': Insert a new fragment after selected fragment
+- 'b': Insert a section break
+- 'd': Deletes the selected fragment
+- 'x': Cuts the selected fragment, placing it at the end of the Clipboard :construction:
+- 'v': Pastes the top element from the clipboard :construction:
+- Tab: Generate new suggestions
+- 1-0: Insert the corresponding suggestion after the selected fragment
+- Ctrl + 1-0: Insert the corresponding suggestion without automatically generating new suggestions
+
+### Edit/Insert Mode
+- Ctrl+Enter: Insert a newline
+- Enter: Save changes and return to explore mode
+- Escape: Discard changes (edit mode) or delete inserted fragment (insert mode) and return to explore mode
 
 ## Architecture
 
@@ -67,34 +96,6 @@ The system supports flexible configuration of:
   - Sampling settings
   - Completion counts
   - Visual styling
-
-## Running
-
-- `node -v` should be `v20.15.1`
-- `npm ci`
-- create `.env`
-    - `REACT_APP_OPENAI_API_ENDPOINT=...`
-    - `REACT_APP_OPENAI_API_KEY=...`
-- `npm run start`
-
-## Keyboard Controls
-
-### Explore Mode (Default)
-- Left/Right Arrows: Change selected fragment
-- CTRL+Left/Right Arrows: Moved the currently selected fragment left or right
-- Space: Edits the selected fragment
-- 'i': Insert a new fragment after selected fragment
-- 'd': Deletes the selected fragment
-- 'x': Cuts the selected fragment, placing it at the end of the Clipboard
-- 'v': Pastes the top element from the clipboard
-- Tab: Generate new suggestions
-- 1-8: Insert the corresponding suggestion after the selected fragment [TODO: expand to 1-0]
-- Ctrl + 1-8: Insert the corresponding suggestion without automatically generating new suggestions [TODO: expand to 1-0]
-
-### Edit/Insert Mode
-- Ctrl+Enter: Insert a newline
-- Enter: Save changes and return to explore mode
-- Escape: Discard changes (edit mode) or delete inserted fragment (insert mode) and return to explore mode
 
 ## Development
 
