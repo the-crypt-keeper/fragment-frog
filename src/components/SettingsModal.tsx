@@ -41,32 +41,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
       LLMService.getAvailableModels()
         .then(models => {
           setAvailableModels(models);
-          // Initialize with first two models if empty
-          if (localModels.length === 0 && models.length >= 2) {
-            const initialModels: ModelConfig[] = [
-              {
-                id: models[0].id,
-                model: models[0].id,
-                tokenizer: null,
-                temperature: 0.7,
-                stopAtPeriod: true,
-                numCompletions: 4,
-                color: '#FF0000',
-                gridOffset: 0
-              },
-              {
-                id: models[1].id,
-                model: models[1].id,
-                tokenizer: null,
-                temperature: 0.7,
-                stopAtPeriod: true,
-                numCompletions: 4,
-                color: '#0000FF',
-                gridOffset: 4
-              }
-            ];
-            setLocalModels(initialModels);
-          }
           setIsLoading(false);
         })
         .catch(err => {
@@ -74,7 +48,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           setIsLoading(false);
         });
     }
-  }, [isOpen, localModels]);
+  }, [isOpen]);
 
   // Reset local state when modal opens
   useEffect(() => {
