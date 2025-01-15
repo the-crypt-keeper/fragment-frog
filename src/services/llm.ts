@@ -120,7 +120,7 @@ export class LLMService {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 50,
+        max_tokens: config.maxTokens,
         temperature: config.temperature,
         top_p: 0.9,
         n: config.numCompletions,
