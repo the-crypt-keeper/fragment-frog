@@ -17,11 +17,32 @@ export class LLMService {
 
     const decoder = new TextDecoder();
     let buffer = '';
+    let streamDone : Map<number, Boolean> = new Map<number, Boolean>();
 
     try {
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done) {
+          // Figure out if there's any streams we need to force completion on.
+          let streamAbort : Array<number> = [];
+
+          streamDone.forEach((value, key) => {
+            if (value !== true) {
+              streamAbort.push(key);
+            }
+          });
+
+          for (const idx of streamAbort) {
+              yield {
+                modelId,
+                slotIndex: idx,
+                text: '',
+                isComplete: true
+              }; 
+          }
+
+          break;
+        }
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
@@ -34,6 +55,8 @@ export class LLMService {
               if (data.choices && data.choices.length > 0) {
                 for (const choice of data.choices) {
                   const slotIndex = baseSlotIndex + choice.index;
+                  if (streamDone.get(slotIndex)) { continue; }
+
                   let text = choice.text;
                   if (choice.delta?.content) {
                     text = choice.delta.content;
@@ -41,13 +64,15 @@ export class LLMService {
                   
                   if (choice.finish_reason === 'stop') {
                     let stop_text = choice.stop_reason ?? '.'; // TODO: Not all backends return this
+                    streamDone.set(slotIndex, true);
                     yield {
                       modelId,
                       slotIndex,
                       text: stop_text,
                       isComplete: true
-                    };    
+                    };                    
                   } else {
+                    streamDone.set(slotIndex, (choice.finish_reason !== null));
                     yield {
                       modelId,
                       slotIndex,
