@@ -11,6 +11,8 @@ It helps compose stories, documents, emails, or any other text quickly by select
 
 ![FragmentFrog screenshot of explore mode](ff2.png "FragmentFrog screenshot of explore mode")
 
+:construction: Out of date :construction:
+
 1. Model Selection - Pick models and configure their parameters in Settings
 2. Control Panel
    - ⬇️ - Download (Export)
@@ -45,12 +47,11 @@ The application uses Redux for state management with two main slices:
    - Fragment management
    - Selection state
    - Edit/Insert modes
-   - Suggestion tracking
-
+   
 2. **LLM Slice**
    - System configuration (grid layout, system prompt)
    - Model configurations
-   - Suggestion state
+   - Suggestion tracking
    - Model status tracking
 
 ### Storage
@@ -156,6 +157,7 @@ The application uses custom hooks to manage complex behaviors:
   - Coordinates fragment manipulation (move/delete/edit)
 
 ### Testing
+
 The project includes comprehensive tests for:
 - Redux reducers
 - Fragment manipulation logic
